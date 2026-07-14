@@ -3,10 +3,10 @@
 import { useDictionary } from "@/components/providers/LocaleProvider";
 import { brandAssets } from "@/content/brand";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const PRELOADER_SRC = "/media/preloader.webm";
-const MAX_MS = 6500;
+const MAX_MS = 5000;
 
 type Props = {
   active: boolean;
@@ -14,10 +14,8 @@ type Props = {
 };
 
 /**
- * Handoff rules (no white flash):
- * 1. Static #herna-boot covers first HTML paint
- * 2. This overlay matches that shell and only removes boot once ready
- * 3. Hard cap always dismisses — never trap the home tree underneath
+ * Cinematic preloader overlay. Site tree must already be mounted underneath.
+ * Hard-dismisses after MAX_MS — never traps navigation.
  */
 export function SiteLoader({ active, onComplete }: Props) {
   const dictionary = useDictionary();
@@ -33,35 +31,40 @@ export function SiteLoader({ active, onComplete }: Props) {
     onCompleteRef.current = onComplete;
   }, [onComplete]);
 
-  const finish = useCallback(() => {
+  const finish = () => {
     if (doneRef.current) return;
     doneRef.current = true;
+    document.body.style.overflow = "";
+    document.getElementById("herna-boot")?.remove();
     onCompleteRef.current();
-  }, []);
+  };
 
-  // Single hard deadline — independent of video / callback identity churn
+  // Hard deadline tied only to `active` — ignore reduced / callback churn
   useEffect(() => {
     if (!active) return;
+
     doneRef.current = false;
     setProgress(0);
     setVideoReady(false);
+    setVideoOk(true);
 
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
 
-    if (reduced) {
-      finish();
-      return () => {
-        document.body.style.overflow = prevOverflow;
-      };
-    }
-
     const maxTimer = window.setTimeout(finish, MAX_MS);
+
     return () => {
       window.clearTimeout(maxTimer);
       document.body.style.overflow = prevOverflow;
     };
-  }, [active, reduced, finish]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [active]);
+
+  // Prefer reduced motion: dismiss immediately
+  useEffect(() => {
+    if (active && reduced) finish();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [active, reduced]);
 
   useEffect(() => {
     if (!active) return;
@@ -82,8 +85,6 @@ export function SiteLoader({ active, onComplete }: Props) {
       );
     };
 
-    const markReady = () => setVideoReady(true);
-
     const play = async () => {
       try {
         el.defaultMuted = true;
@@ -97,16 +98,16 @@ export function SiteLoader({ active, onComplete }: Props) {
     };
 
     el.addEventListener("timeupdate", onTime);
-    el.addEventListener("playing", markReady);
+    el.addEventListener("playing", () => setVideoReady(true));
     el.addEventListener("ended", finish);
     void play();
 
     return () => {
       el.removeEventListener("timeupdate", onTime);
-      el.removeEventListener("playing", markReady);
       el.removeEventListener("ended", finish);
     };
-  }, [active, reduced, videoOk, finish]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [active, reduced, videoOk]);
 
   useEffect(() => {
     if (!active || reduced || videoOk) return;
@@ -114,17 +115,18 @@ export function SiteLoader({ active, onComplete }: Props) {
     let raf = 0;
     const tick = () => {
       frame += 1;
-      const next = Math.min(100, Math.round(frame * 3));
+      const next = Math.min(100, Math.round(frame * 4));
       setProgress(next);
       if (next >= 100) {
-        window.setTimeout(finish, 120);
+        finish();
         return;
       }
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [active, reduced, videoOk, finish]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [active, reduced, videoOk]);
 
   return (
     <AnimatePresence>
@@ -133,7 +135,7 @@ export function SiteLoader({ active, onComplete }: Props) {
           className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-white"
           initial={false}
           animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
+          exit={{ opacity: 0, transition: { duration: 0.4 } }}
           transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
           aria-busy="true"
           aria-label={dictionary.ui.loading}
@@ -144,7 +146,7 @@ export function SiteLoader({ active, onComplete }: Props) {
             alt=""
             width={720}
             height={280}
-            className={`pointer-events-none absolute left-1/2 top-1/2 w-[min(86vw,26rem)] -translate-x-1/2 -translate-y-1/2 object-contain transition-opacity duration-500 ${
+            className={`pointer-events-none absolute left-1/2 top-1/2 z-[1] w-[min(86vw,26rem)] -translate-x-1/2 -translate-y-1/2 object-contain transition-opacity duration-500 ${
               videoReady && videoOk ? "opacity-0" : "opacity-100"
             }`}
           />
@@ -152,7 +154,7 @@ export function SiteLoader({ active, onComplete }: Props) {
           {videoOk && !reduced ? (
             <video
               ref={videoRef}
-              className={`absolute inset-0 h-full w-full scale-[1.2] object-contain bg-white transition-opacity duration-500 sm:scale-[1.24] md:scale-[1.3] ${
+              className={`pointer-events-none absolute inset-0 z-[1] h-full w-full scale-[1.2] object-contain bg-white transition-opacity duration-500 sm:scale-[1.24] md:scale-[1.3] ${
                 videoReady ? "opacity-100" : "opacity-0"
               }`}
               src={PRELOADER_SRC}
@@ -164,7 +166,7 @@ export function SiteLoader({ active, onComplete }: Props) {
             />
           ) : null}
 
-          <div className="pointer-events-none absolute inset-x-0 bottom-16 flex flex-col items-center">
+          <div className="pointer-events-none absolute inset-x-0 bottom-16 z-[2] flex flex-col items-center">
             <div className="h-px w-40 overflow-hidden bg-black/10 sm:w-52">
               <div
                 className="h-full bg-[color:var(--gold)] transition-[width] duration-200 ease-out"
@@ -175,7 +177,7 @@ export function SiteLoader({ active, onComplete }: Props) {
 
           <button
             type="button"
-            className="absolute bottom-8 z-10 text-sm text-[color:var(--muted)] underline-offset-4 hover:text-[color:var(--ink)] hover:underline"
+            className="absolute bottom-8 z-[3] text-sm text-[color:var(--muted)] underline-offset-4 hover:text-[color:var(--ink)] hover:underline"
             onClick={finish}
             data-cursor-hover
           >

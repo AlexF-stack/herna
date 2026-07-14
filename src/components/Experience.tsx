@@ -15,7 +15,7 @@ import { SiteNav } from "@/components/site/SiteNav";
 import { SitePartners } from "@/components/site/SitePartners";
 import { useSessionIntro } from "@/hooks/useSessionIntro";
 import dynamic from "next/dynamic";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 
 const SoftCursor = dynamic(
   () => import("@/components/site/SoftCursor").then((m) => m.SoftCursor),
@@ -30,6 +30,16 @@ function ExperienceInner() {
     markComplete();
     document.getElementById("herna-boot")?.remove();
   }, [markComplete]);
+
+  // Parent safety net if the loader overlay fails to self-dismiss
+  useEffect(() => {
+    if (!shouldShowIntro) return;
+    const t = window.setTimeout(() => {
+      markComplete();
+      document.getElementById("herna-boot")?.remove();
+    }, 7000);
+    return () => window.clearTimeout(t);
+  }, [shouldShowIntro, markComplete]);
 
   return (
     <>

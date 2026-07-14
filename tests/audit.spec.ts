@@ -13,11 +13,14 @@ const slugs = [
 async function dismissLoader(page: import("@playwright/test").Page) {
   const skip = page.getByRole("button", { name: /^Skip$|^Passer$/i });
   try {
-    await skip.waitFor({ state: "visible", timeout: 3_000 });
-    await skip.click();
+    await skip.waitFor({ state: "visible", timeout: 4_000 });
+    await skip.click({ force: true });
   } catch {
-    /* already dismissed / session skip */
+    /* already dismissed */
   }
+  await expect(page.locator('[aria-label="Loading"]')).toHaveCount(0, {
+    timeout: 12_000,
+  });
 }
 
 test.describe("HERNA audit", () => {
