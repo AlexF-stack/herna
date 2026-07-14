@@ -53,7 +53,6 @@ export const fr: Dictionary = {
     { href: "#about", label: "À propos" },
     { href: "#identity", label: "Identité" },
     { href: "#divisions", label: "Divisions" },
-    { href: "#insights", label: "Actualités" },
     { href: "#partners", label: "Partenaires" },
     { href: "#contact", label: "Contact" },
   ],
@@ -176,37 +175,10 @@ export const fr: Dictionary = {
     label: "Actualités",
     headline: "Les perspectives de la holding.",
     intro:
-      "Points stratégiques, jalons de partenariats et regards sur l'héritage que HERNA construit à travers l'Afrique.",
+      "Les notes stratégiques et communications officielles paraîtront ici dès qu'elles seront publiées.",
     readMore: "Lire la suite",
     back: "Retour aux actualités",
-    items: [
-      {
-        id: "regional-expansion-strategy",
-        title: "HERNA présente sa stratégie d'expansion régionale 2026–2030",
-        excerpt:
-          "La direction de la holding définit ses priorités pour approfondir ses activités dans les secteurs stratégiques d'Afrique de l'Ouest au cours du prochain cycle d'investissement.",
-        date: "2026-03-12",
-        category: "Stratégie",
-      },
-      {
-        id: "tpg-partnership-renewal",
-        title:
-          "HERNA et TPG renouvellent leur accord de partenariat stratégique",
-        excerpt:
-          "Cette collaboration renouvelée renforce les initiatives communes dans les projets d'infrastructures et d'équipements industriels de la région.",
-        date: "2026-01-22",
-        category: "Partenariat",
-      },
-      {
-        id: "heritage-of-nations-legacy",
-        title:
-          "Bâtir un héritage : retour sur la vision fondatrice de HERNA",
-        excerpt:
-          "Un regard sur les principes qui ont façonné HERITAGE OF NATIONS et continuent de guider ses engagements de long terme en Afrique.",
-        date: "2025-11-05",
-        category: "Héritage",
-      },
-    ],
+    items: [],
   },
   approach: {
     label: "Approche",

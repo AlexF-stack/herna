@@ -9,7 +9,6 @@ import { SiteDivisions } from "@/components/site/SiteDivisions";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { SiteHero } from "@/components/site/SiteHero";
 import { SiteIdentity } from "@/components/site/SiteIdentity";
-import { SiteInsights } from "@/components/site/SiteInsights";
 import { SiteLoader } from "@/components/site/SiteLoader";
 import { SiteMediaBand } from "@/components/site/SiteMediaBand";
 import { SiteNav } from "@/components/site/SiteNav";
@@ -58,7 +57,6 @@ function ExperienceInner() {
             <SiteMediaBand />
             <SiteIdentity />
             <SiteDivisions />
-            <SiteInsights />
             <SitePartners />
             <SiteContact />
             <SiteFooter />

@@ -204,7 +204,6 @@ export const en: Dictionary = {
     { href: "#about", label: "About" },
     { href: "#identity", label: "Identity" },
     { href: "#divisions", label: "Divisions" },
-    { href: "#insights", label: "Insights" },
     { href: "#partners", label: "Partners" },
     { href: "#contact", label: "Contact" },
   ],
@@ -327,35 +326,10 @@ export const en: Dictionary = {
     label: "Insights",
     headline: "Perspectives from across the holding.",
     intro:
-      "Strategic updates, partnership milestones and reflections on the legacy HERNA is building across Africa.",
+      "Strategic notes and corporate updates will appear here when official communications are published.",
     readMore: "Read more",
     back: "Back to insights",
-    items: [
-      {
-        id: "regional-expansion-strategy",
-        title: "HERNA Outlines Regional Expansion Strategy for 2026–2030",
-        excerpt:
-          "Holding leadership sets out priorities for deepening operations across West Africa's strategic sectors over the coming investment cycle.",
-        date: "2026-03-12",
-        category: "Strategy",
-      },
-      {
-        id: "tpg-partnership-renewal",
-        title: "HERNA and TPG Renew Strategic Partnership Agreement",
-        excerpt:
-          "The renewed collaboration reinforces joint initiatives across infrastructure and industrial equipment projects in the region.",
-        date: "2026-01-22",
-        category: "Partnership",
-      },
-      {
-        id: "heritage-of-nations-legacy",
-        title: "Building a Legacy: HERNA's Founding Vision Revisited",
-        excerpt:
-          "A look back at the principles that shaped HERITAGE OF NATIONS and continue to guide its long-term commitments across Africa.",
-        date: "2025-11-05",
-        category: "Legacy",
-      },
-    ],
+    items: [],
   },
   approach: {
     label: "Approach",

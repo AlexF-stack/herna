@@ -9,15 +9,9 @@ const divisionSlugs = [
   "energy",
 ];
 
-const insightSlugs = [
-  "regional-expansion-strategy",
-  "tpg-partnership-renewal",
-  "heritage-of-nations-legacy",
-];
-
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = "https://www.herna-group.com";
-  const staticPaths = ["", "/legal-notice", "/privacy-policy", "/insights"];
+  const staticPaths = ["", "/legal-notice", "/privacy-policy"];
 
   const entries: MetadataRoute.Sitemap = [];
 
@@ -27,7 +21,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         url: `${base}/${locale}${path}`,
         lastModified: new Date(),
         changeFrequency: path === "" ? "weekly" : "monthly",
-        priority: path === "" ? 1 : path === "/insights" ? 0.7 : 0.3,
+        priority: path === "" ? 1 : 0.3,
         alternates: {
           languages: Object.fromEntries(
             locales.map((l) => [l, `${base}/${l}${path}`]),
@@ -41,14 +35,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
         lastModified: new Date(),
         changeFrequency: "monthly",
         priority: 0.8,
-      });
-    }
-    for (const slug of insightSlugs) {
-      entries.push({
-        url: `${base}/${locale}/insights/${slug}`,
-        lastModified: new Date(),
-        changeFrequency: "monthly",
-        priority: 0.6,
       });
     }
   }

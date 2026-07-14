@@ -2,7 +2,14 @@
 
 import { SoftImage } from "@/shared/ui/SoftImage";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
-import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type CSSProperties,
+} from "react";
 
 type Props = {
   videoSrc?: string;
@@ -18,7 +25,7 @@ type Props = {
 };
 
 /**
- * Full-bleed cinematic media: muted looping video(s) with image slideshow fallback.
+ * Full-bleed cinematic media: muted looping video playlist with image fallback.
  */
 export function CinematicMedia({
   videoSrc,
@@ -30,7 +37,7 @@ export function CinematicMedia({
   overlayStyle,
   kenBurns = true,
   cycleMs = 7000,
-  videoCycleMs = 14000,
+  videoCycleMs = 16000,
 }: Props) {
   const reduced = usePrefersReducedMotion();
   const clips = useMemo(
@@ -42,18 +49,43 @@ export function CinematicMedia({
   );
 
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+  const activeRef = useRef(0);
+  const advancingRef = useRef(false);
   const [activeClip, setActiveClip] = useState(0);
-  /** Mount at most the first clip initially; unlock more on cycle */
-  const [mountCount, setMountCount] = useState(clips.length ? 1 : 0);
-  const [playing, setPlaying] = useState<Record<number, boolean>>({});
+  const [playing, setPlaying] = useState(false);
   const [index, setIndex] = useState(0);
 
-  const anyPlaying = Object.values(playing).some(Boolean);
-  const showVideo =
-    clips.length > 0 && Boolean(playing[activeClip]) && !reduced;
+  const playlist = clips.length > 1;
+  const showVideo = clips.length > 0 && playing && !reduced;
+
+  const goTo = useCallback(
+    (next: number) => {
+      if (!clips.length || advancingRef.current) return;
+      const target = ((next % clips.length) + clips.length) % clips.length;
+      if (target === activeRef.current) return;
+
+      advancingRef.current = true;
+      const prev = videoRefs.current[activeRef.current];
+      if (prev) {
+        try {
+          prev.pause();
+          prev.currentTime = 0;
+        } catch {
+          /* ignore */
+        }
+      }
+
+      activeRef.current = target;
+      setActiveClip(target);
+      window.setTimeout(() => {
+        advancingRef.current = false;
+      }, 600);
+    },
+    [clips.length],
+  );
 
   useEffect(() => {
-    if (reduced || mountCount === 0) return;
+    if (reduced || clips.length === 0) return;
 
     const el = videoRefs.current[activeClip];
     if (!el) return;
@@ -66,57 +98,72 @@ export function CinematicMedia({
         el.muted = true;
         el.playsInline = true;
         await el.play();
-        if (!cancelled) {
-          setPlaying((prev) => ({ ...prev, [activeClip]: true }));
-        }
+        if (!cancelled) setPlaying(true);
       } catch {
-        // Retry once after metadata — common on deferred mounts after preloader
-        const retry = async () => {
-          try {
-            el.muted = true;
-            await el.play();
-            if (!cancelled) {
-              setPlaying((prev) => ({ ...prev, [activeClip]: true }));
-            }
-          } catch {
-            if (!cancelled) {
-              setPlaying((prev) => ({ ...prev, [activeClip]: false }));
-            }
-          }
-        };
-        window.setTimeout(() => void retry(), 280);
+        window.setTimeout(() => {
+          if (cancelled) return;
+          el.muted = true;
+          void el
+            .play()
+            .then(() => {
+              if (!cancelled) setPlaying(true);
+            })
+            .catch(() => {
+              if (!cancelled) {
+                if (playlist) goTo(activeClip + 1);
+                else setPlaying(false);
+              }
+            });
+        }, 280);
       }
     };
 
     void start();
-
     return () => {
       cancelled = true;
     };
-  }, [reduced, activeClip, mountCount]);
+  }, [reduced, activeClip, clips.length, playlist, goTo]);
+
+  // Preload next clip while current plays
+  useEffect(() => {
+    if (reduced || !playlist || !playing) return;
+    const next = (activeClip + 1) % clips.length;
+    const el = videoRefs.current[next];
+    if (!el) return;
+    try {
+      el.preload = "auto";
+      if (el.readyState < 2) el.load();
+    } catch {
+      /* ignore */
+    }
+  }, [reduced, playlist, playing, activeClip, clips.length]);
 
   useEffect(() => {
-    if (reduced || clips.length < 2 || !anyPlaying) return;
+    if (reduced || !playlist || !playing) return;
 
-    const id = window.setInterval(() => {
-      setActiveClip((current) => {
-        const next = (current + 1) % clips.length;
-        setMountCount((count) => Math.max(count, next + 1));
-        // Pause previous to save decode; resume happens in play effect
-        const prev = videoRefs.current[current];
-        if (prev && current !== next) {
-          try {
-            prev.pause();
-          } catch {
-            /* ignore */
-          }
-        }
-        return next;
-      });
-    }, videoCycleMs);
+    const el = videoRefs.current[activeClip];
+    if (!el) return;
 
-    return () => window.clearInterval(id);
-  }, [reduced, clips.length, anyPlaying, videoCycleMs]);
+    const advance = () => goTo(activeClip + 1);
+
+    el.loop = false;
+    el.addEventListener("ended", advance);
+
+    const nearEnd = window.setInterval(() => {
+      if (!el.duration || !Number.isFinite(el.duration)) return;
+      if (el.currentTime > 1 && el.duration - el.currentTime < 0.4) {
+        advance();
+      }
+    }, 350);
+
+    const hardFallback = window.setTimeout(advance, videoCycleMs);
+
+    return () => {
+      el.removeEventListener("ended", advance);
+      window.clearInterval(nearEnd);
+      window.clearTimeout(hardFallback);
+    };
+  }, [reduced, playlist, playing, activeClip, goTo, videoCycleMs]);
 
   useEffect(() => {
     if (showVideo || images.length < 2 || reduced) return;
@@ -145,7 +192,7 @@ export function CinematicMedia({
       ) : null}
 
       {!reduced &&
-        clips.slice(0, mountCount).map((src, i) => (
+        clips.map((src, i) => (
           <video
             key={src}
             ref={(node) => {
@@ -157,18 +204,25 @@ export function CinematicMedia({
             src={src}
             muted
             playsInline
-            loop
+            loop={!playlist}
             autoPlay={i === 0}
-            preload={i === 0 ? "auto" : "metadata"}
+            preload="auto"
             aria-hidden
-            onPlaying={() => setPlaying((prev) => ({ ...prev, [i]: true }))}
+            onPlaying={() => {
+              if (i === activeClip) setPlaying(true);
+            }}
             onLoadedData={() => {
               const el = videoRefs.current[i];
               if (!el || i !== activeClip) return;
               el.muted = true;
               void el.play().catch(() => undefined);
             }}
-            onError={() => setPlaying((prev) => ({ ...prev, [i]: false }))}
+            onError={() => {
+              if (i === activeClip) {
+                if (playlist) goTo(i + 1);
+                else setPlaying(false);
+              }
+            }}
           />
         ))}
 
