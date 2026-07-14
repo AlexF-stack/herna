@@ -97,6 +97,7 @@ export default function RootLayout({
             justifyContent: "center",
             background: "#ffffff",
             padding: "2rem",
+            pointerEvents: "none",
           }}
           aria-hidden
         >
@@ -115,7 +116,7 @@ export default function RootLayout({
         </div>
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){var el=document.getElementById('herna-boot');if(!el)return;var p=location.pathname.replace(/\\/$/,'');if(!/^\\/(en|fr)$/.test(p)){el.remove();return;}setTimeout(function(){el.remove();},2800);})();`,
+            __html: `(function(){var el=document.getElementById('herna-boot');if(!el)return;var p=location.pathname.replace(/\\/$/,'');if(!/^\\/(en|fr)$/.test(p)){el.remove();return;}setTimeout(function(){el&&el.remove();},1200);})();`,
           }}
         />
         {children}
