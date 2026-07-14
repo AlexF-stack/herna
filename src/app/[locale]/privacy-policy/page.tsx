@@ -1,8 +1,8 @@
+import { BackLink } from "@/components/site/BackLink";
 import { brandAssets } from "@/content/brand";
 import { isLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/getDictionary";
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 
 export async function generateMetadata({
@@ -32,12 +32,7 @@ export default async function PrivacyPolicyPage({
   return (
     <main className="min-h-screen bg-[color:var(--bg)] pb-24 pt-28 text-[color:var(--ink)]">
       <div className="container-herna max-w-3xl">
-        <Link
-          href={`/${locale}`}
-          className="link-underline text-sm text-[color:var(--gold)]"
-        >
-          ← {dictionary.ui.backHome}
-        </Link>
+        <BackLink href={`/${locale}`}>{dictionary.ui.backHome}</BackLink>
         <h1 className="heading-display mt-10 text-display-md">
           {dictionary.legal.privacyTitle}
         </h1>

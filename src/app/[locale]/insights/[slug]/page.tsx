@@ -1,3 +1,4 @@
+import { BackLink } from "@/components/site/BackLink";
 import { formatInsightDate } from "@/i18n/formatDate";
 import { isLocale, locales, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/getDictionary";
@@ -51,13 +52,10 @@ export default async function InsightDetailPage({
 
   return (
     <main className="min-h-screen bg-[color:var(--bg)] text-[color:var(--ink)]">
-      <article className="container-herna max-w-2xl py-16 md:py-24">
-        <Link
-          href={`/${locale}/insights`}
-          className="link-underline text-sm text-[color:var(--gold)]"
-        >
-          ← {dictionary.insights.back}
-        </Link>
+      <article className="container-herna max-w-2xl pb-16 pt-28 md:pb-24 md:pt-32">
+        <BackLink href={`/${locale}/insights`}>
+          {dictionary.insights.back}
+        </BackLink>
 
         <div className="mt-8 flex items-center gap-3 text-xs text-[color:var(--muted)]">
           <span className="rounded-full bg-[color:var(--surface)] px-2.5 py-1 font-medium uppercase tracking-wide text-[color:var(--gold)]">

@@ -2,12 +2,11 @@
 
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { useDictionary, useLocale } from "@/components/providers/LocaleProvider";
+import { BackLink } from "@/components/site/BackLink";
 import { Button } from "@/shared/ui/Button";
 import { Section } from "@/shared/ui/Section";
 import { SoftImage } from "@/shared/ui/SoftImage";
-import { brandAssets } from "@/content/brand";
 import { breakpoints, space } from "@/shared/tokens";
-import Link from "next/link";
 
 function LabContent() {
   const dictionary = useDictionary();
@@ -16,9 +15,7 @@ function LabContent() {
   return (
     <main className="min-h-screen bg-[color:var(--bg)] pb-24 text-[color:var(--ink)]">
       <div className="container-herna py-10">
-        <Link href={`/${locale}`} className="link-underline text-sm">
-          ← {brandAssets.name}
-        </Link>
+        <BackLink href={`/${locale}`}>{dictionary.ui.backHome}</BackLink>
 
         <h1 className="heading-display mt-12 text-display-md">Component Lab</h1>
         <p className="mt-4 max-w-2xl text-body-lg text-[color:var(--muted)]">

@@ -5,6 +5,40 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(brandAssets.websiteUrl),
+  applicationName: brandAssets.name,
+  title: {
+    default: `${brandAssets.name} — ${brandAssets.fullName}`,
+    template: `%s · ${brandAssets.name}`,
+  },
+  description:
+    "HERITAGE OF NATIONS (HERNA) is a pan-African investment holding based in Cotonou, Benin.",
+  icons: {
+    icon: [
+      { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon.png", sizes: "48x48", type: "image/png" },
+      { url: "/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-icon.png", sizes: "180x180", type: "image/png" }],
+    shortcut: "/favicon.png",
+  },
+  openGraph: {
+    type: "website",
+    siteName: brandAssets.name,
+    title: `${brandAssets.name} — ${brandAssets.fullName}`,
+    images: [
+      {
+        url: brandAssets.logoSrc,
+        width: 1536,
+        height: 1024,
+        alt: brandAssets.holdingName,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary",
+    title: brandAssets.holdingName,
+    images: [brandAssets.logoSrc],
+  },
 };
 
 export default function RootLayout({

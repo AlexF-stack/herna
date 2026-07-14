@@ -1,4 +1,5 @@
 import { SoftImage } from "@/shared/ui/SoftImage";
+import { BackLink } from "@/components/site/BackLink";
 import { isLocale, locales, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/getDictionary";
 import type { Metadata } from "next";
@@ -61,13 +62,10 @@ export default async function DivisionPage({
 
   return (
     <main className="min-h-screen bg-[color:var(--bg)] text-[color:var(--ink)]">
-      <div className="container-herna py-16 md:py-24">
-        <Link
-          href={`/${locale}#divisions`}
-          className="link-underline text-sm text-[color:var(--gold)]"
-        >
-          ← {dictionary.ui.backToDivisions}
-        </Link>
+      <div className="container-herna pb-16 pt-28 md:pb-24 md:pt-32">
+        <BackLink href={`/${locale}#divisions`}>
+          {dictionary.ui.backToDivisions}
+        </BackLink>
 
         <div className="mt-10 grid gap-10 lg:grid-cols-12 lg:gap-14">
           <div className="lg:col-span-7">
