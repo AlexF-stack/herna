@@ -2,7 +2,6 @@
 
 import { locales, type Locale } from "@/i18n/config";
 import { useLocale } from "@/components/providers/LocaleProvider";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 function stripLocale(pathname: string) {
@@ -24,31 +23,19 @@ export function LanguageSwitcher({ className = "" }: { className?: string }) {
         const active = l === locale;
         const href = `/${l}${rest}`;
         return (
-          <Link
+          <a
             key={l}
             href={href}
             hrefLang={l}
-            prefetch
             className={
               active
                 ? "font-semibold text-[color:var(--gold)]"
                 : "text-[color:var(--muted)] transition-colors hover:text-[color:var(--ink)]"
             }
             aria-current={active ? "page" : undefined}
-            onClick={(e) => {
-              if (active) {
-                e.preventDefault();
-                return;
-              }
-              // Full navigation — more reliable than soft RSC swaps across locales
-              e.preventDefault();
-              const hash =
-                typeof window !== "undefined" ? window.location.hash : "";
-              window.location.assign(`${href}${hash}`);
-            }}
           >
             {l}
-          </Link>
+          </a>
         );
       })}
     </div>
