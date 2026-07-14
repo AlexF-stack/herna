@@ -28,13 +28,23 @@ export function SitePartners() {
           {dictionary.partners.items.map((partner, i) => (
             <Reveal key={partner.id} delay={i * 0.04}>
               <article className="flex h-full flex-col items-center rounded-2xl border border-[color:var(--line)] bg-[color:var(--bg-elevated)] px-6 py-9 text-center transition duration-500 hover:border-[color:var(--maroon)]/30 hover:shadow-[0_16px_40px_rgba(22,48,72,0.08)]">
-                <div className="flex h-24 w-full items-center justify-center sm:h-28">
+                <div
+                  className="flex h-28 w-full items-center justify-center sm:h-32"
+                  style={
+                    partner.logoBg !== "transparent"
+                      ? {
+                          backgroundColor: partner.logoBg,
+                          borderRadius: "0.75rem",
+                        }
+                      : undefined
+                  }
+                >
                   <Image
                     src={partner.logoSrc}
                     alt={partner.name}
-                    width={220}
-                    height={96}
-                    className="max-h-20 w-auto max-w-[85%] object-contain sm:max-h-24"
+                    width={260}
+                    height={120}
+                    className="max-h-24 w-auto max-w-[90%] object-contain sm:max-h-28"
                   />
                 </div>
                 <h3 className="mt-6 font-display text-base text-[color:var(--ink)] md:text-lg">
