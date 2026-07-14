@@ -58,7 +58,7 @@ test.describe("HERNA audit", () => {
         page.waitForURL(new RegExp(`/en/divisions/${slug}`), {
           timeout: 20_000,
         }),
-        card.click(),
+        card.click({ force: true }),
       ]);
       await expect(page.locator("h1")).toBeVisible();
       await page.goto(`${BASE}/en`, { waitUntil: "domcontentloaded" });

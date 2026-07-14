@@ -61,6 +61,10 @@ function DivisionCard({
         className="group relative isolate block overflow-hidden rounded-2xl border border-[color:var(--line)] bg-[color:var(--bg-elevated)] shine-border cursor-grow"
         onMouseMove={onMove}
         onMouseLeave={onLeave}
+        onClick={(e) => {
+          e.preventDefault();
+          window.location.assign(`/${locale}/divisions/${item.id}`);
+        }}
       >
         <div className="relative aspect-[16/11] overflow-hidden">
           <motion.div
