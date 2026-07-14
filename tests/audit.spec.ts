@@ -18,7 +18,7 @@ test.describe("HERNA audit", () => {
   });
 
   test("language switch en -> fr", async ({ page }) => {
-    await page.goto(`${BASE}/en`, { waitUntil: "networkidle" });
+    await page.goto(`${BASE}/en`, { waitUntil: "domcontentloaded" });
     await expect(page.locator("#hero-title")).toBeVisible({ timeout: 30_000 });
     await page.locator("#herna-boot").waitFor({ state: "detached", timeout: 5_000 }).catch(() => undefined);
     await page.getByRole("navigation", { name: "Language" }).getByRole("link", { name: "fr" }).click();
@@ -43,7 +43,7 @@ test.describe("HERNA audit", () => {
   }
 
   test("home card links navigate to each division", async ({ page }) => {
-    await page.goto(`${BASE}/en`, { waitUntil: "networkidle" });
+    await page.goto(`${BASE}/en`, { waitUntil: "domcontentloaded" });
     await page.locator("#herna-boot").waitFor({ state: "detached", timeout: 5_000 }).catch(() => undefined);
     await expect(page.locator("#divisions")).toBeVisible({ timeout: 30_000 });
 
