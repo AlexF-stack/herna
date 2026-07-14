@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 200" role="img" aria-label="TPG  The Pertinent Group">
+  <g fill="#12161e">
+    <!-- Stylized TPG monogram -->
+    <g transform="translate(24 18)">
+      <path d="M8 8h72v14H54v92H34V22H8V8z"/>
+      <path d="M92 8h48c28 0 46 16 46 42 0 20-10 34-28 40l36 52h-24l-34-50H112v50H92V8zm20 14v40h26c14 0 24-8 24-20s-10-20-24-20H112z"/>
+      <path d="M244 114c0 34-26 58-62 58s-62-24-62-58 26-58 62-58c18 0 34 6 44 16l-14 14c-8-8-18-12-30-12-24 0-40 16-40 40s16 40 40 40c20 0 34-12 38-30h-40V98h62c0 6 0 10 2 16z"/>
+    </g>
+    <rect x="36" y="88" width="260" height="28" fill="#12161e"/>
+    <text x="166" y="108" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" letter-spacing="0.14em" fill="#ffffff">THE PERTINENT GROUP</text>
+    <text x="166" y="168" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="13" letter-spacing="0.04em" fill="#5a6270">Where Insight fuels Influence</text>
+  </g>
+</svg>

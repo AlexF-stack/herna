@@ -33,7 +33,7 @@ export function SiteFooter() {
               alt={brandAssets.holdingName}
               width={200}
               height={72}
-              className="h-9 w-auto object-contain drop-shadow-[0_2px_10px_rgba(0,0,0,0.35)] sm:h-11"
+              className="h-12 w-auto object-contain drop-shadow-[0_2px_12px_rgba(0,0,0,0.4)] sm:h-14"
             />
           </div>
           <p className="mt-6 max-w-sm text-sm leading-relaxed text-white/60">

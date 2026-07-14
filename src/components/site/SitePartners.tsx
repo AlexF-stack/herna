@@ -24,25 +24,23 @@ export function SitePartners() {
           </h2>
         </Reveal>
 
-        <div className="mt-12 grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-5">
+        <div className="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {dictionary.partners.items.map((partner, i) => (
             <Reveal key={partner.id} delay={i * 0.04}>
-              <article className="flex h-full flex-col items-center justify-center rounded-2xl border border-[color:var(--line)] bg-[color:var(--bg-elevated)] px-5 py-8 text-center transition duration-500 hover:border-[color:var(--maroon)]/30">
-                <div className="mb-5 flex h-14 w-full items-center justify-center px-2">
+              <article className="flex h-full flex-col items-center rounded-2xl border border-[color:var(--line)] bg-[color:var(--bg-elevated)] px-6 py-9 text-center transition duration-500 hover:border-[color:var(--maroon)]/30 hover:shadow-[0_16px_40px_rgba(22,48,72,0.08)]">
+                <div className="flex h-24 w-full items-center justify-center sm:h-28">
                   <Image
                     src={partner.logoSrc}
                     alt={partner.name}
-                    width={140}
-                    height={48}
-                    className={`max-h-10 w-auto object-contain ${
-                      partner.id === "tpg" ? "brightness-0" : ""
-                    }`}
+                    width={220}
+                    height={96}
+                    className="max-h-20 w-auto max-w-[85%] object-contain sm:max-h-24"
                   />
                 </div>
-                <h3 className="font-display text-sm text-[color:var(--ink)] md:text-base">
+                <h3 className="mt-6 font-display text-base text-[color:var(--ink)] md:text-lg">
                   {partner.name}
                 </h3>
-                <p className="mt-2 text-xs leading-relaxed text-[color:var(--muted)] md:text-sm">
+                <p className="mt-2 text-sm leading-relaxed text-[color:var(--muted)]">
                   {partner.role}
                 </p>
               </article>

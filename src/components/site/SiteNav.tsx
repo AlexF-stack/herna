@@ -111,7 +111,7 @@ export function SiteNav({ visible }: Props) {
                       alt=""
                       width={200}
                       height={70}
-                      className="h-11 w-auto sm:h-12"
+                      className="h-12 w-auto sm:h-14"
                     />
                   </a>
                   <div className="flex items-center gap-2">
@@ -241,7 +241,7 @@ export function SiteNav({ visible }: Props) {
               alt={brandAssets.holdingName}
               width={220}
               height={76}
-              className="h-10 w-auto drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)] sm:h-11 md:h-12 lg:h-[3.35rem]"
+              className="h-11 w-auto drop-shadow-[0_2px_10px_rgba(0,0,0,0.4)] sm:h-12 md:h-[3.35rem] lg:h-14"
               priority
             />
           </a>

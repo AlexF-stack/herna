@@ -57,7 +57,7 @@ export default function RootLayout({
         />
         <link
           rel="preload"
-          href={brandAssets.logoSrc}
+          href={brandAssets.logoOpaqueSrc}
           as="image"
           type="image/png"
         />
@@ -102,7 +102,7 @@ export default function RootLayout({
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={brandAssets.logoClearSrc}
+            src={brandAssets.logoOpaqueSrc}
             alt=""
             width={420}
             height={160}

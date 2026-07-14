@@ -3,7 +3,6 @@
 import { useDictionary } from "@/components/providers/LocaleProvider";
 import { brandAssets } from "@/content/brand";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 const PRELOADER_SRC = "/media/preloader.webm";
@@ -14,6 +13,12 @@ type Props = {
   onComplete: () => void;
 };
 
+/**
+ * Handoff rules (no white flash):
+ * 1. Static #herna-boot covers first HTML paint
+ * 2. This overlay matches that shell and only removes boot once the video/logo layer is live
+ * 3. Exit runs after the parent has already mounted the site underneath
+ */
 export function SiteLoader({ active, onComplete }: Props) {
   const dictionary = useDictionary();
   const reduced = useReducedMotion();
@@ -44,6 +49,14 @@ export function SiteLoader({ active, onComplete }: Props) {
     return () => window.clearTimeout(maxTimer);
   }, [active, reduced, finish]);
 
+  // Only drop the HTML boot shell once THIS layer is ready to take over
+  useEffect(() => {
+    if (!active) return;
+    if (videoReady || !videoOk) {
+      document.getElementById("herna-boot")?.remove();
+    }
+  }, [active, videoReady, videoOk]);
+
   useEffect(() => {
     if (!active || reduced || !videoOk) return;
     const el = videoRef.current;
@@ -60,10 +73,13 @@ export function SiteLoader({ active, onComplete }: Props) {
 
     const play = async () => {
       try {
+        el.defaultMuted = true;
         el.muted = true;
+        el.playsInline = true;
         await el.play();
         setVideoReady(true);
       } catch {
+        // Keep boot/logo visible; still allow timeout / skip
         setVideoOk(false);
       }
     };
@@ -89,7 +105,7 @@ export function SiteLoader({ active, onComplete }: Props) {
       const next = Math.min(100, Math.round(frame * 2.4));
       setProgress(next);
       if (next >= 100) {
-        window.setTimeout(finish, 220);
+        window.setTimeout(finish, 200);
         return;
       }
       raf = requestAnimationFrame(tick);
@@ -102,33 +118,30 @@ export function SiteLoader({ active, onComplete }: Props) {
     <AnimatePresence>
       {active && (
         <motion.div
-          className="fixed inset-0 z-[80] flex flex-col items-center justify-center bg-white"
-          initial={{ opacity: 1 }}
+          className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-white"
+          initial={false}
+          animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
           aria-busy="true"
           aria-label={dictionary.ui.loading}
         >
-          {/* Logo holds the brand while the webm buffers — no empty white stage */}
-          <div
-            className={`pointer-events-none absolute inset-0 flex items-center justify-center px-8 transition-opacity duration-500 ${
+          {/* Same lockup as #herna-boot — continuous brand stage */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={brandAssets.logoOpaqueSrc}
+            alt=""
+            width={720}
+            height={280}
+            className={`pointer-events-none absolute left-1/2 top-1/2 w-[min(86vw,26rem)] -translate-x-1/2 -translate-y-1/2 object-contain transition-opacity duration-500 ${
               videoReady && videoOk ? "opacity-0" : "opacity-100"
             }`}
-          >
-            <Image
-              src={brandAssets.logoClearSrc}
-              alt=""
-              width={720}
-              height={280}
-              className="h-auto w-full max-w-[22rem] object-contain sm:max-w-[26rem]"
-              priority
-            />
-          </div>
+          />
 
           {videoOk && !reduced ? (
             <video
               ref={videoRef}
-              className={`absolute inset-0 h-full w-full scale-[1.18] object-contain bg-white transition-opacity duration-500 sm:scale-[1.22] md:scale-[1.28] ${
+              className={`absolute inset-0 h-full w-full scale-[1.2] object-contain bg-white transition-opacity duration-500 sm:scale-[1.24] md:scale-[1.3] ${
                 videoReady ? "opacity-100" : "opacity-0"
               }`}
               src={PRELOADER_SRC}
@@ -141,7 +154,7 @@ export function SiteLoader({ active, onComplete }: Props) {
           ) : null}
 
           <div className="pointer-events-none absolute inset-x-0 bottom-16 flex flex-col items-center">
-            <div className="h-px w-36 overflow-hidden bg-black/10 sm:w-48">
+            <div className="h-px w-40 overflow-hidden bg-black/10 sm:w-52">
               <div
                 className="h-full bg-[color:var(--gold)] transition-[width] duration-200 ease-out"
                 style={{ width: `${progress}%` }}
