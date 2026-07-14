@@ -4,7 +4,7 @@
   --font-clash: "Cabinet Grotesk", "Clash Display", system-ui, sans-serif;
   --font-general: "General Sans", system-ui, sans-serif;
 
-  /* Light-only premium holding palette (logo: gold / maroon / navy) */
+  /* Light-only premium holding palette (logo: gold / maroon / navy / slate blue) */
   --bg: #f7f4ef;
   --bg-elevated: #ffffff;
   --surface: #ebe5db;
@@ -12,11 +12,17 @@
   --muted: #5a6270;
   --line: rgba(22, 48, 72, 0.1);
   --gold: #b8922f;
-  --gold-soft: #8e322a;
+  --gold-soft: #c9a84c;
   --maroon: #8e322a;
+  --maroon-soft: #a84a42;
+  --maroon-wash: #f3e9e7;
   --navy: #24374d;
   --navy-deep: #163048;
-  --blue: #5a7a9a;
+  /* Mid wave from the emblem */
+  --blue: #355e83;
+  /* Section wash — logo blue diluted for readable holding bands */
+  --blue-wash: #e7eef5;
+  --blue-mist: #d5e2ee;
   --nav-bg: rgba(247, 244, 239, 0.92);
   --hero-overlay: linear-gradient(
     115deg,
@@ -38,6 +44,23 @@
   --logo-maroon: var(--maroon);
   --logo-navy: var(--navy-deep);
   --logo-blue: var(--blue);
+}
+
+/* Soft brand band — light slate blue from the logo emblem */
+.section-blue {
+  background:
+    radial-gradient(
+      120% 80% at 12% 0%,
+      color-mix(in srgb, var(--blue-mist) 88%, white) 0%,
+      transparent 55%
+    ),
+    radial-gradient(
+      90% 70% at 88% 100%,
+      color-mix(in srgb, var(--blue) 10%, transparent) 0%,
+      transparent 50%
+    ),
+    var(--blue-wash);
+  border-color: color-mix(in srgb, var(--blue) 16%, transparent);
 }
 
 @theme inline {
@@ -126,11 +149,42 @@ html.has-soft-cursor * {
 }
 
 .label-act {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
   font-size: 0.7rem;
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--gold);
+}
+
+/* Emblem maroon as a quiet brand tick — never a fill */
+.label-act::before {
+  content: "";
+  width: 1.05rem;
+  height: 1.5px;
+  flex-shrink: 0;
+  border-radius: 999px;
+  background: var(--maroon);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--maroon) 12%, transparent);
+}
+
+.chip-maroon {
+  background: var(--maroon-wash);
+  color: var(--maroon);
+}
+
+.accent-rule {
+  border-color: color-mix(in srgb, var(--maroon) 55%, var(--line));
+}
+
+.card-accent-maroon {
+  box-shadow: inset 3px 0 0 0 var(--maroon);
+}
+
+.card-accent-blue {
+  box-shadow: inset 3px 0 0 0 var(--blue);
 }
 
 .section-pad {
@@ -356,9 +410,11 @@ textarea:focus {
   padding: 1px;
   background: linear-gradient(
     135deg,
-    transparent 20%,
-    color-mix(in srgb, var(--gold) 55%, transparent) 50%,
-    transparent 80%
+    color-mix(in srgb, var(--maroon) 35%, transparent) 0%,
+    transparent 28%,
+    color-mix(in srgb, var(--gold) 55%, transparent) 52%,
+    transparent 78%,
+    color-mix(in srgb, var(--blue) 28%, transparent) 100%
   );
   -webkit-mask:
     linear-gradient(#000 0 0) content-box,

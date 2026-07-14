@@ -16,7 +16,6 @@ export function SiteContact() {
     "idle",
   );
   const address = brandAssets.address[locale];
-  const formspreeId = process.env.NEXT_PUBLIC_FORMSPREE_ID;
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -26,27 +25,19 @@ export function SiteContact() {
       return;
     }
 
-    if (!formspreeId) {
-      const data = new FormData(form);
-      const name = String(data.get("name") || "");
-      const email = String(data.get("email") || "");
-      const message = String(data.get("message") || "");
-      const subject = encodeURIComponent(`HERNA contact — ${name}`);
-      const body = encodeURIComponent(
-        `Name: ${name}\nEmail: ${email}\n\n${message}`,
-      );
-      window.location.href = `mailto:${brandAssets.email}?subject=${subject}&body=${body}`;
-      setStatus("sent");
-      form.reset();
-      return;
-    }
-
+    const data = new FormData(form);
     setStatus("sending");
+
     try {
-      const res = await fetch(`https://formspree.io/f/${formspreeId}`, {
+      const res = await fetch("/api/contact", {
         method: "POST",
-        body: new FormData(form),
-        headers: { Accept: "application/json" },
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          name: String(data.get("name") || ""),
+          email: String(data.get("email") || ""),
+          message: String(data.get("message") || ""),
+          website: String(data.get("website") || ""),
+        }),
       });
       if (!res.ok) throw new Error("fail");
       setStatus("sent");
@@ -178,6 +169,15 @@ export function SiteContact() {
                 </span>
                 <textarea name="message" rows={5} required />
               </label>
+              {/* Honeypot — leave empty */}
+              <input
+                type="text"
+                name="website"
+                tabIndex={-1}
+                autoComplete="off"
+                className="hidden"
+                aria-hidden
+              />
               <div className="mt-6 flex flex-wrap items-center gap-4">
                 <button
                   type="submit"

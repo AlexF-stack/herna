@@ -2,28 +2,20 @@
 
 import { useCallback, useEffect, useState } from "react";
 
-const STORAGE_KEY = "herna-intro-seen";
-
+/**
+ * Preloader runs once per full page load (while the experience mounts).
+ * Skip / completion only lasts for this visit — refresh shows it again.
+ */
 export function useSessionIntro() {
   const [shouldShowIntro, setShouldShowIntro] = useState(true);
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    try {
-      const seen = sessionStorage.getItem(STORAGE_KEY);
-      setShouldShowIntro(!seen);
-    } catch {
-      setShouldShowIntro(true);
-    }
+    setShouldShowIntro(true);
     setReady(true);
   }, []);
 
   const markComplete = useCallback(() => {
-    try {
-      sessionStorage.setItem(STORAGE_KEY, "1");
-    } catch {
-      /* ignore */
-    }
     setShouldShowIntro(false);
   }, []);
 

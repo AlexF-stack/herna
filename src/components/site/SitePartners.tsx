@@ -10,7 +10,7 @@ export function SitePartners() {
   return (
     <section
       id="partners"
-      className="section-pad border-y border-[color:var(--line)] bg-[color:var(--bg-elevated)]"
+      className="section-blue section-pad border-y"
       aria-labelledby="partners-heading"
     >
       <div className="container-herna">
@@ -27,7 +27,7 @@ export function SitePartners() {
         <div className="mt-12 grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-5">
           {dictionary.partners.items.map((partner, i) => (
             <Reveal key={partner.id} delay={i * 0.04}>
-              <article className="flex h-full flex-col items-center justify-center rounded-2xl border border-[color:var(--line)] bg-[color:var(--bg)] px-5 py-8 text-center transition duration-500 hover:border-[color:var(--gold)]/35">
+              <article className="flex h-full flex-col items-center justify-center rounded-2xl border border-[color:var(--line)] bg-[color:var(--bg-elevated)] px-5 py-8 text-center transition duration-500 hover:border-[color:var(--maroon)]/30">
                 <div
                   className="mb-5 flex h-14 w-full items-center justify-center rounded-xl px-3"
                   style={{ background: partner.logoBg }}

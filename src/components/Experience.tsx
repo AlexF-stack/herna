@@ -57,7 +57,7 @@ function ExperienceInner() {
 
       {!ready && (
         <div
-          className="fixed inset-0 z-50 bg-[#f7f4ef]"
+          className="fixed inset-0 z-[80] bg-white"
           aria-busy="true"
           aria-label={dictionary.ui.loading}
         />

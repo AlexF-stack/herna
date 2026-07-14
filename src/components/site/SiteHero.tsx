@@ -6,10 +6,15 @@ import { brandAssets } from "@/content/brand";
 import { motion, useReducedMotion } from "framer-motion";
 
 const HERO_IMAGES = [
+  "/media/hero-poster.jpg",
+  "/media/hero-b-poster.jpg",
   "/divisions/energy.jpg",
   "/divisions/real-estate.jpg",
   "/divisions/agriculture.jpg",
+  "/divisions/mining.jpg",
 ];
+
+const HERO_VIDEOS = ["/media/hero.mp4", "/media/hero-b.mp4"];
 
 export function SiteHero() {
   const dictionary = useDictionary();
@@ -24,10 +29,12 @@ export function SiteHero() {
       aria-labelledby="hero-title"
     >
       <CinematicMedia
-        videoSrc="/media/hero.mp4"
+        videoSrcs={HERO_VIDEOS}
+        posterSrc="/media/hero-poster.jpg"
         images={HERO_IMAGES}
         kenBurns
         cycleMs={6500}
+        videoCycleMs={14000}
       />
 
       <div className="container-herna relative z-10 flex min-h-[100svh] flex-col justify-end pb-14 pt-28 sm:pb-16 sm:pt-32 md:justify-center md:pb-24 md:pt-28">

@@ -104,6 +104,7 @@ export type Dictionary = {
   };
   approach: {
     label: string;
+    intro: string;
     values: {
       title: string;
       description: string | null;
@@ -257,7 +258,7 @@ export const en: Dictionary = {
           "Preventive maintenance",
           "After-sales support",
         ],
-        accent: "#8C8F94",
+        accent: "#8e322a",
         imageSrc: "/divisions/equipment.jpg",
       },
       {
@@ -358,21 +359,34 @@ export const en: Dictionary = {
   },
   approach: {
     label: "Approach",
+    intro:
+      "Every HERNA endeavor is built upon a foundation of five unwavering principles that define our approach and commitment.",
     values: [
       {
         title: "Professionalism",
-        description: "Rigor in project execution",
+        description:
+          "Achieving operational excellence and rigorous execution in every project.",
       },
       {
         title: "Quality",
-        description: "Adherence to quality standards",
+        description:
+          "Upholding international standards across all our diverse projects and operations.",
+      },
+      {
+        title: "Innovation",
+        description:
+          "Developing tailored and forward-thinking solutions for unique African challenges.",
       },
       {
         title: "Partnership",
-        description: "Pursuit of durable strategic alliances",
+        description:
+          "Cultivating strategic alliances for profound and sustainable impact.",
       },
-      { title: "Innovation", description: null },
-      { title: "Sustainable Development", description: null },
+      {
+        title: "Sustainable Development",
+        description:
+          "Championing economic growth that profoundly respects both the environment and its people.",
+      },
     ],
   },
   partners: {

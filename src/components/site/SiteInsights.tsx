@@ -41,7 +41,7 @@ export function SiteInsights() {
                 className="group flex h-full flex-col rounded-2xl border border-[color:var(--line)] bg-[color:var(--bg-elevated)] p-6 shine-border transition duration-500 hover:border-[color:var(--gold)]/35 md:p-7"
               >
                 <div className="flex items-center gap-3 text-xs text-[color:var(--muted)]">
-                  <span className="rounded-full bg-[color:var(--surface)] px-2.5 py-1 font-medium uppercase tracking-wide text-[color:var(--gold)]">
+                  <span className="chip-maroon rounded-full px-2.5 py-1 font-medium uppercase tracking-wide">
                     {insight.category}
                   </span>
                   <time dateTime={insight.date}>

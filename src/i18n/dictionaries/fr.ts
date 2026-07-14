@@ -107,7 +107,7 @@ export const fr: Dictionary = {
           "Maintenance préventive",
           "Support après-vente",
         ],
-        accent: "#8C8F94",
+        accent: "#8e322a",
         imageSrc: "/divisions/equipment.jpg",
       },
       {
@@ -210,21 +210,34 @@ export const fr: Dictionary = {
   },
   approach: {
     label: "Approche",
+    intro:
+      "Chaque initiative HERNA repose sur cinq principes constants qui définissent notre approche et notre engagement.",
     values: [
       {
         title: "Professionnalisme",
-        description: "Rigueur dans l'exécution des projets",
+        description:
+          "Viser l'excellence opérationnelle et une exécution rigoureuse dans chaque projet.",
       },
       {
         title: "Qualité",
-        description: "Respect des normes de qualité",
+        description:
+          "Respecter les normes internationales à travers l'ensemble de nos projets et opérations.",
+      },
+      {
+        title: "Innovation",
+        description:
+          "Développer des solutions sur mesure et prospectives face aux défis spécifiques de l'Afrique.",
       },
       {
         title: "Partenariat",
-        description: "Recherche d'alliances stratégiques durables",
+        description:
+          "Cultiver des alliances stratégiques pour un impact profond et durable.",
       },
-      { title: "Innovation", description: null },
-      { title: "Développement durable", description: null },
+      {
+        title: "Développement durable",
+        description:
+          "Promouvoir une croissance économique qui respecte profondément l'environnement et les populations.",
+      },
     ],
   },
   partners: {

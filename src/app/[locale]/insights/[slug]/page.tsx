@@ -58,7 +58,7 @@ export default async function InsightDetailPage({
         </BackLink>
 
         <div className="mt-8 flex items-center gap-3 text-xs text-[color:var(--muted)]">
-          <span className="rounded-full bg-[color:var(--surface)] px-2.5 py-1 font-medium uppercase tracking-wide text-[color:var(--gold)]">
+          <span className="chip-maroon rounded-full px-2.5 py-1 font-medium uppercase tracking-wide">
             {item.category}
           </span>
           <time dateTime={item.date}>

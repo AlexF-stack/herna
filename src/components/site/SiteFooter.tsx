@@ -47,7 +47,7 @@ export function SiteFooter() {
             <p>
               <a
                 href={`tel:${brandAssets.phoneTel}`}
-                className="transition hover:text-[color:var(--gold-soft)]"
+                className="transition hover:text-[color:var(--maroon)]"
               >
                 {brandAssets.phone}
               </a>
@@ -55,7 +55,7 @@ export function SiteFooter() {
             <p>
               <a
                 href={`mailto:${brandAssets.email}`}
-                className="transition hover:text-[color:var(--gold-soft)]"
+                className="transition hover:text-[color:var(--maroon)]"
               >
                 {brandAssets.email}
               </a>

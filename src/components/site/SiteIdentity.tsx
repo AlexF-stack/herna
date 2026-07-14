@@ -22,7 +22,7 @@ export function SiteIdentity() {
   return (
     <section
       id="identity"
-      className="section-pad border-y border-[color:var(--line)] bg-[color:var(--bg-elevated)]"
+      className="section-blue section-pad border-y"
       aria-labelledby="identity-heading"
     >
       <div className="container-herna">
@@ -38,7 +38,11 @@ export function SiteIdentity() {
             <Reveal key={card.id} delay={i * 0.06}>
               <article
                 id={card.id}
-                className="h-full rounded-2xl border border-[color:var(--line)] bg-[color:var(--bg)] p-6 shine-border sm:p-7 md:p-9"
+                className={`h-full rounded-2xl border border-[color:var(--line)] bg-[color:var(--bg-elevated)] p-6 shine-border sm:p-7 md:p-9 ${
+                  card.id === "vision"
+                    ? "card-accent-maroon"
+                    : "card-accent-blue"
+                }`}
               >
                 <p className="label-act">{card.label}</p>
                 <p className="mt-5 text-body-lg text-[color:var(--ink)]">
@@ -52,17 +56,23 @@ export function SiteIdentity() {
         <Reveal className="mt-6" delay={0.1}>
           <article
             id="approach"
-            className="rounded-2xl border border-[color:var(--line)] bg-[color:var(--bg)] p-7 md:p-9"
+            className="rounded-2xl border border-[color:var(--line)] bg-[color:var(--bg-elevated)] p-7 md:p-9"
           >
             <p className="label-act">{dictionary.approach.label}</p>
+            <p className="mt-5 max-w-3xl text-body-lg text-[color:var(--muted)]">
+              {dictionary.approach.intro}
+            </p>
             <ul className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {dictionary.approach.values.map((value) => (
-                <li key={value.title} className="border-t border-[color:var(--line)] pt-4">
-                  <h3 className="font-display text-lg text-[color:var(--ink)]">
+                <li
+                  key={value.title}
+                  className="border-t border-[color:var(--line)] pt-4 accent-rule"
+                >
+                  <h3 className="font-display text-lg uppercase tracking-wide text-[color:var(--ink)]">
                     {value.title}
                   </h3>
                   {value.description ? (
-                    <p className="mt-2 text-sm text-[color:var(--muted)]">
+                    <p className="mt-2 text-sm leading-relaxed text-[color:var(--muted)]">
                       {value.description}
                     </p>
                   ) : null}

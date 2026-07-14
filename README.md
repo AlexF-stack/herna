@@ -17,7 +17,13 @@ Open [http://localhost:3000](http://localhost:3000) (or the port shown).
 
 ## Environment
 
-Copy `.env.example` → `.env.local` and set `NEXT_PUBLIC_FORMSPREE_ID` for live form delivery.
+Contact form posts to `/api/contact` and delivers to **contact@herna-group.com** via FormSubmit by default.
+
+1. Submit the form once from the live/staging site.
+2. Open the activation email in the HERNA inbox and confirm.
+3. Later messages arrive normally (reply-to = visitor email).
+
+Optional: set `FORMSPREE_ID` / `NEXT_PUBLIC_FORMSPREE_ID` to use Formspree instead (see `.env.example`).
 
 ## Scripts
 
@@ -26,6 +32,6 @@ Copy `.env.example` → `.env.local` and set `NEXT_PUBLIC_FORMSPREE_ID` for live
 
 ## Deploy
 
-Connected to Vercel from the GitHub repository. Set `NEXT_PUBLIC_FORMSPREE_ID` in the Vercel project env.
+Connected to Vercel from the GitHub repository. No env var required for the default FormSubmit inbox flow.
 
 Replace `public/company-profile.pdf` and `public/media/hero.mp4` with official assets when available.
