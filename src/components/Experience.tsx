@@ -15,7 +15,7 @@ import { SiteNav } from "@/components/site/SiteNav";
 import { SitePartners } from "@/components/site/SitePartners";
 import { useSessionIntro } from "@/hooks/useSessionIntro";
 import dynamic from "next/dynamic";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 
 const SoftCursor = dynamic(
   () => import("@/components/site/SoftCursor").then((m) => m.SoftCursor),
@@ -25,19 +25,11 @@ const SoftCursor = dynamic(
 function ExperienceInner() {
   const dictionary = useDictionary();
   const { shouldShowIntro, markComplete } = useSessionIntro();
-  /** Site mounts under the loader before the loader fades — no white gap */
-  const [siteReady, setSiteReady] = useState(false);
 
   const handleIntroComplete = useCallback(() => {
-    setSiteReady(true);
-    // Let the home tree paint under the white loader, then dismiss the overlay
-    window.setTimeout(() => {
-      markComplete();
-      document.getElementById("herna-boot")?.remove();
-    }, 120);
+    markComplete();
+    document.getElementById("herna-boot")?.remove();
   }, [markComplete]);
-
-  const showSite = siteReady || !shouldShowIntro;
 
   return (
     <>
@@ -45,28 +37,21 @@ function ExperienceInner() {
         {dictionary.ui.skipToContent}
       </a>
 
+      {/* Site always mounts under the loader so nav / FR / divisions stay reachable */}
       <SiteLoader active={shouldShowIntro} onComplete={handleIntroComplete} />
 
-      {showSite ? (
-        <>
-          <SoftCursor />
-          <SiteNav visible />
-          <main id="main">
-            <SiteHero />
-            <SiteAbout />
-            <SiteMediaBand />
-            <SiteIdentity />
-            <SiteDivisions />
-            <SitePartners />
-            <SiteContact />
-            <SiteFooter />
-          </main>
-        </>
-      ) : (
-        <main id="main" className="sr-only" aria-hidden>
-          {dictionary.meta.title}
-        </main>
-      )}
+      <SoftCursor />
+      <SiteNav visible />
+      <main id="main">
+        <SiteHero />
+        <SiteAbout />
+        <SiteMediaBand />
+        <SiteIdentity />
+        <SiteDivisions />
+        <SitePartners />
+        <SiteContact />
+        <SiteFooter />
+      </main>
     </>
   );
 }

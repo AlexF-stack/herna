@@ -10,10 +10,14 @@ test.describe("HERNA smoke", () => {
 
   test("loads EN hero and can open FR", async ({ page }) => {
     await page.goto("/en", { waitUntil: "domcontentloaded" });
+    const skip = page.getByRole("button", { name: /^Skip$|^Passer$/i });
+    if (await skip.isVisible().catch(() => false)) {
+      await skip.click();
+    }
     await expect(page.locator("#hero-title")).toBeVisible({ timeout: 60_000 });
     await expect(page.getByRole("link", { name: /Explore divisions/i })).toBeVisible();
 
-    await page.getByRole("navigation", { name: "Language" }).getByText("fr").click();
+    await page.getByRole("navigation", { name: "Language" }).getByText("fr").first().click();
     await expect(page).toHaveURL(/\/fr/);
     await expect(
       page.getByRole("link", { name: /Explorer les divisions/i }),

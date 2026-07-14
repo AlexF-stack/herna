@@ -1,6 +1,9 @@
 "use client";
 
-import { useDictionary } from "@/components/providers/LocaleProvider";
+import {
+  useDictionary,
+  useLocale,
+} from "@/components/providers/LocaleProvider";
 import { CinematicMedia } from "@/components/site/CinematicMedia";
 import { brandAssets } from "@/content/brand";
 import { motion, useReducedMotion } from "framer-motion";
@@ -11,6 +14,7 @@ const HERO_VIDEOS = ["/media/hero.mp4", "/media/hero-b.mp4"];
 
 export function SiteHero() {
   const dictionary = useDictionary();
+  const { locale } = useLocale();
   const reduced = useReducedMotion();
 
   const ease = [0.16, 1, 0.3, 1] as const;
@@ -66,11 +70,15 @@ export function SiteHero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.75, ease, delay: 0.5 }}
           >
-            <a href="#divisions" className="btn-primary" data-cursor-hover>
+            <a
+              href={`/${locale}#divisions`}
+              className="btn-primary"
+              data-cursor-hover
+            >
               {dictionary.hero.primaryCta}
             </a>
             <a
-              href="#about"
+              href={`/${locale}#about`}
               data-cursor-hover
               className="text-sm font-medium tracking-wide text-white/75 underline-offset-4 transition hover:text-white hover:underline"
             >

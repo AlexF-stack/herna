@@ -267,7 +267,7 @@ export function SiteNav({ visible }: Props) {
 
           <div className="relative z-50 flex items-center gap-1.5 sm:gap-2">
             <LanguageSwitcher
-              className={`hidden sm:flex ${
+              className={`${
                 overHero
                   ? "[&_a]:text-white/65 [&_a[aria-current=page]]:text-[color:var(--gold-soft)] [&_a:hover]:text-white"
                   : "[&_a]:text-[color:var(--muted)] [&_a[aria-current=page]]:text-[color:var(--gold)] [&_a:hover]:text-[color:var(--ink)]"

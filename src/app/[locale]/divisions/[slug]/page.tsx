@@ -63,7 +63,7 @@ export default async function DivisionPage({
   return (
     <main className="min-h-screen bg-[color:var(--bg)] text-[color:var(--ink)]">
       <div className="container-herna pb-16 pt-28 md:pb-24 md:pt-32">
-        <BackLink href={`/${locale}#divisions`}>
+        <BackLink href={`/${locale}`}>
           {dictionary.ui.backToDivisions}
         </BackLink>
 

@@ -15,9 +15,9 @@ export function SiteMediaBand() {
       <div className="relative min-h-[52svh] md:min-h-[62svh]">
         <CinematicMedia
           images={[
-            "/divisions/agriculture.jpg",
-            "/divisions/energy.jpg",
-            "/divisions/equipment.jpg",
+            "/divisions/agriculture.png",
+            "/divisions/energy.png",
+            "/divisions/equipment.png",
           ]}
           kenBurns
           cycleMs={5500}

@@ -3,27 +3,16 @@
 import { locales, type Locale } from "@/i18n/config";
 import { useLocale } from "@/components/providers/LocaleProvider";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { useTransition } from "react";
+import { usePathname } from "next/navigation";
+
+function stripLocale(pathname: string) {
+  return pathname.replace(/^\/(en|fr)(?=\/|$)/, "") || "";
+}
 
 export function LanguageSwitcher({ className = "" }: { className?: string }) {
   const { locale } = useLocale();
   const pathname = usePathname() || "/";
-  const router = useRouter();
-  const [, startTransition] = useTransition();
-
-  const rest = pathname.replace(/^\/(en|fr)(?=\/|$)/, "") || "";
-
-  const switchTo = (l: Locale) => {
-    const href = `/${l}${rest}`;
-    /* Avoid focusing skip-link / first tabbable after locale change */
-    if (document.activeElement instanceof HTMLElement) {
-      document.activeElement.blur();
-    }
-    startTransition(() => {
-      router.push(href, { scroll: false });
-    });
-  };
+  const rest = stripLocale(pathname);
 
   return (
     <div
@@ -33,11 +22,13 @@ export function LanguageSwitcher({ className = "" }: { className?: string }) {
     >
       {locales.map((l: Locale) => {
         const active = l === locale;
+        const href = `/${l}${rest}`;
         return (
           <Link
             key={l}
-            href={`/${l}${rest}`}
+            href={href}
             hrefLang={l}
+            prefetch
             className={
               active
                 ? "font-semibold text-[color:var(--gold)]"
@@ -45,8 +36,17 @@ export function LanguageSwitcher({ className = "" }: { className?: string }) {
             }
             aria-current={active ? "page" : undefined}
             onClick={(e) => {
-              e.preventDefault();
-              if (!active) switchTo(l);
+              if (active) {
+                e.preventDefault();
+                return;
+              }
+              // Preserve in-page hash (usePathname omits it)
+              const hash =
+                typeof window !== "undefined" ? window.location.hash : "";
+              if (hash) {
+                e.preventDefault();
+                window.location.assign(`${href}${hash}`);
+              }
             }}
           >
             {l}

@@ -10,8 +10,8 @@ export const brandAssets = {
   logoOpaqueSrc: "/brand/herna-logo.png",
   /** Flat mark when a compact symbol is needed */
   markSrc: "/brand/herna-mark.svg",
-  website: "www.herna-group.com",
-  websiteUrl: "https://www.herna-group.com",
+  website: "herna.vercel.app",
+  websiteUrl: "https://herna.vercel.app",
   email: "contact@herna-group.com",
   phone: "[+229] 0196399988",
   phoneTel: "+2290196399988",

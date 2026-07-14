@@ -258,7 +258,7 @@ export const en: Dictionary = {
           "After-sales support",
         ],
         accent: "#8e322a",
-        imageSrc: "/divisions/equipment.jpg",
+        imageSrc: "/divisions/equipment.png",
       },
       {
         id: "real-estate",
@@ -273,7 +273,7 @@ export const en: Dictionary = {
           "Construction project management",
         ],
         accent: "#D8D6CE",
-        imageSrc: "/divisions/real-estate.jpg",
+        imageSrc: "/divisions/real-estate.png",
       },
       {
         id: "mining",
@@ -288,7 +288,7 @@ export const en: Dictionary = {
           "Community engagement",
         ],
         accent: "#B8934A",
-        imageSrc: "/divisions/mining.jpg",
+        imageSrc: "/divisions/mining.png",
       },
       {
         id: "agriculture",
@@ -303,7 +303,7 @@ export const en: Dictionary = {
           "Producer partnerships",
         ],
         accent: "#2F4A3B",
-        imageSrc: "/divisions/agriculture.jpg",
+        imageSrc: "/divisions/agriculture.png",
       },
       {
         id: "energy",
@@ -318,7 +318,7 @@ export const en: Dictionary = {
           "Grid & access projects",
         ],
         accent: "#2E5C8A",
-        imageSrc: "/divisions/energy.jpg",
+        imageSrc: "/divisions/energy.png",
       },
     ],
   },

@@ -37,7 +37,7 @@ function LabContent() {
           <h2 className="heading-display text-display-sm">SoftImage</h2>
           <div className="relative mt-6 h-56 w-full max-w-xl overflow-hidden rounded-2xl">
             <SoftImage
-              src="/divisions/energy.jpg"
+              src="/divisions/energy.png"
               alt="Sample division visual"
               fill
               sizes="512px"

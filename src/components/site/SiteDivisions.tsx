@@ -58,6 +58,7 @@ function DivisionCard({
       <Link
         href={`/${locale}/divisions/${item.id}`}
         id={`division-${item.id}`}
+        prefetch
         data-cursor-hover
         className="group relative isolate block overflow-hidden rounded-2xl border border-[color:var(--line)] bg-[color:var(--bg-elevated)] shine-border cursor-grow"
         onMouseMove={onMove}

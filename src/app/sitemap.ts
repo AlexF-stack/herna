@@ -10,7 +10,7 @@ const divisionSlugs = [
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const base = "https://www.herna-group.com";
+  const base = "https://herna.vercel.app";
   const staticPaths = ["", "/legal-notice", "/privacy-policy"];
 
   const entries: MetadataRoute.Sitemap = [];

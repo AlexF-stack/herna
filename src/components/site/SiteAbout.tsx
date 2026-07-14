@@ -50,7 +50,7 @@ export function SiteAbout() {
           <div className="relative aspect-[16/11] overflow-hidden rounded-2xl border border-[color:var(--line)]">
             <motion.div className="absolute inset-[-10%]" style={{ y }}>
               <SoftImage
-                src="/divisions/real-estate.jpg"
+                src="/divisions/real-estate.png"
                 alt=""
                 fill
                 quality={70}

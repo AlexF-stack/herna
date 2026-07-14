@@ -6,7 +6,7 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 const PRELOADER_SRC = "/media/preloader.webm";
-const MAX_MS = 10000;
+const MAX_MS = 6500;
 
 type Props = {
   active: boolean;
@@ -16,40 +16,53 @@ type Props = {
 /**
  * Handoff rules (no white flash):
  * 1. Static #herna-boot covers first HTML paint
- * 2. This overlay matches that shell and only removes boot once the video/logo layer is live
- * 3. Exit runs after the parent has already mounted the site underneath
+ * 2. This overlay matches that shell and only removes boot once ready
+ * 3. Hard cap always dismisses — never trap the home tree underneath
  */
 export function SiteLoader({ active, onComplete }: Props) {
   const dictionary = useDictionary();
   const reduced = useReducedMotion();
   const videoRef = useRef<HTMLVideoElement>(null);
   const doneRef = useRef(false);
+  const onCompleteRef = useRef(onComplete);
   const [videoOk, setVideoOk] = useState(true);
   const [videoReady, setVideoReady] = useState(false);
   const [progress, setProgress] = useState(0);
 
+  useEffect(() => {
+    onCompleteRef.current = onComplete;
+  }, [onComplete]);
+
   const finish = useCallback(() => {
     if (doneRef.current) return;
     doneRef.current = true;
-    onComplete();
-  }, [onComplete]);
+    onCompleteRef.current();
+  }, []);
 
+  // Single hard deadline — independent of video / callback identity churn
   useEffect(() => {
     if (!active) return;
     doneRef.current = false;
     setProgress(0);
     setVideoReady(false);
 
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
     if (reduced) {
       finish();
-      return;
+      return () => {
+        document.body.style.overflow = prevOverflow;
+      };
     }
 
     const maxTimer = window.setTimeout(finish, MAX_MS);
-    return () => window.clearTimeout(maxTimer);
+    return () => {
+      window.clearTimeout(maxTimer);
+      document.body.style.overflow = prevOverflow;
+    };
   }, [active, reduced, finish]);
 
-  // Only drop the HTML boot shell once THIS layer is ready to take over
   useEffect(() => {
     if (!active) return;
     if (videoReady || !videoOk) {
@@ -79,7 +92,6 @@ export function SiteLoader({ active, onComplete }: Props) {
         await el.play();
         setVideoReady(true);
       } catch {
-        // Keep boot/logo visible; still allow timeout / skip
         setVideoOk(false);
       }
     };
@@ -102,10 +114,10 @@ export function SiteLoader({ active, onComplete }: Props) {
     let raf = 0;
     const tick = () => {
       frame += 1;
-      const next = Math.min(100, Math.round(frame * 2.4));
+      const next = Math.min(100, Math.round(frame * 3));
       setProgress(next);
       if (next >= 100) {
-        window.setTimeout(finish, 200);
+        window.setTimeout(finish, 120);
         return;
       }
       raf = requestAnimationFrame(tick);
@@ -126,7 +138,6 @@ export function SiteLoader({ active, onComplete }: Props) {
           aria-busy="true"
           aria-label={dictionary.ui.loading}
         >
-          {/* Same lockup as #herna-boot — continuous brand stage */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={brandAssets.logoOpaqueSrc}
