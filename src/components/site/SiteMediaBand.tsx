@@ -1,0 +1,46 @@
+"use client";
+
+import { useDictionary } from "@/components/providers/LocaleProvider";
+import { CinematicMedia } from "@/components/site/CinematicMedia";
+import { Reveal } from "@/components/site/Reveal";
+
+export function SiteMediaBand() {
+  const dictionary = useDictionary();
+
+  return (
+    <section
+      className="relative isolate overflow-hidden"
+      aria-labelledby="media-band-heading"
+    >
+      <div className="relative min-h-[52svh] md:min-h-[62svh]">
+        <CinematicMedia
+          images={[
+            "/divisions/agriculture.jpg",
+            "/divisions/energy.jpg",
+            "/divisions/equipment.jpg",
+          ]}
+          kenBurns
+          cycleMs={5500}
+          overlayStyle={{
+            background:
+              "linear-gradient(180deg, rgba(10,12,16,0.35) 0%, rgba(22,48,72,0.72) 55%, rgba(10,12,16,0.88) 100%)",
+          }}
+        />
+        <div className="container-herna relative z-10 flex min-h-[52svh] items-end pb-14 pt-24 md:min-h-[62svh] md:pb-20">
+          <Reveal className="max-w-2xl">
+            <p className="label-act text-white/85">{dictionary.mediaBand.label}</p>
+            <h2
+              id="media-band-heading"
+              className="heading-display mt-4 text-display-md text-white"
+            >
+              {dictionary.mediaBand.headline}
+            </h2>
+            <p className="mt-5 max-w-xl text-body-lg text-white/72">
+              {dictionary.mediaBand.body}
+            </p>
+          </Reveal>
+        </div>
+      </div>
+    </section>
+  );
+}
