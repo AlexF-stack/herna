@@ -16,33 +16,29 @@ import { SiteNav } from "@/components/site/SiteNav";
 import { SitePartners } from "@/components/site/SitePartners";
 import { useSessionIntro } from "@/hooks/useSessionIntro";
 import dynamic from "next/dynamic";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 
 const SoftCursor = dynamic(
   () => import("@/components/site/SoftCursor").then((m) => m.SoftCursor),
   { ssr: false },
 );
 
+function dismissBootShell() {
+  document.getElementById("herna-boot")?.remove();
+}
+
 function ExperienceInner() {
   const dictionary = useDictionary();
-  const { shouldShowIntro, ready, markComplete } = useSessionIntro();
-  const [showIntro, setShowIntro] = useState(false);
-  const [showNav, setShowNav] = useState(false);
+  const { shouldShowIntro, markComplete } = useSessionIntro();
 
   useEffect(() => {
-    if (!ready) return;
-    if (shouldShowIntro) {
-      setShowIntro(true);
-      return;
-    }
-    setShowNav(true);
-    setShowIntro(false);
-  }, [ready, shouldShowIntro]);
+    // As soon as React mounts the loader, drop the static HTML shell.
+    dismissBootShell();
+  }, []);
 
   const handleIntroComplete = useCallback(() => {
+    dismissBootShell();
     markComplete();
-    setShowIntro(false);
-    setShowNav(true);
   }, [markComplete]);
 
   return (
@@ -51,29 +47,30 @@ function ExperienceInner() {
         {dictionary.ui.skipToContent}
       </a>
 
-      <SoftCursor />
-      <SiteLoader active={ready && showIntro} onComplete={handleIntroComplete} />
-      <SiteNav visible={showNav} />
+      <SiteLoader active={shouldShowIntro} onComplete={handleIntroComplete} />
 
-      {!ready && (
-        <div
-          className="fixed inset-0 z-[80] bg-white"
-          aria-busy="true"
-          aria-label={dictionary.ui.loading}
-        />
+      {!shouldShowIntro ? (
+        <>
+          <SoftCursor />
+          <SiteNav visible />
+          <main id="main">
+            <SiteHero />
+            <SiteAbout />
+            <SiteMediaBand />
+            <SiteIdentity />
+            <SiteDivisions />
+            <SiteInsights />
+            <SitePartners />
+            <SiteContact />
+            <SiteFooter />
+          </main>
+        </>
+      ) : (
+        /* Keep landmark for a11y while preloader runs — no heavy media fetch */
+        <main id="main" className="sr-only" aria-hidden>
+          {dictionary.meta.title}
+        </main>
       )}
-
-      <main id="main" style={{ visibility: ready ? "visible" : "hidden" }}>
-        <SiteHero />
-        <SiteAbout />
-        <SiteMediaBand />
-        <SiteIdentity />
-        <SiteDivisions />
-        <SiteInsights />
-        <SitePartners />
-        <SiteContact />
-        <SiteFooter />
-      </main>
     </>
   );
 }

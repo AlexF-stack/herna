@@ -1,23 +1,17 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 
 /**
- * Preloader runs once per full page load (while the experience mounts).
- * Skip / completion only lasts for this visit — refresh shows it again.
+ * Preloader shows immediately on first paint (no ready-gate flash).
+ * Completing skips it for the rest of this page load only.
  */
 export function useSessionIntro() {
   const [shouldShowIntro, setShouldShowIntro] = useState(true);
-  const [ready, setReady] = useState(false);
-
-  useEffect(() => {
-    setShouldShowIntro(true);
-    setReady(true);
-  }, []);
 
   const markComplete = useCallback(() => {
     setShouldShowIntro(false);
   }, []);
 
-  return { shouldShowIntro, ready, markComplete };
+  return { shouldShowIntro, markComplete };
 }

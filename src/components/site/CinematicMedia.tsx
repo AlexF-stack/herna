@@ -5,9 +5,7 @@ import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 
 type Props = {
-  /** Single video (legacy) or first in a playlist */
   videoSrc?: string;
-  /** Playlist of looping clips — crossfades between sources */
   videoSrcs?: string[];
   posterSrc?: string;
   images: string[];
@@ -16,12 +14,12 @@ type Props = {
   overlayStyle?: CSSProperties;
   kenBurns?: boolean;
   cycleMs?: number;
-  /** How long each hero clip stays before crossfade (default 14s) */
   videoCycleMs?: number;
 };
 
 /**
  * Full-bleed cinematic media: muted looping video(s) with image slideshow fallback.
+ * Only the active clip downloads — the next one loads when it's about to play.
  */
 export function CinematicMedia({
   videoSrc,
@@ -44,55 +42,51 @@ export function CinematicMedia({
     [videoSrc, videoSrcs],
   );
 
-  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const [activeClip, setActiveClip] = useState(0);
-  const [ready, setReady] = useState<Record<number, boolean>>({});
+  const [mountedClips, setMountedClips] = useState(() =>
+    clips.length ? new Set([0]) : new Set<number>(),
+  );
+  const [videoOk, setVideoOk] = useState(false);
   const [index, setIndex] = useState(0);
 
-  const anyVideoOk = clips.some((_, i) => ready[i]);
-  const showVideo = clips.length > 0 && anyVideoOk && !reduced;
+  const showVideo = clips.length > 0 && videoOk && !reduced;
+  const activeSrc = clips[activeClip];
 
   useEffect(() => {
-    if (reduced || clips.length === 0) return;
+    if (reduced || !activeSrc) return;
+    const el = videoRef.current;
+    if (!el) return;
 
-    const playClip = async (i: number) => {
-      const el = videoRefs.current[i];
-      if (!el) return;
+    const play = async () => {
       try {
         el.muted = true;
-        el.currentTime = 0;
         await el.play();
-        setReady((prev) => ({ ...prev, [i]: true }));
+        setVideoOk(true);
       } catch {
-        setReady((prev) => ({ ...prev, [i]: false }));
+        setVideoOk(false);
       }
     };
-
-    void playClip(0);
-    // Warm the second clip so crossfade is instant
-    if (clips.length > 1) {
-      const warm = window.setTimeout(() => void playClip(1), 1200);
-      return () => window.clearTimeout(warm);
-    }
-  }, [reduced, clips]);
+    void play();
+  }, [reduced, activeSrc, activeClip]);
 
   useEffect(() => {
-    if (reduced || clips.length < 2 || !anyVideoOk) return;
+    if (reduced || clips.length < 2 || !videoOk) return;
 
     const id = window.setInterval(() => {
       setActiveClip((current) => {
         const next = (current + 1) % clips.length;
-        const el = videoRefs.current[next];
-        if (el) {
-          el.muted = true;
-          void el.play().catch(() => undefined);
-        }
+        setMountedClips((prev) => {
+          const copy = new Set(prev);
+          copy.add(next);
+          return copy;
+        });
         return next;
       });
     }, videoCycleMs);
 
     return () => window.clearInterval(id);
-  }, [reduced, clips.length, anyVideoOk, videoCycleMs]);
+  }, [reduced, clips.length, videoOk, videoCycleMs]);
 
   useEffect(() => {
     if (showVideo || images.length < 2 || reduced) return;
@@ -105,36 +99,43 @@ export function CinematicMedia({
 
   return (
     <div className={`absolute inset-0 overflow-hidden ${className}`}>
-      {clips.length > 0 && !reduced
-        ? clips.map((src, i) => {
-            const visible = showVideo && i === activeClip && ready[i];
-            return (
-              <video
-                key={src}
-                ref={(el) => {
-                  videoRefs.current[i] = el;
-                }}
-                className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-[1400ms] ease-out ${
-                  visible ? "opacity-100" : "opacity-0"
-                } ${kenBurns && visible ? "media-kenburns" : ""}`}
-                src={src}
-                poster={i === 0 ? posterSrc : undefined}
-                muted
-                playsInline
-                loop
-                autoPlay={i === 0}
-                preload={i === 0 ? "auto" : "metadata"}
-                aria-hidden
-                onLoadedData={() =>
-                  setReady((prev) => ({ ...prev, [i]: true }))
-                }
-                onError={() => setReady((prev) => ({ ...prev, [i]: false }))}
-              />
-            );
-          })
-        : null}
+      {posterSrc ? (
+        <SoftImage
+          src={posterSrc}
+          alt=""
+          fill
+          priority
+          quality={68}
+          sizes="100vw"
+          className={`object-cover transition-opacity duration-700 ${
+            showVideo ? "opacity-0" : "opacity-100"
+          }`}
+          wrapperClassName="absolute inset-0"
+        />
+      ) : null}
+
+      {clips.length > 0 && !reduced && mountedClips.has(activeClip) ? (
+        <video
+          key={activeSrc}
+          ref={videoRef}
+          className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
+            showVideo ? "opacity-100" : "opacity-0"
+          } ${kenBurns && showVideo ? "media-kenburns" : ""}`}
+          src={activeSrc}
+          poster={posterSrc}
+          muted
+          playsInline
+          loop
+          autoPlay
+          preload="auto"
+          aria-hidden
+          onLoadedData={() => setVideoOk(true)}
+          onError={() => setVideoOk(false)}
+        />
+      ) : null}
 
       {!showVideo &&
+        !posterSrc &&
         images.map((src, i) => (
           <div
             key={src}
@@ -147,7 +148,7 @@ export function CinematicMedia({
               alt=""
               fill
               priority={i === 0}
-              quality={72}
+              quality={68}
               sizes="100vw"
               className={`object-cover ${
                 kenBurns && i === index && !reduced ? "media-kenburns" : ""

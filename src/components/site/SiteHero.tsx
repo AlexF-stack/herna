@@ -5,14 +5,7 @@ import { CinematicMedia } from "@/components/site/CinematicMedia";
 import { brandAssets } from "@/content/brand";
 import { motion, useReducedMotion } from "framer-motion";
 
-const HERO_IMAGES = [
-  "/media/hero-poster.jpg",
-  "/media/hero-b-poster.jpg",
-  "/divisions/energy.jpg",
-  "/divisions/real-estate.jpg",
-  "/divisions/agriculture.jpg",
-  "/divisions/mining.jpg",
-];
+const HERO_IMAGES = ["/media/hero-poster.jpg", "/media/hero-b-poster.jpg"];
 
 const HERO_VIDEOS = ["/media/hero.mp4", "/media/hero-b.mp4"];
 

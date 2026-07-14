@@ -50,11 +50,74 @@ export default function RootLayout({
     <html suppressHydrationWarning lang="en" className="light" data-theme="light">
       <head>
         <link
+          rel="preload"
+          href="/media/preloader.webm"
+          as="video"
+          type="video/webm"
+        />
+        <link
+          rel="preload"
+          href={brandAssets.logoSrc}
+          as="image"
+          type="image/png"
+        />
+        <link
+          rel="preconnect"
+          href="https://api.fontshare.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          id="herna-fonts"
           href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700&f[]=clash-display@400,500,600&f[]=general-sans@400,500,600&display=swap"
           rel="stylesheet"
+          media="print"
         />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `document.getElementById('herna-fonts')?.addEventListener('load',function(){this.media='all'});`,
+          }}
+        />
+        <noscript>
+          <link
+            href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700&f[]=clash-display@400,500,600&f[]=general-sans@400,500,600&display=swap"
+            rel="stylesheet"
+          />
+        </noscript>
       </head>
       <body className="antialiased" suppressHydrationWarning>
+        {/* Home-only instant shell before JS — SiteLoader removes it on mount */}
+        <div
+          id="herna-boot"
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 100,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            background: "#ffffff",
+            padding: "2rem",
+          }}
+          aria-hidden
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={brandAssets.logoSrc}
+            alt=""
+            width={420}
+            height={160}
+            style={{
+              width: "min(86vw, 26rem)",
+              height: "auto",
+              objectFit: "contain",
+            }}
+          />
+        </div>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){var p=location.pathname.replace(/\\/$/,'');if(!/^\\/(en|fr)$/.test(p)){var el=document.getElementById('herna-boot');if(el)el.remove();}})();`,
+          }}
+        />
         {children}
       </body>
     </html>

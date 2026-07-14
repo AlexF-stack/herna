@@ -4,7 +4,7 @@ import { SiteNav } from "@/components/site/SiteNav";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { usePathname } from "next/navigation";
 import dynamic from "next/dynamic";
-import type { ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
 
 const SoftCursorLazy = dynamic(
   () => import("@/components/site/SoftCursor").then((m) => m.SoftCursor),
@@ -15,6 +15,10 @@ const SoftCursorLazy = dynamic(
 export function SecondaryChrome({ children }: { children: ReactNode }) {
   const pathname = usePathname() || "";
   const isHome = /^\/(en|fr)\/?$/.test(pathname);
+
+  useEffect(() => {
+    if (!isHome) document.getElementById("herna-boot")?.remove();
+  }, [isHome]);
 
   return (
     <ThemeProvider>
