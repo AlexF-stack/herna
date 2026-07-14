@@ -13,7 +13,6 @@ import {
   useReducedMotion,
   useSpring,
 } from "framer-motion";
-import Link from "next/link";
 import type { MouseEvent } from "react";
 
 function DivisionCard({
@@ -55,10 +54,9 @@ function DivisionCard({
 
   return (
     <Reveal delay={index * 0.06}>
-      <Link
+      <a
         href={`/${locale}/divisions/${item.id}`}
         id={`division-${item.id}`}
-        prefetch
         data-cursor-hover
         className="group relative isolate block overflow-hidden rounded-2xl border border-[color:var(--line)] bg-[color:var(--bg-elevated)] shine-border cursor-grow"
         onMouseMove={onMove}
@@ -103,7 +101,7 @@ function DivisionCard({
             <span aria-hidden>→</span>
           </span>
         </div>
-      </Link>
+      </a>
     </Reveal>
   );
 }

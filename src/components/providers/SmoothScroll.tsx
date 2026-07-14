@@ -65,10 +65,6 @@ export function SmoothScroll({ children }: Props) {
         smoothWheel: true,
         touchMultiplier: 1.15,
         stopInertiaOnNavigate: true,
-        anchors: {
-          offset: -96,
-          duration: 1.15,
-        },
       }}
     >
       <LenisScrollTriggerBridge />

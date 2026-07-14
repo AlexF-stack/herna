@@ -40,13 +40,11 @@ export function LanguageSwitcher({ className = "" }: { className?: string }) {
                 e.preventDefault();
                 return;
               }
-              // Preserve in-page hash (usePathname omits it)
+              // Full navigation — more reliable than soft RSC swaps across locales
+              e.preventDefault();
               const hash =
                 typeof window !== "undefined" ? window.location.hash : "";
-              if (hash) {
-                e.preventDefault();
-                window.location.assign(`${href}${hash}`);
-              }
+              window.location.assign(`${href}${hash}`);
             }}
           >
             {l}
