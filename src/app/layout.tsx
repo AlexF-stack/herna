@@ -115,7 +115,7 @@ export default function RootLayout({
         </div>
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){var p=location.pathname.replace(/\\/$/,'');if(!/^\\/(en|fr)$/.test(p)){var el=document.getElementById('herna-boot');if(el)el.remove();}})();`,
+            __html: `(function(){var el=document.getElementById('herna-boot');if(!el)return;var p=location.pathname.replace(/\\/$/,'');if(!/^\\/(en|fr)$/.test(p)){el.remove();return;}setTimeout(function(){el.remove();},2800);})();`,
           }}
         />
         {children}

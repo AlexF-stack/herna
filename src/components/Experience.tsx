@@ -9,12 +9,11 @@ import { SiteDivisions } from "@/components/site/SiteDivisions";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { SiteHero } from "@/components/site/SiteHero";
 import { SiteIdentity } from "@/components/site/SiteIdentity";
-import { SiteLoader } from "@/components/site/SiteLoader";
 import { SiteMediaBand } from "@/components/site/SiteMediaBand";
 import { SiteNav } from "@/components/site/SiteNav";
 import { SitePartners } from "@/components/site/SitePartners";
 import dynamic from "next/dynamic";
-import { useCallback } from "react";
+import { useEffect } from "react";
 
 const SoftCursor = dynamic(
   () => import("@/components/site/SoftCursor").then((m) => m.SoftCursor),
@@ -24,7 +23,7 @@ const SoftCursor = dynamic(
 function ExperienceInner() {
   const dictionary = useDictionary();
 
-  const handleIntroComplete = useCallback(() => {
+  useEffect(() => {
     document.getElementById("herna-boot")?.remove();
   }, []);
 
@@ -33,8 +32,6 @@ function ExperienceInner() {
       <a href="#main" className="skip-link">
         {dictionary.ui.skipToContent}
       </a>
-
-      <SiteLoader onComplete={handleIntroComplete} />
 
       <SoftCursor />
       <SiteNav visible />
