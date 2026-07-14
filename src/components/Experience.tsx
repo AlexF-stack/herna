@@ -13,9 +13,8 @@ import { SiteLoader } from "@/components/site/SiteLoader";
 import { SiteMediaBand } from "@/components/site/SiteMediaBand";
 import { SiteNav } from "@/components/site/SiteNav";
 import { SitePartners } from "@/components/site/SitePartners";
-import { useSessionIntro } from "@/hooks/useSessionIntro";
 import dynamic from "next/dynamic";
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 
 const SoftCursor = dynamic(
   () => import("@/components/site/SoftCursor").then((m) => m.SoftCursor),
@@ -24,22 +23,10 @@ const SoftCursor = dynamic(
 
 function ExperienceInner() {
   const dictionary = useDictionary();
-  const { shouldShowIntro, markComplete } = useSessionIntro();
 
   const handleIntroComplete = useCallback(() => {
-    markComplete();
     document.getElementById("herna-boot")?.remove();
-  }, [markComplete]);
-
-  // Parent safety net if the loader overlay fails to self-dismiss
-  useEffect(() => {
-    if (!shouldShowIntro) return;
-    const t = window.setTimeout(() => {
-      markComplete();
-      document.getElementById("herna-boot")?.remove();
-    }, 7000);
-    return () => window.clearTimeout(t);
-  }, [shouldShowIntro, markComplete]);
+  }, []);
 
   return (
     <>
@@ -47,8 +34,7 @@ function ExperienceInner() {
         {dictionary.ui.skipToContent}
       </a>
 
-      {/* Site always mounts under the loader so nav / FR / divisions stay reachable */}
-      <SiteLoader active={shouldShowIntro} onComplete={handleIntroComplete} />
+      <SiteLoader onComplete={handleIntroComplete} />
 
       <SoftCursor />
       <SiteNav visible />

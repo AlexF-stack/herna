@@ -6,23 +6,39 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
 const PRELOADER_SRC = "/media/preloader.webm";
-const MAX_MS = 5000;
+const SESSION_KEY = "herna-intro-seen";
+const MAX_MS = 4500;
+
+/** Survives React remounts / Strict Mode so the deadline cannot loop forever */
+let dismissDeadline = 0;
 
 type Props = {
-  active: boolean;
   onComplete: () => void;
 };
 
-/**
- * Cinematic preloader overlay. Site tree must already be mounted underneath.
- * Hard-dismisses after MAX_MS — never traps navigation.
- */
-export function SiteLoader({ active, onComplete }: Props) {
+function hasSeenIntro() {
+  try {
+    return sessionStorage.getItem(SESSION_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+
+function markSeen() {
+  try {
+    sessionStorage.setItem(SESSION_KEY, "1");
+  } catch {
+    /* ignore */
+  }
+}
+
+export function SiteLoader({ onComplete }: Props) {
   const dictionary = useDictionary();
   const reduced = useReducedMotion();
   const videoRef = useRef<HTMLVideoElement>(null);
-  const doneRef = useRef(false);
+  const completedRef = useRef(false);
   const onCompleteRef = useRef(onComplete);
+  const [visible, setVisible] = useState(() => !hasSeenIntro());
   const [videoOk, setVideoOk] = useState(true);
   const [videoReady, setVideoReady] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -31,50 +47,45 @@ export function SiteLoader({ active, onComplete }: Props) {
     onCompleteRef.current = onComplete;
   }, [onComplete]);
 
-  const finish = () => {
-    if (doneRef.current) return;
-    doneRef.current = true;
+  const complete = () => {
+    if (completedRef.current) return;
+    completedRef.current = true;
+    markSeen();
+    dismissDeadline = 0;
     document.body.style.overflow = "";
     document.getElementById("herna-boot")?.remove();
+    setVisible(false);
     onCompleteRef.current();
   };
 
-  // Hard deadline tied only to `active` — ignore reduced / callback churn
   useEffect(() => {
-    if (!active) return;
+    if (!visible) {
+      document.getElementById("herna-boot")?.remove();
+      onCompleteRef.current();
+      return;
+    }
 
-    doneRef.current = false;
-    setProgress(0);
-    setVideoReady(false);
-    setVideoOk(true);
-
-    const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+    document.getElementById("herna-boot")?.remove();
 
-    const maxTimer = window.setTimeout(finish, MAX_MS);
+    if (reduced) {
+      complete();
+      return;
+    }
+
+    if (!dismissDeadline) dismissDeadline = Date.now() + MAX_MS;
+    const wait = Math.max(0, dismissDeadline - Date.now());
+    const timer = window.setTimeout(complete, wait);
 
     return () => {
-      window.clearTimeout(maxTimer);
-      document.body.style.overflow = prevOverflow;
+      window.clearTimeout(timer);
+      document.body.style.overflow = "";
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [active]);
-
-  // Prefer reduced motion: dismiss immediately
-  useEffect(() => {
-    if (active && reduced) finish();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [active, reduced]);
+  }, []);
 
   useEffect(() => {
-    if (!active) return;
-    if (videoReady || !videoOk) {
-      document.getElementById("herna-boot")?.remove();
-    }
-  }, [active, videoReady, videoOk]);
-
-  useEffect(() => {
-    if (!active || reduced || !videoOk) return;
+    if (!visible || reduced || !videoOk) return;
     const el = videoRef.current;
     if (!el) return;
 
@@ -99,26 +110,26 @@ export function SiteLoader({ active, onComplete }: Props) {
 
     el.addEventListener("timeupdate", onTime);
     el.addEventListener("playing", () => setVideoReady(true));
-    el.addEventListener("ended", finish);
+    el.addEventListener("ended", complete);
     void play();
 
     return () => {
       el.removeEventListener("timeupdate", onTime);
-      el.removeEventListener("ended", finish);
+      el.removeEventListener("ended", complete);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [active, reduced, videoOk]);
+  }, [visible, reduced, videoOk]);
 
   useEffect(() => {
-    if (!active || reduced || videoOk) return;
+    if (!visible || reduced || videoOk) return;
     let frame = 0;
     let raf = 0;
     const tick = () => {
       frame += 1;
-      const next = Math.min(100, Math.round(frame * 4));
+      const next = Math.min(100, Math.round(frame * 5));
       setProgress(next);
       if (next >= 100) {
-        finish();
+        complete();
         return;
       }
       raf = requestAnimationFrame(tick);
@@ -126,17 +137,17 @@ export function SiteLoader({ active, onComplete }: Props) {
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [active, reduced, videoOk]);
+  }, [visible, reduced, videoOk]);
 
   return (
     <AnimatePresence>
-      {active && (
+      {visible && (
         <motion.div
           className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-white"
           initial={false}
           animate={{ opacity: 1 }}
-          exit={{ opacity: 0, transition: { duration: 0.4 } }}
-          transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
           aria-busy="true"
           aria-label={dictionary.ui.loading}
         >
@@ -178,7 +189,7 @@ export function SiteLoader({ active, onComplete }: Props) {
           <button
             type="button"
             className="absolute bottom-8 z-[3] text-sm text-[color:var(--muted)] underline-offset-4 hover:text-[color:var(--ink)] hover:underline"
-            onClick={finish}
+            onClick={complete}
             data-cursor-hover
           >
             {dictionary.prologue.skip}
