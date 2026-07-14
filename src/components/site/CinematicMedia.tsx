@@ -19,7 +19,6 @@ type Props = {
 
 /**
  * Full-bleed cinematic media: muted looping video(s) with image slideshow fallback.
- * Only the active clip downloads — the next one loads when it's about to play.
  */
 export function CinematicMedia({
   videoSrc,
@@ -42,51 +41,82 @@ export function CinematicMedia({
     [videoSrc, videoSrcs],
   );
 
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const [activeClip, setActiveClip] = useState(0);
-  const [mountedClips, setMountedClips] = useState(() =>
-    clips.length ? new Set([0]) : new Set<number>(),
-  );
-  const [videoOk, setVideoOk] = useState(false);
+  /** Mount at most the first clip initially; unlock more on cycle */
+  const [mountCount, setMountCount] = useState(clips.length ? 1 : 0);
+  const [playing, setPlaying] = useState<Record<number, boolean>>({});
   const [index, setIndex] = useState(0);
 
-  const showVideo = clips.length > 0 && videoOk && !reduced;
-  const activeSrc = clips[activeClip];
+  const anyPlaying = Object.values(playing).some(Boolean);
+  const showVideo =
+    clips.length > 0 && Boolean(playing[activeClip]) && !reduced;
 
   useEffect(() => {
-    if (reduced || !activeSrc) return;
-    const el = videoRef.current;
+    if (reduced || mountCount === 0) return;
+
+    const el = videoRefs.current[activeClip];
     if (!el) return;
 
-    const play = async () => {
+    let cancelled = false;
+
+    const start = async () => {
       try {
+        el.defaultMuted = true;
         el.muted = true;
+        el.playsInline = true;
         await el.play();
-        setVideoOk(true);
+        if (!cancelled) {
+          setPlaying((prev) => ({ ...prev, [activeClip]: true }));
+        }
       } catch {
-        setVideoOk(false);
+        // Retry once after metadata — common on deferred mounts after preloader
+        const retry = async () => {
+          try {
+            el.muted = true;
+            await el.play();
+            if (!cancelled) {
+              setPlaying((prev) => ({ ...prev, [activeClip]: true }));
+            }
+          } catch {
+            if (!cancelled) {
+              setPlaying((prev) => ({ ...prev, [activeClip]: false }));
+            }
+          }
+        };
+        window.setTimeout(() => void retry(), 280);
       }
     };
-    void play();
-  }, [reduced, activeSrc, activeClip]);
+
+    void start();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [reduced, activeClip, mountCount]);
 
   useEffect(() => {
-    if (reduced || clips.length < 2 || !videoOk) return;
+    if (reduced || clips.length < 2 || !anyPlaying) return;
 
     const id = window.setInterval(() => {
       setActiveClip((current) => {
         const next = (current + 1) % clips.length;
-        setMountedClips((prev) => {
-          const copy = new Set(prev);
-          copy.add(next);
-          return copy;
-        });
+        setMountCount((count) => Math.max(count, next + 1));
+        // Pause previous to save decode; resume happens in play effect
+        const prev = videoRefs.current[current];
+        if (prev && current !== next) {
+          try {
+            prev.pause();
+          } catch {
+            /* ignore */
+          }
+        }
         return next;
       });
     }, videoCycleMs);
 
     return () => window.clearInterval(id);
-  }, [reduced, clips.length, videoOk, videoCycleMs]);
+  }, [reduced, clips.length, anyPlaying, videoCycleMs]);
 
   useEffect(() => {
     if (showVideo || images.length < 2 || reduced) return;
@@ -114,25 +144,33 @@ export function CinematicMedia({
         />
       ) : null}
 
-      {clips.length > 0 && !reduced && mountedClips.has(activeClip) ? (
-        <video
-          key={activeSrc}
-          ref={videoRef}
-          className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
-            showVideo ? "opacity-100" : "opacity-0"
-          } ${kenBurns && showVideo ? "media-kenburns" : ""}`}
-          src={activeSrc}
-          poster={posterSrc}
-          muted
-          playsInline
-          loop
-          autoPlay
-          preload="auto"
-          aria-hidden
-          onLoadedData={() => setVideoOk(true)}
-          onError={() => setVideoOk(false)}
-        />
-      ) : null}
+      {!reduced &&
+        clips.slice(0, mountCount).map((src, i) => (
+          <video
+            key={src}
+            ref={(node) => {
+              videoRefs.current[i] = node;
+            }}
+            className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ease-out ${
+              showVideo && i === activeClip ? "opacity-100" : "opacity-0"
+            } ${kenBurns && showVideo && i === activeClip ? "media-kenburns" : ""}`}
+            src={src}
+            muted
+            playsInline
+            loop
+            autoPlay={i === 0}
+            preload={i === 0 ? "auto" : "metadata"}
+            aria-hidden
+            onPlaying={() => setPlaying((prev) => ({ ...prev, [i]: true }))}
+            onLoadedData={() => {
+              const el = videoRefs.current[i];
+              if (!el || i !== activeClip) return;
+              el.muted = true;
+              void el.play().catch(() => undefined);
+            }}
+            onError={() => setPlaying((prev) => ({ ...prev, [i]: false }))}
+          />
+        ))}
 
       {!showVideo &&
         !posterSrc &&

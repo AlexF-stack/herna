@@ -2,10 +2,12 @@ export const brandAssets = {
   name: "HERNA",
   holdingName: "HERNA HOLDING",
   fullName: "HERITAGE OF NATIONS",
-  /** Official lockup on white — loader, OG, contact cards */
-  logoSrc: "/brand/herna-logo.png",
-  /** Transparent lockup for nav / dark surfaces */
+  /** Transparent lockup (default UI) */
+  logoSrc: "/brand/herna-logo-clear.png",
+  /** Same transparent lockup */
   logoClearSrc: "/brand/herna-logo-clear.png",
+  /** Opaque lockup for OG / social cards only */
+  logoOpaqueSrc: "/brand/herna-logo.png",
   /** Flat mark when a compact symbol is needed */
   markSrc: "/brand/herna-mark.svg",
   website: "www.herna-group.com",

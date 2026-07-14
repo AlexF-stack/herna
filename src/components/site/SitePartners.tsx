@@ -28,16 +28,15 @@ export function SitePartners() {
           {dictionary.partners.items.map((partner, i) => (
             <Reveal key={partner.id} delay={i * 0.04}>
               <article className="flex h-full flex-col items-center justify-center rounded-2xl border border-[color:var(--line)] bg-[color:var(--bg-elevated)] px-5 py-8 text-center transition duration-500 hover:border-[color:var(--maroon)]/30">
-                <div
-                  className="mb-5 flex h-14 w-full items-center justify-center rounded-xl px-3"
-                  style={{ background: partner.logoBg }}
-                >
+                <div className="mb-5 flex h-14 w-full items-center justify-center px-2">
                   <Image
                     src={partner.logoSrc}
                     alt={partner.name}
                     width={140}
                     height={48}
-                    className="max-h-9 w-auto object-contain"
+                    className={`max-h-10 w-auto object-contain ${
+                      partner.id === "tpg" ? "brightness-0" : ""
+                    }`}
                   />
                 </div>
                 <h3 className="font-display text-sm text-[color:var(--ink)] md:text-base">

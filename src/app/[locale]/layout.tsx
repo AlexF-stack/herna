@@ -70,7 +70,7 @@ export async function generateMetadata({
       siteName: "HERNA",
       images: [
         {
-          url: brandAssets.logoSrc,
+          url: brandAssets.logoOpaqueSrc,
           width: 1200,
           height: 630,
           alt: brandAssets.holdingName,
@@ -81,7 +81,7 @@ export async function generateMetadata({
       card: "summary_large_image",
       title: dictionary.meta.title,
       description: dictionary.brand.tagline,
-      images: [brandAssets.logoSrc],
+      images: [brandAssets.logoOpaqueSrc],
     },
     robots: {
       index: true,

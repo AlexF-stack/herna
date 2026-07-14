@@ -116,7 +116,7 @@ export function SiteLoader({ active, onComplete }: Props) {
             }`}
           >
             <Image
-              src={brandAssets.logoSrc}
+              src={brandAssets.logoClearSrc}
               alt=""
               width={720}
               height={280}

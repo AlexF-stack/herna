@@ -15,7 +15,7 @@ export function JsonLd({
     name: brandAssets.holdingName,
     alternateName: [brandAssets.name, brandAssets.fullName],
     url: brandAssets.websiteUrl,
-    logo: `${brandAssets.websiteUrl}${brandAssets.logoSrc}`,
+    logo: `${brandAssets.websiteUrl}${brandAssets.logoOpaqueSrc}`,
     description: dictionary.meta.description,
     email: brandAssets.email,
     telephone: brandAssets.phoneTel,

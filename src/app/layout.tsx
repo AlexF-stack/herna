@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     title: `${brandAssets.name} — ${brandAssets.fullName}`,
     images: [
       {
-        url: brandAssets.logoSrc,
+        url: brandAssets.logoOpaqueSrc,
         width: 1536,
         height: 1024,
         alt: brandAssets.holdingName,
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary",
     title: brandAssets.holdingName,
-    images: [brandAssets.logoSrc],
+    images: [brandAssets.logoOpaqueSrc],
   },
 };
 
@@ -102,7 +102,7 @@ export default function RootLayout({
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={brandAssets.logoSrc}
+            src={brandAssets.logoClearSrc}
             alt=""
             width={420}
             height={160}

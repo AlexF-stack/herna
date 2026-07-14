@@ -27,13 +27,13 @@ export function SiteFooter() {
 
       <div className="container-herna relative grid gap-10 py-12 sm:gap-12 sm:py-16 md:grid-cols-12 md:gap-10 md:py-20">
         <div className="md:col-span-5">
-          <div className="inline-flex rounded-lg bg-white px-3 py-2.5 shadow-sm sm:px-4 sm:py-3">
+          <div className="inline-flex">
             <Image
-              src={brandAssets.logoSrc}
+              src={brandAssets.logoClearSrc}
               alt={brandAssets.holdingName}
               width={200}
               height={72}
-              className="h-8 w-auto object-contain sm:h-10"
+              className="h-9 w-auto object-contain drop-shadow-[0_2px_10px_rgba(0,0,0,0.35)] sm:h-11"
             />
           </div>
           <p className="mt-6 max-w-sm text-sm leading-relaxed text-white/60">

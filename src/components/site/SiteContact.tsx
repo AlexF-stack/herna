@@ -66,9 +66,9 @@ export function SiteContact() {
 
         <div className="mt-12 grid gap-10 lg:grid-cols-12">
           <Reveal className="lg:col-span-5">
-            <div className="mb-8 inline-flex rounded-xl bg-white px-5 py-4 shadow-sm">
+            <div className="mb-8 inline-flex">
               <Image
-                src={brandAssets.logoSrc}
+                src={brandAssets.logoClearSrc}
                 alt={`${brandAssets.holdingName} logo`}
                 width={280}
                 height={100}

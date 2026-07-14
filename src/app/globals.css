@@ -341,7 +341,7 @@ textarea:focus {
 }
 
 .media-kenburns {
-  animation: media-kenburns 18s var(--ease) forwards;
+  animation: media-kenburns 22s var(--ease) infinite alternate;
   will-change: transform;
 }
 
