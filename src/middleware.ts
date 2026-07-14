@@ -18,12 +18,9 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  const accept = request.headers.get("accept-language") ?? "";
-  const prefersFr = accept.toLowerCase().includes("fr");
-  const locale = prefersFr ? "fr" : defaultLocale;
-
+  // Always enter in English; users can switch to FR via the UI.
   const url = request.nextUrl.clone();
-  url.pathname = `/${locale}${pathname === "/" ? "" : pathname}`;
+  url.pathname = `/${defaultLocale}${pathname === "/" ? "" : pathname}`;
   return NextResponse.redirect(url);
 }
 

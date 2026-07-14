@@ -110,14 +110,6 @@ export function SiteFooter() {
                 {dictionary.ui.contactShort}
               </a>
             </li>
-            <li>
-              <a
-                href={brandAssets.websiteUrl}
-                className="text-sm text-white/70 transition hover:text-white"
-              >
-                {brandAssets.website}
-              </a>
-            </li>
           </ul>
         </div>
       </div>
