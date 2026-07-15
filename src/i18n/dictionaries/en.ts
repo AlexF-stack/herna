@@ -138,6 +138,7 @@ export type Dictionary = {
   legal: {
     copyright: string;
     noticeTitle: string;
+    noticeDescription: string;
     noticeExtra: string;
     privacyTitle: string;
     privacyIntro: string;
@@ -420,20 +421,22 @@ export const en: Dictionary = {
   legal: {
     copyright: `© ${new Date().getFullYear()} HERITAGE OF NATIONS (HERNA). All rights reserved.`,
     noticeTitle: "Legal notice",
+    noticeDescription:
+      "Legal information about HERNA HOLDING — Heritage of Nations: publisher, hosting and intellectual property.",
     noticeExtra:
-      "Additional corporate registration details will be published here when provided.",
+      "HERNA strives to keep the information on this website accurate and up to date. However, we cannot guarantee completeness or uninterrupted availability. Use of the site is at your own risk. Corporate registration numbers will be published here as soon as they are available.",
     privacyTitle: "Privacy policy",
     privacyIntro:
-      "This page describes how HERITAGE OF NATIONS (HERNA) handles information submitted through www.herna-group.com.",
+      "This policy explains how HERITAGE OF NATIONS (HERNA) collects and uses personal information submitted through herna.vercel.app and related contact channels.",
     privacyContactHeading: "Contact",
     privacyContactBody: "For privacy requests, contact",
     privacyDataHeading: "Data collected",
     privacyDataBody:
-      "When you use the contact form, we may process your name, email address, and message content solely to respond to your inquiry.",
+      "When you use the contact form, we may process your name, email address and message content solely to respond to your inquiry. Technical logs (IP address, browser type, pages visited) may be processed by our hosting provider for security and performance.",
     privacyRetentionHeading: "Retention",
     privacyRetentionBody:
-      "Messages are retained only as long as needed to handle your request, unless a longer period is required by applicable law.",
+      "Messages are retained only as long as needed to handle your request, unless a longer period is required by applicable law. Hosting logs follow the retention practices of our infrastructure provider.",
     privacyPlaceholder:
-      "This summary is a functional placeholder pending a full legal review.",
+      "Depending on applicable law, you may have the right to access, rectify or delete personal data concerning you, and to object to or restrict certain processing. Contact us at the email above to exercise these rights. This policy may be updated; the version published on this page is the one in force.",
   },
 };

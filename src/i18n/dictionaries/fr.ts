@@ -269,20 +269,22 @@ export const fr: Dictionary = {
   legal: {
     copyright: `© ${new Date().getFullYear()} HERITAGE OF NATIONS (HERNA). Tous droits réservés.`,
     noticeTitle: "Mentions légales",
+    noticeDescription:
+      "Informations légales sur HERNA HOLDING — Heritage of Nations : éditeur, hébergement et propriété intellectuelle.",
     noticeExtra:
-      "Les détails d'immatriculation complémentaires seront publiés ici dès qu'ils seront fournis.",
+      "HERNA s'efforce de maintenir des informations exactes et à jour sur ce site. Nous ne pouvons toutefois garantir l'exhaustivité ni la disponibilité continue du service. L'utilisation du site se fait sous votre responsabilité. Les numéros d'immatriculation seront publiés ici dès qu'ils seront disponibles.",
     privacyTitle: "Politique de confidentialité",
     privacyIntro:
-      "Cette page décrit la manière dont HERITAGE OF NATIONS (HERNA) traite les informations soumises via www.herna-group.com.",
+      "Cette politique explique comment HERITAGE OF NATIONS (HERNA) collecte et utilise les informations personnelles soumises via herna.vercel.app et les canaux de contact associés.",
     privacyContactHeading: "Contact",
     privacyContactBody: "Pour toute demande relative à la confidentialité, contactez",
     privacyDataHeading: "Données collectées",
     privacyDataBody:
-      "Lorsque vous utilisez le formulaire de contact, nous pouvons traiter votre nom, votre adresse e-mail et le contenu de votre message uniquement pour répondre à votre demande.",
+      "Lorsque vous utilisez le formulaire de contact, nous pouvons traiter votre nom, votre adresse e-mail et le contenu de votre message uniquement pour répondre à votre demande. Des journaux techniques (adresse IP, type de navigateur, pages consultées) peuvent être traités par notre hébergeur pour la sécurité et la performance.",
     privacyRetentionHeading: "Conservation",
     privacyRetentionBody:
-      "Les messages sont conservés uniquement aussi longtemps que nécessaire pour traiter votre demande, sauf si une durée plus longue est exigée par la loi applicable.",
+      "Les messages sont conservés uniquement aussi longtemps que nécessaire pour traiter votre demande, sauf si une durée plus longue est exigée par la loi applicable. Les journaux d'hébergement suivent les pratiques de conservation de notre prestataire d'infrastructure.",
     privacyPlaceholder:
-      "Ce résumé est un placeholder fonctionnel en attendant une validation juridique complète.",
+      "Selon la législation applicable, vous pouvez disposer d'un droit d'accès, de rectification ou de suppression des données vous concernant, ainsi que d'un droit d'opposition ou de limitation de certains traitements. Contactez-nous à l'adresse e-mail ci-dessus pour exercer ces droits. Cette politique peut être mise à jour ; la version publiée sur cette page est celle en vigueur.",
   },
 };

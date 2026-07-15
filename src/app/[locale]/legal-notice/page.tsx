@@ -2,6 +2,7 @@ import { BackLink } from "@/components/site/BackLink";
 import { brandAssets } from "@/content/brand";
 import { isLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/getDictionary";
+import { pageAlternates } from "@/lib/seo";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -12,10 +13,17 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale: raw } = await params;
   if (!isLocale(raw)) return {};
-  const dictionary = getDictionary(raw as Locale);
+  const locale = raw as Locale;
+  const dictionary = getDictionary(locale);
   return {
     title: dictionary.legal.noticeTitle,
-    description: dictionary.legal.noticeTitle,
+    description: dictionary.legal.noticeDescription,
+    alternates: pageAlternates(locale, "/legal-notice"),
+    openGraph: {
+      title: dictionary.legal.noticeTitle,
+      description: dictionary.legal.noticeDescription,
+      url: `/${locale}/legal-notice`,
+    },
   };
 }
 
@@ -47,26 +55,37 @@ export default async function LegalNoticePage({
               {isFr ? "Éditeur" : "Publisher"}
             </h2>
             <p className="mt-3 leading-relaxed">
-              <span className="text-[color:var(--ink)]">{brandAssets.holdingName}</span>
+              <span className="text-[color:var(--ink)]">
+                {brandAssets.holdingName}
+              </span>
               {" — "}
               {brandAssets.fullName} ({brandAssets.name})
             </p>
             <p className="mt-2">{address}</p>
             <p className="mt-2">
               {dictionary.ui.phone}:{" "}
-              <a href={`tel:${brandAssets.phoneTel}`} className="text-[color:var(--gold)] hover:underline">
+              <a
+                href={`tel:${brandAssets.phoneTel}`}
+                className="text-[color:var(--gold)] hover:underline"
+              >
                 {brandAssets.phone}
               </a>
             </p>
             <p className="mt-2">
               Email:{" "}
-              <a href={`mailto:${brandAssets.email}`} className="text-[color:var(--gold)] hover:underline">
+              <a
+                href={`mailto:${brandAssets.email}`}
+                className="text-[color:var(--gold)] hover:underline"
+              >
                 {brandAssets.email}
               </a>
             </p>
             <p className="mt-2">
               {dictionary.ui.website}:{" "}
-              <a href={brandAssets.websiteUrl} className="text-[color:var(--gold)] hover:underline">
+              <a
+                href={brandAssets.websiteUrl}
+                className="text-[color:var(--gold)] hover:underline"
+              >
                 {brandAssets.website}
               </a>
             </p>
@@ -77,8 +96,8 @@ export default async function LegalNoticePage({
             </h2>
             <p className="mt-3 leading-relaxed">
               {isFr
-                ? "Le site est hébergé par Vercel Inc. Les coordonnées d'hébergement seront complétées après mise en production définitive."
-                : "This website is hosted by Vercel Inc. Full hosting particulars will be completed after final production launch."}
+                ? "Le site est hébergé par Vercel Inc., 440 N Barranca Ave #4133, Covina, CA 91723, États-Unis."
+                : "This website is hosted by Vercel Inc., 440 N Barranca Ave #4133, Covina, CA 91723, United States."}
             </p>
           </section>
           <section>
@@ -87,12 +106,19 @@ export default async function LegalNoticePage({
             </h2>
             <p className="mt-3 leading-relaxed">
               {isFr
-                ? "L'ensemble des contenus (textes, images, marques, logo) est la propriété de HERITAGE OF NATIONS (HERNA), sauf mention contraire. Toute reproduction non autorisée est interdite."
-                : "All content (texts, images, trademarks, logo) is owned by HERITAGE OF NATIONS (HERNA) unless otherwise stated. Unauthorized reproduction is prohibited."}
+                ? "L'ensemble des contenus (textes, images, marques, logo) est la propriété de HERITAGE OF NATIONS (HERNA), sauf mention contraire. Toute reproduction, représentation ou diffusion non autorisée est interdite."
+                : "All content (texts, images, trademarks, logo) is owned by HERITAGE OF NATIONS (HERNA) unless otherwise stated. Unauthorized reproduction, representation or distribution is prohibited."}
             </p>
           </section>
-          <p className="text-sm italic">{dictionary.legal.noticeExtra}</p>
-          <p className="text-sm">{dictionary.legal.privacyPlaceholder}</p>
+          <section>
+            <h2 className="font-display text-lg text-[color:var(--ink)]">
+              {isFr ? "Limitation de responsabilité" : "Limitation of liability"}
+            </h2>
+            <p className="mt-3 leading-relaxed">
+              {dictionary.legal.noticeExtra}
+            </p>
+          </section>
+          <p className="text-sm">{dictionary.legal.copyright}</p>
         </div>
       </div>
     </main>

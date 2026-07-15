@@ -4,6 +4,7 @@ import { JsonLd } from "@/components/seo/JsonLd";
 import { brandAssets } from "@/content/brand";
 import { isLocale, locales, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/getDictionary";
+import { ogImage, pageAlternates } from "@/lib/seo";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
@@ -52,14 +53,7 @@ export async function generateMetadata({
       apple: [{ url: "/apple-icon.png", sizes: "180x180", type: "image/png" }],
       shortcut: "/favicon.png",
     },
-    alternates: {
-      canonical: `/${locale}`,
-      languages: {
-        en: "/en",
-        fr: "/fr",
-        "x-default": "/en",
-      },
-    },
+    alternates: pageAlternates(locale),
     openGraph: {
       title: dictionary.meta.title,
       description: dictionary.meta.description,
@@ -68,20 +62,13 @@ export async function generateMetadata({
       alternateLocale: locale === "fr" ? ["en_US"] : ["fr_FR"],
       type: "website",
       siteName: "HERNA",
-      images: [
-        {
-          url: brandAssets.logoOpaqueSrc,
-          width: 1200,
-          height: 630,
-          alt: brandAssets.holdingName,
-        },
-      ],
+      images: [ogImage],
     },
     twitter: {
       card: "summary_large_image",
       title: dictionary.meta.title,
       description: dictionary.brand.tagline,
-      images: [brandAssets.logoOpaqueSrc],
+      images: [ogImage.url],
     },
     robots: {
       index: true,

@@ -2,6 +2,7 @@ import { BackLink } from "@/components/site/BackLink";
 import { brandAssets } from "@/content/brand";
 import { isLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/getDictionary";
+import { pageAlternates } from "@/lib/seo";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -12,10 +13,17 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale: raw } = await params;
   if (!isLocale(raw)) return {};
-  const dictionary = getDictionary(raw as Locale);
+  const locale = raw as Locale;
+  const dictionary = getDictionary(locale);
   return {
     title: dictionary.legal.privacyTitle,
     description: dictionary.legal.privacyIntro,
+    alternates: pageAlternates(locale, "/privacy-policy"),
+    openGraph: {
+      title: dictionary.legal.privacyTitle,
+      description: dictionary.legal.privacyIntro,
+      url: `/${locale}/privacy-policy`,
+    },
   };
 }
 
@@ -28,6 +36,7 @@ export default async function PrivacyPolicyPage({
   if (!isLocale(raw)) notFound();
   const locale = raw as Locale;
   const dictionary = getDictionary(locale);
+  const isFr = locale === "fr";
 
   return (
     <main
@@ -72,7 +81,14 @@ export default async function PrivacyPolicyPage({
               {dictionary.legal.privacyRetentionBody}
             </p>
           </section>
-          <p className="text-sm italic">{dictionary.legal.privacyPlaceholder}</p>
+          <section>
+            <h2 className="font-display text-lg text-[color:var(--ink)]">
+              {isFr ? "Vos droits" : "Your rights"}
+            </h2>
+            <p className="mt-3 leading-relaxed">
+              {dictionary.legal.privacyPlaceholder}
+            </p>
+          </section>
           <p className="text-sm">{dictionary.legal.copyright}</p>
         </div>
       </div>

@@ -1,6 +1,7 @@
 import { brandAssets } from "@/content/brand";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries/en";
+import { localeUrl } from "@/lib/seo";
 
 export function JsonLd({
   locale,
@@ -9,13 +10,16 @@ export function JsonLd({
   locale: Locale;
   dictionary: Dictionary;
 }) {
-  const data = {
-    "@context": "https://schema.org",
+  const organization = {
     "@type": "Organization",
+    "@id": `${brandAssets.websiteUrl}/#organization`,
     name: brandAssets.holdingName,
     alternateName: [brandAssets.name, brandAssets.fullName],
     url: brandAssets.websiteUrl,
-    logo: `${brandAssets.websiteUrl}${brandAssets.logoOpaqueSrc}`,
+    logo: {
+      "@type": "ImageObject",
+      url: `${brandAssets.websiteUrl}${brandAssets.logoOpaqueSrc}`,
+    },
     description: dictionary.meta.description,
     email: brandAssets.email,
     telephone: brandAssets.phoneTel,
@@ -24,9 +28,27 @@ export function JsonLd({
       addressLocality: "Cotonou",
       addressCountry: "BJ",
     },
-    sameAs: [brandAssets.websiteUrl],
     areaServed: "Africa",
     inLanguage: locale,
+  };
+
+  const website = {
+    "@type": "WebSite",
+    "@id": `${brandAssets.websiteUrl}/#website`,
+    url: brandAssets.websiteUrl,
+    name: brandAssets.name,
+    description: dictionary.meta.description,
+    publisher: { "@id": `${brandAssets.websiteUrl}/#organization` },
+    inLanguage: [locale],
+    potentialAction: {
+      "@type": "ReadAction",
+      target: [localeUrl(locale), localeUrl(locale === "en" ? "fr" : "en")],
+    },
+  };
+
+  const data = {
+    "@context": "https://schema.org",
+    "@graph": [organization, website],
   };
 
   return (

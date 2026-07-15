@@ -3,6 +3,7 @@ import { BackLink } from "@/components/site/BackLink";
 import { HardLink } from "@/components/site/HardLink";
 import { isLocale, locales, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/getDictionary";
+import { pageAlternates } from "@/lib/seo";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -32,18 +33,24 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale: raw, slug } = await params;
   if (!isLocale(raw)) return {};
-  const item = findDivision(raw as Locale, slug);
+  const locale = raw as Locale;
+  const item = findDivision(locale, slug);
   if (!item) return {};
   return {
     title: item.title,
     description: item.description,
-    alternates: {
-      canonical: `/${raw}/divisions/${slug}`,
-    },
+    alternates: pageAlternates(locale, `/divisions/${slug}`),
     openGraph: {
       title: item.title,
       description: item.description,
-      images: [{ url: item.imageSrc }],
+      url: `/${locale}/divisions/${slug}`,
+      images: [{ url: item.imageSrc, alt: item.title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: item.title,
+      description: item.description,
+      images: [item.imageSrc],
     },
   };
 }

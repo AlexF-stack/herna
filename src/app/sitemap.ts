@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { locales } from "@/i18n/config";
+import { brandAssets } from "@/content/brand";
 
 const divisionSlugs = [
   "equipment",
@@ -10,9 +11,8 @@ const divisionSlugs = [
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const base = "https://herna.vercel.app";
+  const base = brandAssets.websiteUrl;
   const staticPaths = ["", "/legal-notice", "/privacy-policy"];
-
   const entries: MetadataRoute.Sitemap = [];
 
   for (const locale of locales) {
@@ -21,7 +21,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         url: `${base}/${locale}${path}`,
         lastModified: new Date(),
         changeFrequency: path === "" ? "weekly" : "monthly",
-        priority: path === "" ? 1 : 0.3,
+        priority: path === "" ? 1 : 0.4,
         alternates: {
           languages: Object.fromEntries(
             locales.map((l) => [l, `${base}/${l}${path}`]),
@@ -30,11 +30,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
       });
     }
     for (const slug of divisionSlugs) {
+      const path = `/divisions/${slug}`;
       entries.push({
-        url: `${base}/${locale}/divisions/${slug}`,
+        url: `${base}/${locale}${path}`,
         lastModified: new Date(),
         changeFrequency: "monthly",
         priority: 0.8,
+        alternates: {
+          languages: Object.fromEntries(
+            locales.map((l) => [l, `${base}/${l}${path}`]),
+          ),
+        },
       });
     }
   }

@@ -1,6 +1,9 @@
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import { brandAssets } from "@/content/brand";
+import { defaultLocale, isLocale } from "@/i18n/config";
+import { ogImage } from "@/lib/seo";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -25,29 +28,31 @@ export const metadata: Metadata = {
     type: "website",
     siteName: brandAssets.name,
     title: `${brandAssets.name} — ${brandAssets.fullName}`,
-    images: [
-      {
-        url: brandAssets.logoOpaqueSrc,
-        width: 1536,
-        height: 1024,
-        alt: brandAssets.holdingName,
-      },
-    ],
+    images: [ogImage],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: brandAssets.holdingName,
-    images: [brandAssets.logoOpaqueSrc],
+    images: [ogImage.url],
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: ReactNode;
 }>) {
+  const headerList = await headers();
+  const raw = headerList.get("x-herna-locale");
+  const lang = raw && isLocale(raw) ? raw : defaultLocale;
+
   return (
-    <html suppressHydrationWarning lang="en" className="light" data-theme="light">
+    <html
+      suppressHydrationWarning
+      lang={lang}
+      className="light"
+      data-theme="light"
+    >
       <head>
         <link
           rel="preload"
@@ -85,7 +90,6 @@ export default function RootLayout({
         </noscript>
       </head>
       <body className="antialiased" suppressHydrationWarning>
-        {/* Instant shell before JS — SiteLoader / SecondaryChrome remove it */}
         <div
           id="herna-boot"
           style={{

@@ -15,18 +15,23 @@ export function middleware(request: NextRequest) {
 
   const segment = pathname.split("/")[1];
   if (isLocale(segment)) {
-    return NextResponse.next();
+    const requestHeaders = new Headers(request.headers);
+    requestHeaders.set("x-herna-locale", segment);
+    return NextResponse.next({
+      request: { headers: requestHeaders },
+    });
   }
 
   // Always enter in English; users can switch to FR via the UI.
   const url = request.nextUrl.clone();
   url.pathname = `/${defaultLocale}${pathname === "/" ? "" : pathname}`;
-  return NextResponse.redirect(url);
+  const response = NextResponse.redirect(url);
+  response.headers.set("x-herna-locale", defaultLocale);
+  return response;
 }
 
 export const config = {
   matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
 };
 
-// keep locales referenced for tree clarity
 void locales;
