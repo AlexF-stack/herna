@@ -1,7 +1,7 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
-import { useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { useState, type CSSProperties } from "react";
 
 type Value = {
   title: string;
@@ -23,7 +23,6 @@ const ACCENTS = [
   "var(--gold-soft)",
 ];
 
-/** Short label that always fits inside an orb */
 function orbShort(title: string) {
   const parts = title.trim().split(/\s+/);
   if (parts.length === 1) return parts[0].slice(0, 8);
@@ -34,14 +33,37 @@ function orbShort(title: string) {
     .toUpperCase();
 }
 
+/** Place floating card toward the ring center so it stays in the viewport. */
+function tooltipPlacement(xPct: number, yPct: number): CSSProperties {
+  const preferRight = xPct < 50;
+  const preferBelow = yPct < 50;
+  const horizontalDominant = Math.abs(xPct - 50) >= Math.abs(yPct - 50);
+
+  if (horizontalDominant) {
+    return preferRight
+      ? { left: "100%", top: "50%", marginLeft: "0.65rem", translate: "0 -50%" }
+      : { right: "100%", top: "50%", marginRight: "0.65rem", translate: "0 -50%" };
+  }
+
+  return preferBelow
+    ? { left: "50%", top: "100%", marginTop: "0.65rem", translate: "-50% 0" }
+    : { left: "50%", bottom: "100%", marginBottom: "0.65rem", translate: "-50% 0" };
+}
+
 export function ApproachOrbit({ label, intro, values, hint }: Props) {
   const reduced = useReducedMotion();
   const [active, setActive] = useState<number | null>(null);
-  const shown = active !== null ? values[active] : null;
+
+  const activate = (i: number) => setActive(i);
+  const deactivate = () => setActive(null);
 
   return (
     <div id="approach" className="relative">
-      <div className="relative mx-auto aspect-square w-full max-w-[min(100%,32rem)]">
+      <p className="mb-6 text-center text-[0.78rem] text-[color:var(--muted)] sm:mb-8">
+        {hint}
+      </p>
+
+      <div className="relative mx-auto aspect-square w-full max-w-[min(100%,34rem)]">
         <div
           className="pointer-events-none absolute inset-[8%] rounded-full opacity-60"
           style={{
@@ -64,29 +86,46 @@ export function ApproachOrbit({ label, intro, values, hint }: Props) {
           aria-hidden
         />
 
-        {/* Center: title only — full text lives in the panel below to avoid overflow */}
-        <div className="absolute inset-[32%] z-10 flex flex-col items-center justify-center overflow-hidden rounded-full border border-[color:var(--line)] bg-[color:var(--bg-elevated)]/95 px-4 text-center shadow-[0_20px_50px_rgba(22,48,72,0.1)] backdrop-blur-md sm:inset-[30%] sm:px-6">
-          {shown ? (
-            <motion.p
-              key={shown.title}
-              initial={reduced ? false : { opacity: 0, scale: 0.94 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              className="max-w-full font-display text-[clamp(0.85rem,2.4vw,1.15rem)] uppercase leading-tight tracking-wide text-[color:var(--ink)]"
-            >
-              {shown.title}
-            </motion.p>
-          ) : (
-            <div className="max-w-full overflow-hidden px-1">
-              <p className="label-act">{label}</p>
-              <p className="mt-2 line-clamp-4 text-[0.7rem] leading-snug text-[color:var(--muted)] sm:mt-2.5 sm:line-clamp-5 sm:text-[0.78rem]">
-                {intro}
-              </p>
-            </div>
-          )}
+        {/* Idle center — intro only when nothing hovered */}
+        <div className="pointer-events-none absolute inset-[32%] z-10 flex flex-col items-center justify-center overflow-hidden rounded-full border border-[color:var(--line)] bg-[color:var(--bg-elevated)]/95 px-4 text-center shadow-[0_20px_50px_rgba(22,48,72,0.1)] backdrop-blur-md sm:inset-[30%] sm:px-6">
+          <AnimatePresence mode="wait">
+            {active === null ? (
+              <motion.div
+                key="idle"
+                initial={reduced ? false : { opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={reduced ? undefined : { opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                className="max-w-full overflow-hidden px-1"
+              >
+                <p className="label-act">{label}</p>
+                <p className="mt-2 line-clamp-4 text-[0.7rem] leading-snug text-[color:var(--muted)] sm:line-clamp-5 sm:text-[0.78rem]">
+                  {intro}
+                </p>
+              </motion.div>
+            ) : (
+              <motion.div
+                key={`center-${values[active].title}`}
+                initial={reduced ? false : { opacity: 0, scale: 0.94 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={reduced ? undefined : { opacity: 0, scale: 0.96 }}
+                transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                className="max-w-full overflow-hidden px-1"
+              >
+                <p className="font-display text-[clamp(0.78rem,2.2vw,1.05rem)] uppercase leading-tight tracking-wide text-[color:var(--ink)]">
+                  {values[active].title}
+                </p>
+                {values[active].description ? (
+                  <p className="mt-2 line-clamp-5 text-[0.68rem] leading-snug text-[color:var(--muted)] sm:line-clamp-6 sm:text-[0.75rem]">
+                    {values[active].description}
+                  </p>
+                ) : null}
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
 
-        <ul className="absolute inset-0 list-none" role="list">
+        <ul className="absolute inset-0 z-20 list-none" role="list">
           {values.map((value, i) => {
             const angle = (i / values.length) * Math.PI * 2 - Math.PI / 2;
             const radius = 42;
@@ -94,6 +133,7 @@ export function ApproachOrbit({ label, intro, values, hint }: Props) {
             const y = 50 + radius * Math.sin(angle);
             const accent = ACCENTS[i % ACCENTS.length];
             const isActive = active === i;
+            const tip = tooltipPlacement(x, y);
 
             return (
               <li
@@ -103,11 +143,15 @@ export function ApproachOrbit({ label, intro, values, hint }: Props) {
                   left: `${x}%`,
                   top: `${y}%`,
                   transform: "translate(-50%, -50%)",
+                  zIndex: isActive ? 30 : 5,
                 }}
+                onMouseEnter={() => activate(i)}
+                onMouseLeave={deactivate}
               >
                 <motion.button
                   type="button"
-                  aria-pressed={isActive}
+                  aria-expanded={isActive}
+                  aria-describedby={isActive ? `approach-tip-${i}` : undefined}
                   aria-label={
                     value.description
                       ? `${value.title}. ${value.description}`
@@ -116,19 +160,16 @@ export function ApproachOrbit({ label, intro, values, hint }: Props) {
                   className="relative flex h-[3.85rem] w-[3.85rem] items-center justify-center overflow-hidden rounded-full border border-white/70 text-center shadow-[0_12px_28px_rgba(22,48,72,0.16)] outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] sm:h-[4.6rem] sm:w-[4.6rem]"
                   style={{
                     background: `radial-gradient(circle at 32% 28%, white 0%, color-mix(in srgb, ${accent} 22%, white) 45%, color-mix(in srgb, ${accent} 38%, white) 100%)`,
-                    zIndex: isActive ? 20 : 5,
                   }}
                   initial={reduced ? false : { scale: 0.7, opacity: 0 }}
                   animate={{
-                    scale: isActive ? 1.22 : 1,
+                    scale: isActive ? 1.2 : 1,
                     opacity: 1,
                   }}
-                  whileHover={reduced ? undefined : { scale: 1.28 }}
+                  whileHover={reduced ? undefined : { scale: 1.26 }}
                   transition={{ type: "spring", stiffness: 320, damping: 22 }}
-                  onHoverStart={() => setActive(i)}
-                  onHoverEnd={() => setActive(null)}
-                  onFocus={() => setActive(i)}
-                  onBlur={() => setActive(null)}
+                  onFocus={() => activate(i)}
+                  onBlur={deactivate}
                   onClick={() => setActive(isActive ? null : i)}
                   data-cursor-hover
                 >
@@ -143,38 +184,35 @@ export function ApproachOrbit({ label, intro, values, hint }: Props) {
                     {orbShort(value.title)}
                   </span>
                 </motion.button>
+
+                {/* Floating card beside the orb — visible on screen for every position */}
+                <AnimatePresence>
+                  {isActive && value.description ? (
+                    <motion.div
+                      id={`approach-tip-${i}`}
+                      role="tooltip"
+                      initial={
+                        reduced ? false : { opacity: 0, scale: 0.92 }
+                      }
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={reduced ? undefined : { opacity: 0, scale: 0.94 }}
+                      transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                      className="pointer-events-none absolute z-40 w-[11.5rem] rounded-xl border border-[color:var(--line)] bg-[color:var(--bg-elevated)] p-3 text-left shadow-[0_16px_40px_rgba(22,48,72,0.18)] sm:w-[13.5rem] sm:p-3.5"
+                      style={tip}
+                    >
+                      <p className="font-display text-[0.72rem] uppercase tracking-wide text-[color:var(--ink)] sm:text-[0.8rem]">
+                        {value.title}
+                      </p>
+                      <p className="mt-1.5 text-[0.68rem] leading-snug text-[color:var(--muted)] sm:text-[0.75rem]">
+                        {value.description}
+                      </p>
+                    </motion.div>
+                  ) : null}
+                </AnimatePresence>
               </li>
             );
           })}
         </ul>
-      </div>
-
-      {/* Dedicated panel — no overflow inside the circle */}
-      <div
-        className="mx-auto mt-8 min-h-[7.5rem] max-w-xl rounded-2xl border border-[color:var(--line)] bg-[color:var(--bg-elevated)] px-5 py-5 text-center sm:mt-10 sm:min-h-[6.5rem] sm:px-8"
-        aria-live="polite"
-      >
-        {shown ? (
-          <motion.div
-            key={`panel-${shown.title}`}
-            initial={reduced ? false : { opacity: 0, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <p className="font-display text-base uppercase tracking-wide text-[color:var(--ink)] sm:text-lg">
-              {shown.title}
-            </p>
-            {shown.description ? (
-              <p className="mt-2 text-sm leading-relaxed text-[color:var(--muted)] sm:text-[0.95rem]">
-                {shown.description}
-              </p>
-            ) : null}
-          </motion.div>
-        ) : (
-          <p className="text-sm leading-relaxed text-[color:var(--muted)]">
-            {hint}
-          </p>
-        )}
       </div>
     </div>
   );
