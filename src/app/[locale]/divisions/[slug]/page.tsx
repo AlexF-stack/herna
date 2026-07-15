@@ -1,9 +1,9 @@
 import { SoftImage } from "@/shared/ui/SoftImage";
 import { BackLink } from "@/components/site/BackLink";
+import { HardLink } from "@/components/site/HardLink";
 import { isLocale, locales, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/getDictionary";
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 
 const divisionSlugs = [
@@ -63,7 +63,7 @@ export default async function DivisionPage({
   return (
     <main className="min-h-screen bg-[color:var(--bg)] text-[color:var(--ink)]">
       <div className="container-herna pb-16 pt-28 md:pb-24 md:pt-32">
-        <BackLink href={`/${locale}`}>
+        <BackLink href={`/${locale}#divisions`}>
           {dictionary.ui.backToDivisions}
         </BackLink>
 
@@ -113,19 +113,19 @@ export default async function DivisionPage({
             </ul>
 
             <div className="mt-10 flex flex-wrap items-center gap-4">
-              <Link
+              <HardLink
                 href={`/${locale}#contact`}
                 className="btn-primary"
                 data-cursor-hover
               >
                 {dictionary.ui.contactShort}
-              </Link>
-              <Link
+              </HardLink>
+              <HardLink
                 href={`/${locale}#divisions`}
                 className="text-sm font-medium tracking-wide text-[color:var(--muted)] underline-offset-4 transition hover:text-[color:var(--ink)] hover:underline"
               >
                 {dictionary.ui.allDivisions}
-              </Link>
+              </HardLink>
             </div>
           </div>
         </div>

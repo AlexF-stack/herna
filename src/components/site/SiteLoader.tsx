@@ -6,39 +6,25 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
 const PRELOADER_SRC = "/media/preloader.webm";
-const SESSION_KEY = "herna-intro-seen";
-const MAX_MS = 4500;
-
-/** Survives React remounts / Strict Mode so the deadline cannot loop forever */
-let dismissDeadline = 0;
+const MIN_MS = 1800;
+const MAX_MS = 4200;
 
 type Props = {
   onComplete: () => void;
 };
 
-function hasSeenIntro() {
-  try {
-    return sessionStorage.getItem(SESSION_KEY) === "1";
-  } catch {
-    return false;
-  }
-}
-
-function markSeen() {
-  try {
-    sessionStorage.setItem(SESSION_KEY, "1");
-  } catch {
-    /* ignore */
-  }
-}
-
+/**
+ * Home intro loader — always plays on hard entry to home.
+ * Overlay uses pointer-events none except Skip, so it never traps the app.
+ */
 export function SiteLoader({ onComplete }: Props) {
   const dictionary = useDictionary();
   const reduced = useReducedMotion();
   const videoRef = useRef<HTMLVideoElement>(null);
   const completedRef = useRef(false);
   const onCompleteRef = useRef(onComplete);
-  const [visible, setVisible] = useState(() => !hasSeenIntro());
+  const startedAt = useRef(0);
+  const [visible, setVisible] = useState(true);
   const [videoOk, setVideoOk] = useState(true);
   const [videoReady, setVideoReady] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -50,21 +36,20 @@ export function SiteLoader({ onComplete }: Props) {
   const complete = () => {
     if (completedRef.current) return;
     completedRef.current = true;
-    markSeen();
-    dismissDeadline = 0;
     document.body.style.overflow = "";
     document.getElementById("herna-boot")?.remove();
     setVisible(false);
     onCompleteRef.current();
   };
 
-  useEffect(() => {
-    if (!visible) {
-      document.getElementById("herna-boot")?.remove();
-      onCompleteRef.current();
-      return;
-    }
+  const finishAfterMin = () => {
+    const elapsed = Date.now() - startedAt.current;
+    const wait = Math.max(0, MIN_MS - elapsed);
+    window.setTimeout(complete, wait);
+  };
 
+  useEffect(() => {
+    startedAt.current = Date.now();
     document.body.style.overflow = "hidden";
     document.getElementById("herna-boot")?.remove();
 
@@ -73,12 +58,9 @@ export function SiteLoader({ onComplete }: Props) {
       return;
     }
 
-    if (!dismissDeadline) dismissDeadline = Date.now() + MAX_MS;
-    const wait = Math.max(0, dismissDeadline - Date.now());
-    const timer = window.setTimeout(complete, wait);
-
+    const maxTimer = window.setTimeout(complete, MAX_MS);
     return () => {
-      window.clearTimeout(timer);
+      window.clearTimeout(maxTimer);
       document.body.style.overflow = "";
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -110,12 +92,12 @@ export function SiteLoader({ onComplete }: Props) {
 
     el.addEventListener("timeupdate", onTime);
     el.addEventListener("playing", () => setVideoReady(true));
-    el.addEventListener("ended", complete);
+    el.addEventListener("ended", finishAfterMin);
     void play();
 
     return () => {
       el.removeEventListener("timeupdate", onTime);
-      el.removeEventListener("ended", complete);
+      el.removeEventListener("ended", finishAfterMin);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [visible, reduced, videoOk]);
@@ -126,10 +108,10 @@ export function SiteLoader({ onComplete }: Props) {
     let raf = 0;
     const tick = () => {
       frame += 1;
-      const next = Math.min(100, Math.round(frame * 5));
+      const next = Math.min(100, Math.round(frame * 4));
       setProgress(next);
       if (next >= 100) {
-        complete();
+        finishAfterMin();
         return;
       }
       raf = requestAnimationFrame(tick);
@@ -143,7 +125,7 @@ export function SiteLoader({ onComplete }: Props) {
     <AnimatePresence>
       {visible && (
         <motion.div
-          className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-white"
+          className="pointer-events-none fixed inset-0 z-[100] flex flex-col items-center justify-center bg-white"
           initial={false}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -157,7 +139,7 @@ export function SiteLoader({ onComplete }: Props) {
             alt=""
             width={720}
             height={280}
-            className={`pointer-events-none absolute left-1/2 top-1/2 z-[1] w-[min(86vw,26rem)] -translate-x-1/2 -translate-y-1/2 object-contain transition-opacity duration-500 ${
+            className={`absolute left-1/2 top-1/2 z-[1] w-[min(86vw,26rem)] -translate-x-1/2 -translate-y-1/2 object-contain transition-opacity duration-500 ${
               videoReady && videoOk ? "opacity-0" : "opacity-100"
             }`}
           />
@@ -165,7 +147,7 @@ export function SiteLoader({ onComplete }: Props) {
           {videoOk && !reduced ? (
             <video
               ref={videoRef}
-              className={`pointer-events-none absolute inset-0 z-[1] h-full w-full scale-[1.2] object-contain bg-white transition-opacity duration-500 sm:scale-[1.24] md:scale-[1.3] ${
+              className={`absolute inset-0 z-[1] h-full w-full scale-[1.2] object-contain bg-white transition-opacity duration-500 sm:scale-[1.24] md:scale-[1.3] ${
                 videoReady ? "opacity-100" : "opacity-0"
               }`}
               src={PRELOADER_SRC}
@@ -177,7 +159,7 @@ export function SiteLoader({ onComplete }: Props) {
             />
           ) : null}
 
-          <div className="pointer-events-none absolute inset-x-0 bottom-16 z-[2] flex flex-col items-center">
+          <div className="absolute inset-x-0 bottom-16 z-[2] flex flex-col items-center">
             <div className="h-px w-40 overflow-hidden bg-black/10 sm:w-52">
               <div
                 className="h-full bg-[color:var(--gold)] transition-[width] duration-200 ease-out"
@@ -188,7 +170,7 @@ export function SiteLoader({ onComplete }: Props) {
 
           <button
             type="button"
-            className="absolute bottom-8 z-[3] text-sm text-[color:var(--muted)] underline-offset-4 hover:text-[color:var(--ink)] hover:underline"
+            className="pointer-events-auto absolute bottom-8 z-[3] text-sm text-[color:var(--muted)] underline-offset-4 hover:text-[color:var(--ink)] hover:underline"
             onClick={complete}
             data-cursor-hover
           >
