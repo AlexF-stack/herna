@@ -24,6 +24,9 @@
   --blue-wash: #e7eef5;
   --blue-mist: #d5e2ee;
   --nav-bg: rgba(247, 244, 239, 0.92);
+  /* Header adapts to section behind it */
+  --nav-on-light: color-mix(in srgb, var(--blue-wash) 94%, transparent);
+  --nav-on-blue: rgba(255, 255, 255, 0.94);
   --hero-overlay: linear-gradient(
     115deg,
     rgba(22, 48, 72, 0.88) 0%,

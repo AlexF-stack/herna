@@ -10,6 +10,7 @@ export function SiteMediaBand() {
   return (
     <section
       className="relative isolate overflow-hidden"
+      data-nav-surface="dark"
       aria-labelledby="media-band-heading"
     >
       <div className="relative min-h-[52svh] md:min-h-[62svh]">

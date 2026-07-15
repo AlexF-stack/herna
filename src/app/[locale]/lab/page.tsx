@@ -13,7 +13,10 @@ function LabContent() {
   const { locale } = useLocale();
 
   return (
-    <main className="min-h-screen bg-[color:var(--bg)] pb-24 text-[color:var(--ink)]">
+    <main
+      data-nav-surface="light"
+      className="min-h-screen bg-[color:var(--bg)] pb-24 text-[color:var(--ink)]"
+    >
       <div className="container-herna py-10">
         <BackLink href={`/${locale}`}>{dictionary.ui.backHome}</BackLink>
 

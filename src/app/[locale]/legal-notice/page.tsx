@@ -32,7 +32,10 @@ export default async function LegalNoticePage({
   const isFr = locale === "fr";
 
   return (
-    <main className="min-h-screen bg-[color:var(--bg)] pb-24 pt-28 text-[color:var(--ink)]">
+    <main
+      data-nav-surface="light"
+      className="min-h-screen bg-[color:var(--bg)] pb-24 pt-28 text-[color:var(--ink)]"
+    >
       <div className="container-herna max-w-3xl">
         <BackLink href={`/${locale}`}>{dictionary.ui.backHome}</BackLink>
         <h1 className="heading-display mt-10 text-display-md">

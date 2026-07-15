@@ -29,6 +29,7 @@ export function SiteAbout() {
     <section
       id="about"
       ref={ref}
+      data-nav-surface="light"
       className="section-pad"
       aria-labelledby="about-heading"
     >

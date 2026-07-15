@@ -50,6 +50,7 @@ export function SiteContact() {
   return (
     <section
       id="contact"
+      data-nav-surface="light"
       className="section-pad pb-0"
       aria-labelledby="contact-heading"
     >

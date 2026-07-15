@@ -10,6 +10,7 @@ export function SitePartners() {
   return (
     <section
       id="partners"
+      data-nav-surface="blue"
       className="section-blue section-pad border-y"
       aria-labelledby="partners-heading"
     >

@@ -10,20 +10,41 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useId, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 type Props = {
   visible: boolean;
+  /** Starting surface before first scroll probe (secondary pages = light). */
+  initialSurface?: NavSurface;
 };
 
-export function SiteNav({ visible }: Props) {
+type NavSurface = "dark" | "blue" | "light";
+
+function readNavSurface(header: HTMLElement | null): NavSurface {
+  const x = Math.round(window.innerWidth / 2);
+  const y = Math.min(56, Math.max(8, window.innerHeight - 1));
+  const prev = header?.style.pointerEvents;
+  if (header) header.style.pointerEvents = "none";
+  const el = document.elementFromPoint(x, y);
+  if (header) header.style.pointerEvents = prev ?? "";
+
+  const tagged = el?.closest("[data-nav-surface]");
+  const value = tagged?.getAttribute("data-nav-surface");
+  if (value === "dark" || value === "blue" || value === "light") return value;
+  if (el?.closest(".section-blue")) return "blue";
+  if (el?.closest("#hero, footer")) return "dark";
+  return "light";
+}
+
+export function SiteNav({ visible, initialSurface = "dark" }: Props) {
   const dictionary = useDictionary();
   const { locale } = useLocale();
   const reduced = useReducedMotion();
   const menuId = useId();
+  const headerRef = useRef<HTMLElement>(null);
   const [open, setOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const [surface, setSurface] = useState<NavSurface>(initialSurface);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -31,10 +52,23 @@ export function SiteNav({ visible }: Props) {
   }, []);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      setSurface(readNavSurface(headerRef.current));
+    };
+    const onScrollOrResize = () => {
+      if (raf) return;
+      raf = window.requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScrollOrResize, { passive: true });
+    window.addEventListener("resize", onScrollOrResize);
+    return () => {
+      if (raf) window.cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", onScrollOrResize);
+      window.removeEventListener("resize", onScrollOrResize);
+    };
   }, []);
 
   useEffect(() => {
@@ -57,12 +91,19 @@ export function SiteNav({ visible }: Props) {
 
   if (!visible) return null;
 
-  const solid = scrolled || open;
-  const overHero = !solid;
-  const linkTone = overHero
+  const overDark = surface === "dark" && !open;
+  const headerSurface: NavSurface = open ? "blue" : surface;
+  const headerClass =
+    headerSurface === "dark"
+      ? "border-b border-transparent bg-gradient-to-b from-black/35 to-transparent"
+      : headerSurface === "blue"
+        ? "border-b border-[color:var(--line)] bg-[color:var(--nav-on-blue)] shadow-[0_10px_40px_rgba(22,48,72,0.08)] backdrop-blur-xl"
+        : "border-b border-[color:var(--line)] bg-[color:var(--nav-on-light)] shadow-[0_10px_40px_rgba(22,48,72,0.08)] backdrop-blur-xl";
+
+  const linkTone = overDark
     ? "text-white/75 hover:text-white"
     : "text-[color:var(--ink)]/70 hover:text-[color:var(--ink)]";
-  const iconTone = overHero ? "text-white" : "text-[color:var(--ink)]";
+  const iconTone = overDark ? "text-white" : "text-[color:var(--ink)]";
   const buildHref = (href: string) => `/${locale}${href}`;
   const address = brandAssets.address[locale];
 
@@ -147,23 +188,12 @@ export function SiteNav({ visible }: Props) {
                       >
                         <a
                           href={buildHref(link.href)}
-                          className="group flex min-h-[3.4rem] items-center justify-between gap-4 border-b border-[color:var(--line)] py-3.5"
+                          className="group flex min-h-[3.4rem] items-center border-b border-[color:var(--line)] py-3.5"
                           onClick={() => setOpen(false)}
                           data-cursor-hover
                         >
-                          <span className="flex min-w-0 items-baseline gap-3">
-                            <span className="shrink-0 font-mono text-[0.65rem] tracking-wider text-[color:var(--maroon)]">
-                              {String(i + 1).padStart(2, "0")}
-                            </span>
-                            <span className="font-display text-[clamp(1.45rem,6.2vw,2.1rem)] leading-none text-[color:var(--ink)] transition-colors group-active:text-[color:var(--maroon)]">
-                              {link.label}
-                            </span>
-                          </span>
-                          <span
-                            className="shrink-0 text-[color:var(--gold)] transition-transform duration-300 group-hover:translate-x-0.5"
-                            aria-hidden
-                          >
-                            ΓåÆ
+                          <span className="font-display text-[clamp(1.45rem,6.2vw,2.1rem)] leading-none text-[color:var(--ink)] transition-colors group-active:text-[color:var(--maroon)]">
+                            {link.label}
                           </span>
                         </a>
                       </motion.li>
@@ -222,11 +252,8 @@ export function SiteNav({ visible }: Props) {
   return (
     <>
       <header
-        className={`fixed inset-x-0 top-0 z-50 transition-[background,border-color,backdrop-filter,box-shadow] duration-500 ${
-          solid
-            ? "border-b border-[color:var(--line)] bg-[color:var(--nav-bg)] shadow-[0_10px_40px_rgba(22,48,72,0.08)] backdrop-blur-xl"
-            : "border-b border-transparent bg-gradient-to-b from-black/35 to-transparent"
-        }`}
+        ref={headerRef}
+        className={`fixed inset-x-0 top-0 z-50 transition-[background,border-color,backdrop-filter,box-shadow] duration-500 ${headerClass}`}
       >
         <div className="container-herna flex items-center justify-between gap-3 py-3 sm:py-3.5 md:py-4">
           <a
@@ -261,7 +288,9 @@ export function SiteNav({ visible }: Props) {
                     {link.label}
                     <span
                       className={`pointer-events-none absolute inset-x-3 -bottom-0.5 h-px origin-left scale-x-0 transition-transform duration-500 ease-out group-hover:scale-x-100 ${
-                        overHero ? "bg-[color:var(--gold-soft)]" : "bg-[color:var(--gold)]"
+                        overDark
+                          ? "bg-[color:var(--gold-soft)]"
+                          : "bg-[color:var(--gold)]"
                       }`}
                       aria-hidden
                     />
@@ -274,7 +303,7 @@ export function SiteNav({ visible }: Props) {
           <div className="relative z-50 flex items-center gap-1.5 sm:gap-2">
             <LanguageSwitcher
               className={`${
-                overHero
+                overDark
                   ? "[&_a]:text-white/65 [&_a[aria-current=page]]:text-[color:var(--gold-soft)] [&_a:hover]:text-white"
                   : "[&_a]:text-[color:var(--muted)] [&_a[aria-current=page]]:text-[color:var(--gold)] [&_a:hover]:text-[color:var(--ink)]"
               }`}
@@ -305,17 +334,17 @@ export function SiteNav({ visible }: Props) {
                 <span aria-hidden className="flex w-5 flex-col items-end gap-[5px]">
                   <span
                     className={`block h-[1.5px] w-full rounded-full ${
-                      overHero ? "bg-white" : "bg-[color:var(--ink)]"
+                      overDark ? "bg-white" : "bg-[color:var(--ink)]"
                     }`}
                   />
                   <span
                     className={`block h-[1.5px] w-3.5 rounded-full ${
-                      overHero ? "bg-white" : "bg-[color:var(--ink)]"
+                      overDark ? "bg-white" : "bg-[color:var(--ink)]"
                     }`}
                   />
                   <span
                     className={`block h-[1.5px] w-full rounded-full ${
-                      overHero ? "bg-white" : "bg-[color:var(--ink)]"
+                      overDark ? "bg-white" : "bg-[color:var(--ink)]"
                     }`}
                   />
                 </span>

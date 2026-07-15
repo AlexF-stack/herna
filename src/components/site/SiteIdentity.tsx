@@ -1,85 +1,89 @@
 "use client";
 
-import { useDictionary } from "@/components/providers/LocaleProvider";
+import {
+  useDictionary,
+  useLocale,
+} from "@/components/providers/LocaleProvider";
+import { ApproachOrbit } from "@/components/site/ApproachOrbit";
 import { Reveal } from "@/components/site/Reveal";
 
 export function SiteIdentity() {
   const dictionary = useDictionary();
-
-  const cards = [
-    {
-      id: "vision",
-      label: dictionary.vision.label,
-      body: dictionary.vision.body,
-    },
-    {
-      id: "mission",
-      label: dictionary.mission.label,
-      body: dictionary.mission.body,
-    },
-  ];
+  const { locale } = useLocale();
+  const hint =
+    locale === "fr"
+      ? "Survolez ou touchez une boule"
+      : "Hover or tap a sphere";
 
   return (
     <section
       id="identity"
+      data-nav-surface="blue"
       className="section-blue section-pad border-y"
       aria-labelledby="identity-heading"
     >
       <div className="container-herna">
         <Reveal>
           <p className="label-act">{dictionary.identity.label}</p>
-          <h2 id="identity-heading" className="heading-display mt-4 max-w-[18ch] text-display-md">
+          <h2
+            id="identity-heading"
+            className="heading-display mt-4 max-w-[18ch] text-display-md"
+          >
             {dictionary.identity.headline}
           </h2>
         </Reveal>
 
-        <div className="mt-12 grid gap-6 md:grid-cols-2">
-          {cards.map((card, i) => (
-            <Reveal key={card.id} delay={i * 0.06}>
-              <article
-                id={card.id}
-                className={`h-full rounded-2xl border border-[color:var(--line)] bg-[color:var(--bg-elevated)] p-6 shine-border sm:p-7 md:p-9 ${
-                  card.id === "vision"
-                    ? "card-accent-maroon"
-                    : "card-accent-blue"
-                }`}
-              >
-                <p className="label-act">{card.label}</p>
-                <p className="mt-5 text-body-lg text-[color:var(--ink)]">
-                  {card.body}
-                </p>
-              </article>
-            </Reveal>
-          ))}
+        <div className="mt-12 grid items-stretch gap-5 lg:grid-cols-12 lg:gap-8">
+          <Reveal className="lg:col-span-5" delay={0.04}>
+            <article
+              id="vision"
+              className="relative flex h-full flex-col overflow-hidden rounded-[1.75rem] border border-[color:var(--line)] bg-[color:var(--bg-elevated)] p-7 sm:p-8 md:p-10"
+            >
+              <div
+                className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full opacity-70"
+                style={{
+                  background:
+                    "radial-gradient(circle, color-mix(in srgb, var(--maroon) 28%, transparent), transparent 70%)",
+                }}
+                aria-hidden
+              />
+              <p className="label-act relative">{dictionary.vision.label}</p>
+              <p className="relative mt-6 font-display text-[clamp(1.35rem,3.2vw,2rem)] leading-snug tracking-tight text-[color:var(--ink)]">
+                {dictionary.vision.body}
+              </p>
+            </article>
+          </Reveal>
+
+          <Reveal className="lg:col-span-7" delay={0.08}>
+            <article
+              id="mission"
+              className="relative flex h-full flex-col justify-between overflow-hidden rounded-[1.75rem] border border-[color:var(--line)] bg-[color:var(--navy-deep)] p-7 text-white sm:p-8 md:p-10"
+            >
+              <div
+                className="pointer-events-none absolute inset-0 opacity-80"
+                style={{
+                  background:
+                    "radial-gradient(90% 80% at 100% 0%, rgba(184,146,47,0.22), transparent 50%), radial-gradient(70% 60% at 0% 100%, rgba(53,94,131,0.45), transparent 55%)",
+                }}
+                aria-hidden
+              />
+              <p className="label-act relative text-[color:var(--gold-soft)]">
+                {dictionary.mission.label}
+              </p>
+              <p className="relative mt-6 max-w-2xl text-body-lg text-white/82">
+                {dictionary.mission.body}
+              </p>
+            </article>
+          </Reveal>
         </div>
 
-        <Reveal className="mt-6" delay={0.1}>
-          <article
-            id="approach"
-            className="rounded-2xl border border-[color:var(--line)] bg-[color:var(--bg-elevated)] p-7 md:p-9"
-          >
-            <p className="label-act">{dictionary.approach.label}</p>
-            <p className="mt-5 max-w-3xl text-body-lg text-[color:var(--muted)]">
-              {dictionary.approach.intro}
-            </p>
-            <ul className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {dictionary.approach.values.map((value) => (
-                <li
-                  key={value.title}
-                  className="border-t border-[color:var(--line)] pt-4 accent-rule"
-                >
-                  <h3 className="font-display text-lg uppercase tracking-wide text-[color:var(--ink)]">
-                    {value.title}
-                  </h3>
-                  {value.description ? (
-                    <p className="mt-2 text-sm leading-relaxed text-[color:var(--muted)]">
-                      {value.description}
-                    </p>
-                  ) : null}
-                </li>
-              ))}
-            </ul>
-          </article>
+        <Reveal className="mt-14 md:mt-16" delay={0.1}>
+          <ApproachOrbit
+            label={dictionary.approach.label}
+            intro={dictionary.approach.intro}
+            values={dictionary.approach.values}
+            hint={hint}
+          />
         </Reveal>
       </div>
     </section>

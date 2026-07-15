@@ -112,6 +112,7 @@ export function SiteDivisions() {
   return (
     <section
       id="divisions"
+      data-nav-surface="light"
       className="section-pad"
       aria-labelledby="divisions-heading"
     >

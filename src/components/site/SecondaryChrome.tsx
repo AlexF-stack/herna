@@ -16,7 +16,7 @@ export function SecondaryChrome({ children }: { children: ReactNode }) {
 
   return (
     <ThemeProvider>
-      {!isHome ? <SiteNav visible /> : null}
+      {!isHome ? <SiteNav visible initialSurface="light" /> : null}
       {children}
     </ThemeProvider>
   );

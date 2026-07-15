@@ -15,7 +15,10 @@ export function SiteFooter() {
   const buildHref = (href: string) => `/${locale}${href}`;
 
   return (
-    <footer className="relative overflow-hidden border-t border-white/10 bg-[#0d1520] text-white">
+    <footer
+      data-nav-surface="dark"
+      className="relative overflow-hidden border-t border-white/10 bg-[#0d1520] text-white"
+    >
       <div
         className="pointer-events-none absolute inset-0 opacity-50"
         style={{
