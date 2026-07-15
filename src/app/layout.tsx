@@ -85,7 +85,7 @@ export default function RootLayout({
         </noscript>
       </head>
       <body className="antialiased" suppressHydrationWarning>
-        {/* Home-only instant shell before JS — SiteLoader removes it on mount */}
+        {/* Instant shell before JS — SiteLoader / SecondaryChrome remove it */}
         <div
           id="herna-boot"
           style={{
@@ -116,7 +116,7 @@ export default function RootLayout({
         </div>
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){var el=document.getElementById('herna-boot');if(!el)return;var p=location.pathname.replace(/\\/$/,'');if(!/^\\/(en|fr)$/.test(p)){el.remove();return;}setTimeout(function(){el&&el.remove();},1200);})();`,
+            __html: `(function(){var el=document.getElementById('herna-boot');if(!el)return;setTimeout(function(){el&&el.remove();},1600);})();`,
           }}
         />
         {children}

@@ -369,6 +369,19 @@ textarea:focus {
   animation: scroll-cue 2.2s var(--ease) infinite;
 }
 
+@keyframes route-loading-slide {
+  0% {
+    transform: translateX(-120%);
+  }
+  100% {
+    transform: translateX(320%);
+  }
+}
+
+.route-loading-bar {
+  animation: route-loading-slide 1.05s var(--ease) infinite;
+}
+
 @keyframes scroll-cue {
   0% {
     opacity: 0;
@@ -445,7 +458,8 @@ textarea:focus {
 @media (prefers-reduced-motion: reduce) {
   .media-kenburns,
   .scroll-cue,
-  .float-soft {
+  .float-soft,
+  .route-loading-bar {
     animation: none !important;
   }
 }

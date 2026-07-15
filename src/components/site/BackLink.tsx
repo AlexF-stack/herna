@@ -1,3 +1,5 @@
+﻿"use client";
+
 import { ArrowLeft } from "lucide-react";
 import type { ReactNode } from "react";
 
@@ -7,9 +9,7 @@ type Props = {
   className?: string;
 };
 
-/**
- * Premium back control — hard navigation so hash targets (#divisions) always resolve.
- */
+/** Premium back control — hard navigation so hash targets (#divisions) always resolve. */
 export function BackLink({ href, children, className = "" }: Props) {
   return (
     <a

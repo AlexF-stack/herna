@@ -11,8 +11,8 @@ export function SecondaryChrome({ children }: { children: ReactNode }) {
   const isHome = /^\/(en|fr)\/?$/.test(pathname);
 
   useEffect(() => {
-    if (!isHome) document.getElementById("herna-boot")?.remove();
-  }, [isHome]);
+    document.getElementById("herna-boot")?.remove();
+  }, [pathname]);
 
   return (
     <ThemeProvider>
