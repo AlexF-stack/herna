@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { locales, type Locale } from "@/i18n/config";
 import { useLocale } from "@/components/providers/LocaleProvider";
@@ -15,33 +15,27 @@ export function LanguageSwitcher({ className = "" }: { className?: string }) {
 
   return (
     <div
-      className={`flex items-center gap-1.5 text-[0.68rem] font-medium uppercase tracking-[0.16em] ${className}`}
+      className={`flex items-center gap-2 text-xs uppercase tracking-[0.12em] ${className}`}
       role="navigation"
       aria-label="Language"
     >
-      {locales.map((l: Locale, i) => {
+      {locales.map((l: Locale) => {
         const active = l === locale;
         const href = `/${l}${rest}`;
         return (
-          <span key={l} className="flex items-center gap-1.5">
-            {i > 0 ? (
-              <span className="opacity-30" aria-hidden>
-                /
-              </span>
-            ) : null}
-            <a
-              href={href}
-              hrefLang={l}
-              className={
-                active
-                  ? "opacity-100"
-                  : "opacity-45 transition-opacity hover:opacity-90"
-              }
-              aria-current={active ? "page" : undefined}
-            >
-              {l}
-            </a>
-          </span>
+          <a
+            key={l}
+            href={href}
+            hrefLang={l}
+            className={
+              active
+                ? "font-semibold text-[color:var(--gold)]"
+                : "text-[color:var(--muted)] transition-colors hover:text-[color:var(--ink)]"
+            }
+            aria-current={active ? "page" : undefined}
+          >
+            {l}
+          </a>
         );
       })}
     </div>

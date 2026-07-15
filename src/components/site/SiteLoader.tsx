@@ -6,16 +6,33 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
 const PRELOADER_SRC = "/media/preloader.webm";
-const MIN_MS = 1800;
+const SESSION_KEY = "herna-intro-seen";
+const MIN_MS = 1600;
 const MAX_MS = 4200;
 
 type Props = {
   onComplete: () => void;
 };
 
+function hasSeenIntro() {
+  try {
+    return sessionStorage.getItem(SESSION_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+
+function markSeen() {
+  try {
+    sessionStorage.setItem(SESSION_KEY, "1");
+  } catch {
+    /* ignore */
+  }
+}
+
 /**
- * Home intro loader — always plays on hard entry to home.
- * Overlay uses pointer-events none except Skip, so it never traps the app.
+ * Cinematic video preloader — only on first home entry of the session.
+ * Later navigations use the route loading shell (logo only, no video).
  */
 export function SiteLoader({ onComplete }: Props) {
   const dictionary = useDictionary();
@@ -24,7 +41,7 @@ export function SiteLoader({ onComplete }: Props) {
   const completedRef = useRef(false);
   const onCompleteRef = useRef(onComplete);
   const startedAt = useRef(0);
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(() => !hasSeenIntro());
   const [videoOk, setVideoOk] = useState(true);
   const [videoReady, setVideoReady] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -36,6 +53,7 @@ export function SiteLoader({ onComplete }: Props) {
   const complete = () => {
     if (completedRef.current) return;
     completedRef.current = true;
+    markSeen();
     document.body.style.overflow = "";
     document.getElementById("herna-boot")?.remove();
     setVisible(false);
@@ -49,6 +67,12 @@ export function SiteLoader({ onComplete }: Props) {
   };
 
   useEffect(() => {
+    if (!visible) {
+      document.getElementById("herna-boot")?.remove();
+      onCompleteRef.current();
+      return;
+    }
+
     startedAt.current = Date.now();
     document.body.style.overflow = "hidden";
     document.getElementById("herna-boot")?.remove();
