@@ -1,12 +1,12 @@
 "use client";
 
+import { HardLink } from "@/components/site/HardLink";
 import {
   useDictionary,
   useLocale,
 } from "@/components/providers/LocaleProvider";
 import { brandAssets } from "@/content/brand";
 import Image from "next/image";
-import Link from "next/link";
 
 export function SiteFooter() {
   const dictionary = useDictionary();
@@ -90,20 +90,20 @@ export function SiteFooter() {
           </p>
           <ul className="mt-5 space-y-3">
             <li>
-              <Link
+              <HardLink
                 href={`/${locale}/legal-notice`}
                 className="text-sm text-white/70 transition hover:text-white"
               >
                 {dictionary.ui.legalNotice}
-              </Link>
+              </HardLink>
             </li>
             <li>
-              <Link
+              <HardLink
                 href={`/${locale}/privacy-policy`}
                 className="text-sm text-white/70 transition hover:text-white"
               >
                 {dictionary.ui.privacyPolicy}
-              </Link>
+              </HardLink>
             </li>
             <li>
               <a

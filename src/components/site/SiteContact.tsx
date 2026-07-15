@@ -133,6 +133,9 @@ export function SiteContact() {
 
             <a
               href="/company-profile.pdf"
+              download="HERNA-Company-Profile-2026.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
               className="btn-secondary mt-8 !rounded-xl"
             >
               {dictionary.ui.downloadProfile}

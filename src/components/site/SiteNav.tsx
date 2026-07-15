@@ -4,22 +4,22 @@ import {
   useDictionary,
   useLocale,
 } from "@/components/providers/LocaleProvider";
+import { HardLink } from "@/components/site/HardLink";
 import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
 import { brandAssets } from "@/content/brand";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { X } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 import { useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+
+type NavSurface = "hero" | "dark" | "blue" | "light";
 
 type Props = {
   visible: boolean;
   /** Starting surface before first scroll probe (secondary pages = light). */
   initialSurface?: NavSurface;
 };
-
-type NavSurface = "dark" | "blue" | "light";
 
 function readNavSurface(header: HTMLElement | null): NavSurface {
   const x = Math.round(window.innerWidth / 2);
@@ -31,13 +31,21 @@ function readNavSurface(header: HTMLElement | null): NavSurface {
 
   const tagged = el?.closest("[data-nav-surface]");
   const value = tagged?.getAttribute("data-nav-surface");
-  if (value === "dark" || value === "blue" || value === "light") return value;
+  if (
+    value === "hero" ||
+    value === "dark" ||
+    value === "blue" ||
+    value === "light"
+  ) {
+    return value;
+  }
   if (el?.closest(".section-blue")) return "blue";
-  if (el?.closest("#hero, footer")) return "dark";
+  if (el?.closest("#hero")) return "hero";
+  if (el?.closest("footer")) return "dark";
   return "light";
 }
 
-export function SiteNav({ visible, initialSurface = "dark" }: Props) {
+export function SiteNav({ visible, initialSurface = "hero" }: Props) {
   const dictionary = useDictionary();
   const { locale } = useLocale();
   const reduced = useReducedMotion();
@@ -91,14 +99,17 @@ export function SiteNav({ visible, initialSurface = "dark" }: Props) {
 
   if (!visible) return null;
 
-  const overDark = surface === "dark" && !open;
+  const overDark =
+    (surface === "hero" || surface === "dark") && !open;
   const headerSurface: NavSurface = open ? "blue" : surface;
   const headerClass =
-    headerSurface === "dark"
+    headerSurface === "hero"
       ? "border-b border-transparent bg-gradient-to-b from-black/35 to-transparent"
-      : headerSurface === "blue"
-        ? "border-b border-[color:var(--line)] bg-[color:var(--nav-on-blue)] shadow-[0_10px_40px_rgba(22,48,72,0.08)] backdrop-blur-xl"
-        : "border-b border-[color:var(--line)] bg-[color:var(--nav-on-light)] shadow-[0_10px_40px_rgba(22,48,72,0.08)] backdrop-blur-xl";
+      : headerSurface === "dark"
+        ? "border-b border-white/10 bg-[#0d1520]/94 shadow-[0_10px_40px_rgba(0,0,0,0.35)] backdrop-blur-xl"
+        : headerSurface === "blue"
+          ? "border-b border-[color:var(--line)] bg-[color:var(--nav-on-blue)] shadow-[0_10px_40px_rgba(22,48,72,0.08)] backdrop-blur-xl"
+          : "border-b border-[color:var(--line)] bg-[color:var(--nav-on-light)] shadow-[0_10px_40px_rgba(22,48,72,0.08)] backdrop-blur-xl";
 
   const linkTone = overDark
     ? "text-white/75 hover:text-white"
@@ -224,20 +235,20 @@ export function SiteNav({ visible, initialSurface = "dark" }: Props) {
                       </a>
                     </div>
                     <div className="flex flex-col items-end gap-2 text-right">
-                      <Link
+                      <HardLink
                         href={`/${locale}/legal-notice`}
                         className="hover:text-[color:var(--ink)]"
                         onClick={() => setOpen(false)}
                       >
                         {dictionary.ui.legalNotice}
-                      </Link>
-                      <Link
+                      </HardLink>
+                      <HardLink
                         href={`/${locale}/privacy-policy`}
                         className="hover:text-[color:var(--ink)]"
                         onClick={() => setOpen(false)}
                       >
                         {dictionary.ui.privacyPolicy}
-                      </Link>
+                      </HardLink>
                     </div>
                   </div>
                 </div>

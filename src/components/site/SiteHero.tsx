@@ -22,7 +22,7 @@ export function SiteHero() {
   return (
     <section
       id="hero"
-      data-nav-surface="dark"
+      data-nav-surface="hero"
       className="relative min-h-[100svh] overflow-hidden"
       aria-labelledby="hero-title"
     >

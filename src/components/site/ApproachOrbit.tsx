@@ -23,6 +23,17 @@ const ACCENTS = [
   "var(--gold-soft)",
 ];
 
+/** Short label that always fits inside an orb */
+function orbShort(title: string) {
+  const parts = title.trim().split(/\s+/);
+  if (parts.length === 1) return parts[0].slice(0, 8);
+  return parts
+    .slice(0, 2)
+    .map((p) => p[0])
+    .join("")
+    .toUpperCase();
+}
+
 export function ApproachOrbit({ label, intro, values, hint }: Props) {
   const reduced = useReducedMotion();
   const [active, setActive] = useState<number | null>(null);
@@ -30,7 +41,7 @@ export function ApproachOrbit({ label, intro, values, hint }: Props) {
 
   return (
     <div id="approach" className="relative">
-      <div className="relative mx-auto aspect-square w-full max-w-[min(100%,34rem)]">
+      <div className="relative mx-auto aspect-square w-full max-w-[min(100%,32rem)]">
         <div
           className="pointer-events-none absolute inset-[8%] rounded-full opacity-60"
           style={{
@@ -53,29 +64,23 @@ export function ApproachOrbit({ label, intro, values, hint }: Props) {
           aria-hidden
         />
 
-        <div className="absolute inset-[30%] z-10 flex flex-col items-center justify-center rounded-full border border-[color:var(--line)] bg-[color:var(--bg-elevated)]/90 px-5 text-center shadow-[0_20px_50px_rgba(22,48,72,0.1)] backdrop-blur-md sm:inset-[28%] sm:px-7">
+        {/* Center: title only — full text lives in the panel below to avoid overflow */}
+        <div className="absolute inset-[32%] z-10 flex flex-col items-center justify-center overflow-hidden rounded-full border border-[color:var(--line)] bg-[color:var(--bg-elevated)]/95 px-4 text-center shadow-[0_20px_50px_rgba(22,48,72,0.1)] backdrop-blur-md sm:inset-[30%] sm:px-6">
           {shown ? (
-            <motion.div
+            <motion.p
               key={shown.title}
               initial={reduced ? false : { opacity: 0, scale: 0.94 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              className="max-w-full font-display text-[clamp(0.85rem,2.4vw,1.15rem)] uppercase leading-tight tracking-wide text-[color:var(--ink)]"
             >
-              <p className="font-display text-[clamp(1rem,2.8vw,1.35rem)] uppercase tracking-wide text-[color:var(--ink)]">
-                {shown.title}
-              </p>
-              <p className="mt-2 text-[0.78rem] leading-relaxed text-[color:var(--muted)] sm:text-sm">
-                {shown.description ?? ""}
-              </p>
-            </motion.div>
+              {shown.title}
+            </motion.p>
           ) : (
-            <div>
+            <div className="max-w-full overflow-hidden px-1">
               <p className="label-act">{label}</p>
-              <p className="mt-2 text-[0.78rem] leading-relaxed text-[color:var(--muted)] sm:mt-3 sm:text-sm">
+              <p className="mt-2 line-clamp-4 text-[0.7rem] leading-snug text-[color:var(--muted)] sm:mt-2.5 sm:line-clamp-5 sm:text-[0.78rem]">
                 {intro}
-              </p>
-              <p className="mt-3 hidden text-[0.68rem] tracking-wide text-[color:var(--gold)] sm:block">
-                {hint}
               </p>
             </div>
           )}
@@ -108,17 +113,17 @@ export function ApproachOrbit({ label, intro, values, hint }: Props) {
                       ? `${value.title}. ${value.description}`
                       : value.title
                   }
-                  className="relative flex h-[4.4rem] w-[4.4rem] items-center justify-center rounded-full border border-white/70 text-center shadow-[0_12px_28px_rgba(22,48,72,0.16)] outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] sm:h-[5.1rem] sm:w-[5.1rem]"
+                  className="relative flex h-[3.85rem] w-[3.85rem] items-center justify-center overflow-hidden rounded-full border border-white/70 text-center shadow-[0_12px_28px_rgba(22,48,72,0.16)] outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] sm:h-[4.6rem] sm:w-[4.6rem]"
                   style={{
                     background: `radial-gradient(circle at 32% 28%, white 0%, color-mix(in srgb, ${accent} 22%, white) 45%, color-mix(in srgb, ${accent} 38%, white) 100%)`,
                     zIndex: isActive ? 20 : 5,
                   }}
                   initial={reduced ? false : { scale: 0.7, opacity: 0 }}
                   animate={{
-                    scale: isActive ? 1.28 : 1,
+                    scale: isActive ? 1.22 : 1,
                     opacity: 1,
                   }}
-                  whileHover={reduced ? undefined : { scale: 1.32 }}
+                  whileHover={reduced ? undefined : { scale: 1.28 }}
                   transition={{ type: "spring", stiffness: 320, damping: 22 }}
                   onHoverStart={() => setActive(i)}
                   onHoverEnd={() => setActive(null)}
@@ -134,8 +139,8 @@ export function ApproachOrbit({ label, intro, values, hint }: Props) {
                     }}
                     aria-hidden
                   />
-                  <span className="relative line-clamp-3 px-1.5 font-display text-[0.58rem] font-semibold uppercase leading-[1.15] tracking-wide text-[color:var(--ink)] sm:text-[0.65rem]">
-                    {value.title}
+                  <span className="relative px-1 font-display text-[0.62rem] font-semibold uppercase leading-none tracking-wide text-[color:var(--ink)] sm:text-[0.7rem]">
+                    {orbShort(value.title)}
                   </span>
                 </motion.button>
               </li>
@@ -144,9 +149,33 @@ export function ApproachOrbit({ label, intro, values, hint }: Props) {
         </ul>
       </div>
 
-      <p className="mt-5 text-center text-[0.72rem] text-[color:var(--muted)] sm:hidden">
-        {hint}
-      </p>
+      {/* Dedicated panel — no overflow inside the circle */}
+      <div
+        className="mx-auto mt-8 min-h-[7.5rem] max-w-xl rounded-2xl border border-[color:var(--line)] bg-[color:var(--bg-elevated)] px-5 py-5 text-center sm:mt-10 sm:min-h-[6.5rem] sm:px-8"
+        aria-live="polite"
+      >
+        {shown ? (
+          <motion.div
+            key={`panel-${shown.title}`}
+            initial={reduced ? false : { opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <p className="font-display text-base uppercase tracking-wide text-[color:var(--ink)] sm:text-lg">
+              {shown.title}
+            </p>
+            {shown.description ? (
+              <p className="mt-2 text-sm leading-relaxed text-[color:var(--muted)] sm:text-[0.95rem]">
+                {shown.description}
+              </p>
+            ) : null}
+          </motion.div>
+        ) : (
+          <p className="text-sm leading-relaxed text-[color:var(--muted)]">
+            {hint}
+          </p>
+        )}
+      </div>
     </div>
   );
 }
