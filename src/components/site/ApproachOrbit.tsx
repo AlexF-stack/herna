@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { useState, type CSSProperties } from "react";
+import { useState } from "react";
 
 type Value = {
   title: string;
@@ -31,23 +31,6 @@ function orbShort(title: string) {
     .map((p) => p[0])
     .join("")
     .toUpperCase();
-}
-
-/** Place floating card toward the ring center so it stays in the viewport. */
-function tooltipPlacement(xPct: number, yPct: number): CSSProperties {
-  const preferRight = xPct < 50;
-  const preferBelow = yPct < 50;
-  const horizontalDominant = Math.abs(xPct - 50) >= Math.abs(yPct - 50);
-
-  if (horizontalDominant) {
-    return preferRight
-      ? { left: "100%", top: "50%", marginLeft: "0.65rem", translate: "0 -50%" }
-      : { right: "100%", top: "50%", marginRight: "0.65rem", translate: "0 -50%" };
-  }
-
-  return preferBelow
-    ? { left: "50%", top: "100%", marginTop: "0.65rem", translate: "-50% 0" }
-    : { left: "50%", bottom: "100%", marginBottom: "0.65rem", translate: "-50% 0" };
 }
 
 export function ApproachOrbit({ label, intro, values, hint }: Props) {
@@ -86,8 +69,10 @@ export function ApproachOrbit({ label, intro, values, hint }: Props) {
           aria-hidden
         />
 
-        {/* Idle center — intro only when nothing hovered */}
-        <div className="pointer-events-none absolute inset-[32%] z-10 flex flex-col items-center justify-center overflow-hidden rounded-full border border-[color:var(--line)] bg-[color:var(--bg-elevated)]/95 px-4 text-center shadow-[0_20px_50px_rgba(22,48,72,0.1)] backdrop-blur-md sm:inset-[30%] sm:px-6">
+        <div
+          className="pointer-events-none absolute inset-[30%] z-10 flex flex-col items-center justify-center overflow-hidden rounded-full border border-[color:var(--line)] bg-[color:var(--bg-elevated)]/95 px-4 text-center shadow-[0_20px_50px_rgba(22,48,72,0.1)] backdrop-blur-md sm:inset-[28%] sm:px-6"
+          aria-live="polite"
+        >
           <AnimatePresence mode="wait">
             {active === null ? (
               <motion.div
@@ -133,7 +118,6 @@ export function ApproachOrbit({ label, intro, values, hint }: Props) {
             const y = 50 + radius * Math.sin(angle);
             const accent = ACCENTS[i % ACCENTS.length];
             const isActive = active === i;
-            const tip = tooltipPlacement(x, y);
 
             return (
               <li
@@ -150,8 +134,7 @@ export function ApproachOrbit({ label, intro, values, hint }: Props) {
               >
                 <motion.button
                   type="button"
-                  aria-expanded={isActive}
-                  aria-describedby={isActive ? `approach-tip-${i}` : undefined}
+                  aria-pressed={isActive}
                   aria-label={
                     value.description
                       ? `${value.title}. ${value.description}`
@@ -184,31 +167,6 @@ export function ApproachOrbit({ label, intro, values, hint }: Props) {
                     {orbShort(value.title)}
                   </span>
                 </motion.button>
-
-                {/* Floating card beside the orb — visible on screen for every position */}
-                <AnimatePresence>
-                  {isActive && value.description ? (
-                    <motion.div
-                      id={`approach-tip-${i}`}
-                      role="tooltip"
-                      initial={
-                        reduced ? false : { opacity: 0, scale: 0.92 }
-                      }
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={reduced ? undefined : { opacity: 0, scale: 0.94 }}
-                      transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                      className="pointer-events-none absolute z-40 w-[11.5rem] rounded-xl border border-[color:var(--line)] bg-[color:var(--bg-elevated)] p-3 text-left shadow-[0_16px_40px_rgba(22,48,72,0.18)] sm:w-[13.5rem] sm:p-3.5"
-                      style={tip}
-                    >
-                      <p className="font-display text-[0.72rem] uppercase tracking-wide text-[color:var(--ink)] sm:text-[0.8rem]">
-                        {value.title}
-                      </p>
-                      <p className="mt-1.5 text-[0.68rem] leading-snug text-[color:var(--muted)] sm:text-[0.75rem]">
-                        {value.description}
-                      </p>
-                    </motion.div>
-                  ) : null}
-                </AnimatePresence>
               </li>
             );
           })}
