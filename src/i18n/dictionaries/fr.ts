@@ -243,15 +243,6 @@ export const fr: Dictionary = {
         logoBg: "transparent",
         logoSrc: "/partners/osgb-clear.png",
       },
-      {
-        id: "agetip",
-        name: "AGETIP",
-        role: "Partenaire stratégique",
-        phone: null,
-        phoneTel: null,
-        logoBg: "transparent",
-        logoSrc: "/partners/agetip.svg",
-      },
     ],
   },
   contact: {

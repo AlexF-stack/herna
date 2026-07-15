@@ -395,15 +395,6 @@ export const en: Dictionary = {
         logoBg: "transparent",
         logoSrc: "/partners/osgb-clear.png",
       },
-      {
-        id: "agetip",
-        name: "AGETIP",
-        role: "Strategic partner",
-        phone: null,
-        phoneTel: null,
-        logoBg: "transparent",
-        logoSrc: "/partners/agetip.svg",
-      },
     ],
   },
   contact: {

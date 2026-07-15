@@ -204,7 +204,6 @@ const pages = [
         "TPG — The Pertinent Group",
         "HMD",
         "OSGB — Oluwa Shola Global Business",
-        "AGETIP",
       ],
     },
   ]),
