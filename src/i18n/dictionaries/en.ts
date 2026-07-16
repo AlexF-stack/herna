@@ -194,9 +194,9 @@ export type Dictionary = {
 
 export const en: Dictionary = {
   meta: {
-    title: "HERNA — Heritage of Nations",
+    title: "HERNA HOLDING — Pan-African Investment Holding | Cotonou, Benin",
     description:
-      "HERNA HOLDING is a pan-African investment holding company based in Cotonou, Benin — building the future, honoring the legacy through five strategic business units.",
+      "HERNA HOLDING (Heritage of Nations) is a pan-African investment holding company based in Cotonou, Benin — equipment, mining, agriculture, energy, and real estate & infrastructure.",
   },
   brand: {
     tagline: "Building the Future, Honoring the Legacy",
@@ -543,8 +543,8 @@ export const en: Dictionary = {
         role: "Joint venture alignment, global funding structuring, and high-level cross-border asset orchestration.",
         phone: "[+229] 0197298070",
         phoneTel: "+2290197298070",
-        logoBg: "transparent",
-        logoSrc: "/partners/tpg-clear.png",
+        logoBg: "#000000",
+        logoSrc: "/partners/tpg.jpg",
       },
       {
         id: "hmd",
@@ -587,7 +587,7 @@ export const en: Dictionary = {
       "HERNA strives to keep the information on this website accurate and up to date. However, we cannot guarantee completeness or uninterrupted availability. Use of the site is at your own risk. Corporate registration numbers will be published here as soon as they are available.",
     privacyTitle: "Privacy policy",
     privacyIntro:
-      "This policy explains how HERITAGE OF NATIONS (HERNA) collects and uses personal information submitted through herna-group.com and related contact channels.",
+      "This policy explains how HERITAGE OF NATIONS (HERNA) collects and uses personal information submitted through hernaholding.com and related contact channels.",
     privacyContactHeading: "Contact",
     privacyContactBody: "For privacy requests, contact",
     privacyDataHeading: "Data collected",

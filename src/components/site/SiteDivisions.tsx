@@ -71,7 +71,7 @@ function DivisionCard({
             >
               <SoftImage
                 src={item.imageSrc}
-                alt=""
+                alt={item.title}
                 fill
                 quality={70}
                 sizes="(max-width: 768px) 100vw, 33vw"

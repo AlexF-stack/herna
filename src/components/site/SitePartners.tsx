@@ -35,16 +35,22 @@ export function SitePartners() {
             >
               <TiltCard intensity={9} className="h-full">
                 <article className="flex h-full flex-col items-center rounded-2xl border border-[color:var(--line)] bg-[color:var(--bg-elevated)] px-6 py-9 text-center transition duration-500 hover:border-[color:var(--gold)]/40 hover:shadow-[0_16px_40px_rgba(10,14,26,0.1)]">
-                  <div className="flex h-28 w-full items-center justify-center sm:h-32">
+                  <div
+                    className={`flex h-28 w-full items-center justify-center sm:h-32 ${
+                      partner.id === "tpg"
+                        ? "overflow-hidden rounded-xl bg-black"
+                        : ""
+                    }`}
+                  >
                     <Image
                       src={partner.logoSrc}
                       alt={partner.name}
-                      width={partner.id === "tpg" ? 320 : 260}
-                      height={partner.id === "tpg" ? 140 : 120}
-                      className={`w-auto max-w-[94%] object-contain ${
+                      width={partner.id === "tpg" ? 220 : 260}
+                      height={partner.id === "tpg" ? 220 : 120}
+                      className={`object-contain ${
                         partner.id === "tpg"
-                          ? "max-h-[5.5rem] sm:max-h-28"
-                          : "max-h-24 sm:max-h-28"
+                          ? "h-full w-full max-h-28 max-w-[11rem] sm:max-h-32 sm:max-w-[12.5rem]"
+                          : "max-h-24 w-auto max-w-[90%] sm:max-h-28"
                       }`}
                     />
                   </div>

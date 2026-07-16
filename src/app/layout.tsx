@@ -58,7 +58,7 @@ export default async function RootLayout({
           rel="preload"
           href={brandAssets.logoClearSrc}
           as="image"
-          type="image/svg+xml"
+          type="image/png"
         />
         <link
           rel="preconnect"

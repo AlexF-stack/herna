@@ -39,17 +39,18 @@ async function knockOutDark(inputBuf, output, threshold = 55) {
     .toFile(output);
 }
 
-// Equipment: photo only (no title) — yellow dozer/excavator golden hour
+# Equipment: dedicated plaquette page (yellow machinery yard)
 await sharp(path.join(root, "img-12.jpg"))
-  .extract({ left: 70, top: 330, width: 980, height: 380 })
-  .jpeg({ quality: 90 })
+  .extract({ left: 70, top: 340, width: 980, height: 360 })
+  .jpeg({ quality: 93 })
   .toFile(path.join(divisions, "equipment.png"));
 
-// Agriculture: tractor photo only (no title / logo strip)
+// Agriculture: dedicated plaquette page (tractor / precision farming)
 await sharp(path.join(root, "img-14.jpg"))
-  .extract({ left: 95, top: 340, width: 780, height: 290 })
-  .jpeg({ quality: 90 })
+  .extract({ left: 95, top: 345, width: 780, height: 280 })
+  .jpeg({ quality: 93 })
   .toFile(path.join(divisions, "agriculture.png"));
+
 
 // Logo lockup from dedicated logo page — center crop, tighter
 const logoRaw = await sharp(path.join(root, "img-24.jpg"))

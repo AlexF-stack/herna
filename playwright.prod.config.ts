@@ -6,7 +6,7 @@ export default defineConfig({
   retries: 0,
   timeout: 90_000,
   use: {
-    baseURL: process.env.PLAYWRIGHT_BASE_URL ?? "https://herna.vercel.app",
+    baseURL: process.env.PLAYWRIGHT_BASE_URL ?? "https://www.hernaholding.com",
     trace: "off",
   },
   projects: [

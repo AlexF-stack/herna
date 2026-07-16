@@ -1,7 +1,6 @@
 import { brandAssets } from "@/content/brand";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries/en";
-import { localeUrl } from "@/lib/seo";
 
 export function JsonLd({
   locale,
@@ -10,40 +9,59 @@ export function JsonLd({
   locale: Locale;
   dictionary: Dictionary;
 }) {
+  const street =
+    locale === "fr" ? brandAssets.address.fr : brandAssets.address.en;
+
   const organization = {
     "@type": "Organization",
     "@id": `${brandAssets.websiteUrl}/#organization`,
     name: brandAssets.holdingName,
-    alternateName: [brandAssets.name, brandAssets.fullName],
+    legalName: brandAssets.holdingName,
+    alternateName: [
+      brandAssets.name,
+      brandAssets.fullName,
+      "Heritage of Nations",
+    ],
     url: brandAssets.websiteUrl,
     logo: {
       "@type": "ImageObject",
       url: `${brandAssets.websiteUrl}${brandAssets.logoOpaqueSrc}`,
     },
+    image: `${brandAssets.websiteUrl}${brandAssets.coverSrc}`,
     description: dictionary.meta.description,
     email: brandAssets.email,
     telephone: brandAssets.phoneTel,
+    foundingDate: String(brandAssets.founded),
     address: {
       "@type": "PostalAddress",
+      streetAddress: street,
       addressLocality: "Cotonou",
       addressCountry: "BJ",
     },
-    areaServed: "Africa",
-    inLanguage: locale,
+    areaServed: {
+      "@type": "Place",
+      name: "Africa",
+    },
+    knowsAbout: [
+      "Investment holding",
+      "Equipment",
+      "Mining",
+      "Agriculture",
+      "Energy",
+      "Real estate",
+      "Infrastructure",
+    ],
   };
 
   const website = {
     "@type": "WebSite",
     "@id": `${brandAssets.websiteUrl}/#website`,
     url: brandAssets.websiteUrl,
-    name: brandAssets.name,
+    name: brandAssets.holdingName,
+    alternateName: brandAssets.fullName,
     description: dictionary.meta.description,
     publisher: { "@id": `${brandAssets.websiteUrl}/#organization` },
-    inLanguage: [locale],
-    potentialAction: {
-      "@type": "ReadAction",
-      target: [localeUrl(locale), localeUrl(locale === "en" ? "fr" : "en")],
-    },
+    inLanguage: ["en", "fr"],
   };
 
   const data = {

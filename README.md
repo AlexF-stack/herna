@@ -2,6 +2,8 @@
 
 Corporate website for **HERNA HOLDING** (Cotonou, Benin).
 
+**Production:** [https://www.hernaholding.com](https://www.hernaholding.com)
+
 ## Stack
 
 Next.js 15 · React 19 · TypeScript · Tailwind CSS 4 · Framer Motion · GSAP/Lenis · Playwright
@@ -15,24 +17,40 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) (or the port shown).
 
-## Environment
+## Domain & email
 
-Contact form posts to `/api/contact` and delivers to **contact@herna-group.com** via FormSubmit by default.
+Canonical domain: **hernaholding.com** (`NEXT_PUBLIC_SITE_URL=https://www.hernaholding.com`).
 
-1. Submit the form once from the live/staging site.
-2. Open the activation email in the HERNA inbox and confirm.
-3. Later messages arrive normally (reply-to = visitor email).
+### Boîte mail `contact@hernaholding.com`
 
-Optional: set `FORMSPREE_ID` / `NEXT_PUBLIC_FORMSPREE_ID` to use Formspree instead (see `.env.example`).
+1. Chez ton registrar / Cloudflare du domaine → **Email Routing** (ou Google Workspace).
+2. Crée `contact@hernaholding.com` (forward vers Gmail, ou boîte complète).
+3. Soumets une fois le formulaire du site pour activer FormSubmit, puis confirme l’e-mail reçu.
+
+Optionnel : `FORMSPREE_ID` / `NEXT_PUBLIC_FORMSPREE_ID` (voir `.env.example`).
+
+## SEO
+
+- Titles / descriptions EN+FR orientés « HERNA HOLDING · Cotonou · Bénin »
+- Canonical + hreflang (`en` / `fr` / `x-default`)
+- `sitemap.xml` + `robots.txt`
+- JSON-LD Organization + WebSite
+- H1 hero = **HERNA HOLDING**
+
+Après déploiement : soumettre `https://www.hernaholding.com/sitemap.xml` dans [Google Search Console](https://search.google.com/search-console).
 
 ## Scripts
 
 - `npm run build` — production build
 - `npm run test:e2e` — Playwright smoke tests
+- `node scripts/sync-plaquette-assets.mjs` — assets plaquette
 
 ## Deploy
 
-Connected to Vercel from the GitHub repository. No env var required for the default FormSubmit inbox flow.
+Vercel (repo GitHub). Définir en production :
 
-Official Company Profile (Plaquette HERNA 2026) is served at `/company-profile.pdf`.
-Set `NEXT_PUBLIC_SITE_URL=https://www.herna-group.com` when the custom domain is live.
+```bash
+NEXT_PUBLIC_SITE_URL=https://www.hernaholding.com
+```
+
+Plaquette : `/company-profile.pdf`.

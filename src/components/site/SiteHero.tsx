@@ -47,21 +47,27 @@ export function SiteHero() {
           </motion.p>
           <motion.h1
             id="hero-title"
-            className="font-display text-[clamp(2.6rem,10.5vw,6.75rem)] font-semibold leading-[0.94] tracking-[-0.045em] text-white"
+            className="font-display text-[clamp(2.4rem,9.5vw,5.75rem)] font-semibold leading-[0.94] tracking-[-0.04em] text-white"
             initial={reduced ? false : { opacity: 0, y: 36 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.95, ease, delay: 0.22 }}
           >
-            <span className="block">{dictionary.hero.line1}</span>
-            <span className="mt-1 block font-medium text-white/88 md:mt-2">
-              {dictionary.hero.line2}
-            </span>
+            {brandAssets.holdingName}
           </motion.h1>
+          <motion.p
+            className="mt-4 max-w-3xl font-display text-[clamp(1.35rem,4.2vw,2.35rem)] font-medium leading-[1.15] tracking-[-0.02em] text-white/90 sm:mt-5"
+            initial={reduced ? false : { opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.85, ease, delay: 0.32 }}
+          >
+            <span className="block">{dictionary.hero.line1}</span>
+            <span className="mt-1 block text-white/80">{dictionary.hero.line2}</span>
+          </motion.p>
           <motion.p
             className="mt-5 max-w-xl text-[0.98rem] leading-relaxed text-white/72 sm:mt-7 sm:text-[1.05rem] md:mt-8 md:text-lg"
             initial={reduced ? false : { opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease, delay: 0.38 }}
+            transition={{ duration: 0.8, ease, delay: 0.42 }}
           >
             {dictionary.hero.subtitle}
           </motion.p>
@@ -69,7 +75,7 @@ export function SiteHero() {
             className="mt-8 flex flex-wrap items-center gap-3 sm:mt-10 sm:gap-4"
             initial={reduced ? false : { opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.75, ease, delay: 0.5 }}
+            transition={{ duration: 0.75, ease, delay: 0.55 }}
           >
             <a
               href={`/${locale}#divisions`}

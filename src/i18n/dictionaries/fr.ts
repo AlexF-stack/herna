@@ -2,9 +2,10 @@ import type { Dictionary } from "@/i18n/dictionaries/en";
 
 export const fr: Dictionary = {
   meta: {
-    title: "HERNA — Héritage des Nations",
+    title:
+      "HERNA HOLDING — Holding d'investissement panafricain | Cotonou, Bénin",
     description:
-      "HERNA HOLDING est une holding d'investissement panafricaine basée à Cotonou — construire l'avenir, honorer l'héritage à travers cinq unités stratégiques.",
+      "HERNA HOLDING (Héritage des Nations) est une holding d'investissement panafricaine basée à Cotonou, Bénin — équipement, mines, agriculture, énergie, immobilier et infrastructures.",
   },
   brand: {
     tagline: "Construire l'avenir, honorer l'héritage",
@@ -352,8 +353,8 @@ export const fr: Dictionary = {
         role: "Alignement de joint-ventures, structuration de financements mondiaux et orchestration d'actifs transfrontaliers.",
         phone: "[+229] 0197298070",
         phoneTel: "+2290197298070",
-        logoBg: "transparent",
-        logoSrc: "/partners/tpg-clear.png",
+        logoBg: "#000000",
+        logoSrc: "/partners/tpg.jpg",
       },
       {
         id: "hmd",
@@ -396,7 +397,7 @@ export const fr: Dictionary = {
       "HERNA s'efforce de maintenir des informations exactes et à jour sur ce site. Nous ne pouvons toutefois garantir l'exhaustivité ni la disponibilité continue du service. L'utilisation du site se fait sous votre responsabilité. Les numéros d'immatriculation seront publiés ici dès qu'ils seront disponibles.",
     privacyTitle: "Politique de confidentialité",
     privacyIntro:
-      "Cette politique explique comment HERITAGE OF NATIONS (HERNA) collecte et utilise les informations personnelles soumises via herna-group.com et les canaux de contact associés.",
+      "Cette politique explique comment HERITAGE OF NATIONS (HERNA) collecte et utilise les informations personnelles soumises via hernaholding.com et les canaux de contact associés.",
     privacyContactHeading: "Contact",
     privacyContactBody: "Pour toute demande relative à la confidentialité, contactez",
     privacyDataHeading: "Données collectées",

@@ -12,10 +12,7 @@ type Props = {
 export function AfricaGoldMap({ locale, className = "" }: Props) {
   const reduced = useReducedMotion();
   const title = locale === "fr" ? "BÉNIN" : "BENIN";
-  const tagline =
-    locale === "fr"
-      ? "Notre base, notre engagement"
-      : "Our Home Base, Our Commitment";
+  const tagline = locale === "fr" ? "Notre base" : "Our Home Base";
   const presence =
     locale === "fr" ? "Présence panafricaine" : "Pan-African presence";
 

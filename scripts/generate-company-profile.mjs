@@ -134,8 +134,8 @@ const pages = [
         "HERNA HOLDING",
         "Cotonou - Benin",
         "Phone: [+229] 0196399988",
-        "Email: contact@herna-group.com",
-        "Web: https://herna.vercel.app",
+        "Email: contact@hernaholding.com",
+        "Web: https://www.hernaholding.com",
       ],
     },
   ]),
@@ -266,8 +266,8 @@ const pages = [
       lines: [
         "HERNA HOLDING — Cotonou, Benin",
         "Tel: [+229] 0196399988",
-        "Email: contact@herna-group.com",
-        "https://herna.vercel.app",
+        "Email: contact@hernaholding.com",
+        "https://www.hernaholding.com",
       ],
     },
     {
