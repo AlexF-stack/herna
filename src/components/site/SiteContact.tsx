@@ -116,22 +116,26 @@ export function SiteContact() {
               </p>
             </address>
 
-            <p className="label-act mt-10 mb-4">
-              {dictionary.contact.partnerContactsLabel}
-            </p>
-            <ul className="space-y-2 text-sm text-[color:var(--muted)]">
-              {dictionary.contact.partnerPhones.map((p) => (
-                <li key={p.label}>
-                  {p.label}:{" "}
-                  <a
-                    href={`tel:${p.phoneTel}`}
-                    className="text-[color:var(--ink)] hover:text-[color:var(--gold)]"
-                  >
-                    {p.phone}
-                  </a>
-                </li>
-              ))}
-            </ul>
+            {dictionary.contact.partnerPhones.length > 0 ? (
+              <>
+                <p className="label-act mt-10 mb-4">
+                  {dictionary.contact.partnerContactsLabel}
+                </p>
+                <ul className="space-y-2 text-sm text-[color:var(--muted)]">
+                  {dictionary.contact.partnerPhones.map((p) => (
+                    <li key={p.label}>
+                      {p.label}:{" "}
+                      <a
+                        href={`tel:${p.phoneTel}`}
+                        className="text-[color:var(--ink)] hover:text-[color:var(--gold)]"
+                      >
+                        {p.phone}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            ) : null}
 
             <a
               href={brandAssets.companyProfileSrc}

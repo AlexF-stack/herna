@@ -127,19 +127,21 @@ export function Contact() {
                   {brandAssets.website}
                 </a>
               </p>
-              <ul className="mt-8 space-y-2">
-                {dictionary.contact.partnerPhones.map((item) => (
-                  <li key={item.label}>
-                    {item.label}:{" "}
-                    <a
-                      href={`tel:${item.phoneTel}`}
-                      className="link-underline text-gold-light"
-                    >
-                      {item.phone}
-                    </a>
-                  </li>
-                ))}
-              </ul>
+              {dictionary.contact.partnerPhones.length > 0 ? (
+                <ul className="mt-8 space-y-2">
+                  {dictionary.contact.partnerPhones.map((item) => (
+                    <li key={item.label}>
+                      {item.label}:{" "}
+                      <a
+                        href={`tel:${item.phoneTel}`}
+                        className="link-underline text-gold-light"
+                      >
+                        {item.phone}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
             </address>
           </div>
 

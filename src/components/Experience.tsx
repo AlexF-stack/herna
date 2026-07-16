@@ -15,6 +15,7 @@ import { SiteMediaBand } from "@/components/site/SiteMediaBand";
 import { SiteNav } from "@/components/site/SiteNav";
 import { SitePartners } from "@/components/site/SitePartners";
 import { SiteStory } from "@/components/site/SiteStory";
+import { SiteSubsidiaries } from "@/components/site/SiteSubsidiaries";
 import { SiteBusinessModel } from "@/components/site/SiteBusinessModel";
 import { SiteWhyInvest } from "@/components/site/SiteWhyInvest";
 import { useCallback } from "react";
@@ -46,6 +47,7 @@ function ExperienceInner() {
         <SiteWhyInvest />
         <SiteMediaBand />
         <SiteDivisions />
+        <SiteSubsidiaries />
         <SitePartners />
         <SiteContact />
         <SiteFooter />

@@ -19,6 +19,8 @@ const ACCENTS = [
   "from-[color:var(--navy)] to-[color:var(--navy-deep)]",
   "from-[color:var(--bg-elevated)] to-[color:var(--line)]/30",
   "from-[color:var(--gold-soft)] to-[color:var(--gold-wash)]",
+  "from-[color:var(--navy-deep)] to-[#152033]",
+  "from-[color:var(--bg-elevated)] to-[color:var(--gold-wash)]/40",
 ] as const;
 
 const TEXT = [
@@ -28,6 +30,8 @@ const TEXT = [
   { title: "text-white", body: "text-white/70", badge: "bg-[color:var(--gold)] text-[color:var(--navy-deep)]" },
   { title: "text-[color:var(--ink)]", body: "text-[color:var(--muted)]", badge: "bg-[color:var(--gold)] text-[color:var(--navy-deep)]" },
   { title: "text-[color:var(--navy-deep)]", body: "text-[color:var(--navy-deep)]/80", badge: "bg-[color:var(--navy-deep)] text-[color:var(--gold)]" },
+  { title: "text-white", body: "text-white/70", badge: "bg-[color:var(--gold)] text-[color:var(--navy-deep)]" },
+  { title: "text-[color:var(--ink)]", body: "text-[color:var(--muted)]", badge: "bg-[color:var(--navy-deep)] text-[color:var(--gold)]" },
 ] as const;
 
 /** Interactive spotlight — vertical selector + animated detail panel. */
@@ -70,7 +74,7 @@ export function SiteWhyInvest() {
   const item = items[active];
   const accent = ACCENTS[active % ACCENTS.length];
   const text = TEXT[active % TEXT.length];
-  const isLight = active === 1 || active === 4;
+  const isLight = active === 1 || active === 4 || active === 7;
   const isGold = active === 2 || active === 5;
 
   return (

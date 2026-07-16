@@ -16,7 +16,7 @@ export function SitePartners() {
       aria-labelledby="partners-heading"
     >
       <div className="container-herna">
-        <Reveal className="mx-auto max-w-2xl text-center">
+        <Reveal className="mx-auto max-w-3xl text-center">
           <p className="label-act">{dictionary.partners.label}</p>
           <h2
             id="partners-heading"
@@ -24,6 +24,9 @@ export function SitePartners() {
           >
             {dictionary.partners.headline}
           </h2>
+          <p className="mt-4 text-base leading-relaxed text-[color:var(--muted)] md:text-lg">
+            {dictionary.partners.intro}
+          </p>
         </Reveal>
 
         <div className="mx-auto mt-12 flex max-w-5xl flex-wrap justify-center gap-5">
@@ -39,13 +42,9 @@ export function SitePartners() {
                     <Image
                       src={partner.logoSrc}
                       alt={partner.name}
-                      width={partner.id === "tpg" ? 400 : 260}
-                      height={partner.id === "tpg" ? 200 : 120}
-                      className={`w-auto max-w-[94%] object-contain ${
-                        partner.id === "tpg"
-                          ? "max-h-[6rem] sm:max-h-28"
-                          : "max-h-24 sm:max-h-28"
-                      }`}
+                      width={260}
+                      height={140}
+                      className="max-h-24 w-auto max-w-[90%] object-contain sm:max-h-28"
                     />
                   </div>
                   <h3 className="mt-6 font-display text-base text-[color:var(--ink)] md:text-lg">

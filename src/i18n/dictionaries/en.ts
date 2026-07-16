@@ -150,9 +150,23 @@ export type Dictionary = {
       description: string | null;
     }[];
   };
+  subsidiaries: {
+    label: string;
+    headline: string;
+    intro: string;
+    tagline: string;
+    items: {
+      id: string;
+      name: string;
+      sector: string;
+      services: string[];
+      logoSrc: string;
+    }[];
+  };
   partners: {
     label: string;
     headline: string;
+    intro: string;
     items: {
       id: string;
       name: string;
@@ -251,6 +265,7 @@ export const en: Dictionary = {
     { href: "#leadership", label: "Leadership" },
     { href: "#identity", label: "Identity" },
     { href: "#divisions", label: "Divisions" },
+    { href: "#subsidiaries", label: "Subsidiaries" },
     { href: "#partners", label: "Partners" },
     { href: "#contact", label: "Contact" },
   ],
@@ -299,10 +314,10 @@ export const en: Dictionary = {
     label: "Message from the",
     headline: "President & CEO",
     paragraphs: [
-      "Africa holds extraordinary potential. At HERNA Holding, we are committed to investing in a sustainable future for our nations — transforming opportunity into lasting prosperity.",
-      "Since our establishment in 2012, we have built a pan-African investment platform dedicated to high-impact projects across strategic sectors. Our ambition is clear: accelerate economic transformation while creating value for investors, communities and generations to come.",
-      "Through integrity, innovation and excellence, we structure partnerships that deliver impactful solutions. We invest today to build a better Africa tomorrow.",
-      "I invite you to discover our vision, our divisions and the allies who walk this journey with us.",
+      "Africa stands at a defining moment in its history — a continent of immense potential, rich resources, and a dynamic, visionary population.",
+      "At HERNA Holding, we have chosen to invest in this potential and to be a driving force in shaping a prosperous and sustainable future for our nations.",
+      "Since our establishment in 2012, our mission has been clear: to create sustainable value by investing in strategic sectors that transform economies, improve lives, and build enduring legacy. Guided by integrity, innovation, and excellence, we partner with governments, institutions, and private sector leaders to deliver impactful solutions that stand the test of time.",
+      "We are more than an investment holding company. We are builders, partners, and catalysts for growth. Together, let us build Africa’s future and honor the legacy we will leave for generations to come.",
     ],
     quote: "We invest today to build a better Africa tomorrow.",
   },
@@ -363,31 +378,39 @@ export const en: Dictionary = {
     label: "Why HERNA",
     headline: "Why invest with HERNA?",
     intro:
-      "Maximizing return, ensuring reliability, and building a prosperous African tomorrow.",
+      "Strategic advantages. Sustainable returns. Lasting legacy. At HERNA HOLDING, we combine vision, expertise, and a strong ecosystem to create value for investors, partners, and communities across Africa.",
     items: [
       {
-        title: "Pan-African vision",
-        body: "Anchored in Benin, bridging regional markets to catalyze structural continental integration.",
+        title: "Strategic diversification",
+        body: "A diversified investment portfolio across key sectors ensures stability, resilience, and long-term value creation.",
       },
       {
-        title: "Strong governance",
-        body: "Uncompromising compliance, financial audit rigor, and complete operational transparency.",
+        title: "High growth potential",
+        body: "We invest in high-impact sectors with strong growth prospects driving sustainable returns and economic transformation.",
       },
       {
         title: "Experienced leadership",
-        body: "A multi-disciplinary executive team driving complex transactions with execution safety.",
+        body: "Our leadership team brings deep industry expertise, integrity, and a proven track record of delivering results across Africa.",
       },
       {
-        title: "Strategic partnerships",
-        body: "Co-investing alongside global funding groups, sovereign agencies, and local state actors.",
+        title: "Strong partnerships",
+        body: "We collaborate with reputable partners, governments, and institutions to execute projects that create shared value and lasting impact.",
       },
       {
-        title: "Long-term value",
-        body: "Prioritizing business resilience, predictable asset cash flows, and sustainable capital return.",
+        title: "Sustainable & responsible",
+        body: "We are committed to ESG principles ensuring our investments promote environmental stewardship, social impact, and good governance.",
       },
       {
-        title: "Responsible investments",
-        body: "Systematically embedding ESG protocols across our energy, agricultural, and mineral assets.",
+        title: "Pan-African focus",
+        body: "With a strong presence and networks across Africa, we understand local realities and deliver solutions that drive inclusive development.",
+      },
+      {
+        title: "Diversified group structure",
+        body: "A strong portfolio of specialized subsidiaries delivering integrated solutions across multiple industries for greater impact and efficiency.",
+      },
+      {
+        title: "Long-term value creation",
+        body: "We aim beyond profitability — building a legacy that empowers nations, transforms communities, and benefits future generations.",
       },
     ],
     quote: "Investing today to shape tomorrow.",
@@ -509,47 +532,102 @@ export const en: Dictionary = {
   approach: {
     label: "Core values",
     intro:
-      "Principles shaping our investment vision and conduct — integrity at the foundation of sustainable growth.",
+      "Principles shaping our investment vision and global conduct — integrity is the foundation of sustainable growth.",
     values: [
       {
-        title: "Integrity",
-        description: "We do what is right.",
+        title: "Professionalism",
+        description:
+          "Upholding absolute rigor, competence, and ethical standards across all projects.",
       },
       {
         title: "Innovation",
-        description: "We embrace new ideas.",
+        description:
+          "Embracing pioneering models, creative approaches, and modern industrial tech.",
       },
       {
         title: "Partnership",
-        description: "We achieve more together.",
+        description:
+          "Cultivating robust alliances with investors, stakeholders, and communities.",
       },
       {
-        title: "Excellence",
-        description: "We deliver quality.",
+        title: "Quality",
+        description:
+          "Ensuring flawless execution and tier-one deliverables that sustain value over time.",
       },
       {
-        title: "Sustainability",
-        description: "We build for the future.",
+        title: "Sustainable development",
+        description:
+          "Structuring environmental conservation, social impact, and long-term economic prosperity into every decision.",
+      },
+    ],
+  },
+  subsidiaries: {
+    label: "Our subsidiaries",
+    headline: "Building excellence through specialized companies",
+    intro:
+      "HERNA HOLDING brings together specialized subsidiaries that operate across strategic sectors, delivering integrated solutions and contributing to Africa’s sustainable development.",
+    tagline: "Three specialized companies. One vision. One legacy.",
+    items: [
+      {
+        id: "mashal",
+        name: "Mashal Equipment",
+        sector: "Heavy equipment & industrial solutions",
+        services: [
+          "Heavy equipment supply",
+          "Spare parts",
+          "Maintenance services",
+          "Industrial equipment",
+          "Technical support",
+        ],
+        logoSrc: "/subsidiaries/mashal.png",
+      },
+      {
+        id: "tsalach",
+        name: "Tsalach Development & Infrastructures",
+        sector: "Engineering • Construction • Real estate",
+        services: [
+          "Infrastructure development",
+          "Civil engineering",
+          "Building construction",
+          "Real estate development",
+          "Project management",
+        ],
+        logoSrc: "/subsidiaries/tsalach.png",
+      },
+      {
+        id: "tpg",
+        name: "The Pertinent Group",
+        sector: "Business advisory • Investment • Strategy",
+        services: [
+          "Business consulting",
+          "Investment advisory",
+          "Project structuring",
+          "Strategic partnerships",
+          "Business development",
+        ],
+        logoSrc: "/subsidiaries/tpg.png",
       },
     ],
   },
   partners: {
     label: "Partners",
-    headline: "Strategic Alliances",
+    headline: "Strategic Partners",
+    intro:
+      "Building strong alliances. Creating lasting impact. HERNA HOLDING collaborates with trusted strategic partners to accelerate sustainable investments, infrastructure development, industrial growth and innovation across Africa.",
     items: [
       {
-        id: "tpg",
-        name: "TPG — The Pertinent Group",
-        role: "Joint venture alignment, global funding structuring, and high-level cross-border asset orchestration.",
-        phone: "[+229] 0197298070",
-        phoneTel: "+2290197298070",
+        id: "agetip",
+        name: "AGETIP-BENIN",
+        role: "A leading engineering and industrial group providing innovative solutions in construction, energy, industry and specialized services.",
+        phone: null,
+        phoneTel: null,
         logoBg: "transparent",
-        logoSrc: "/partners/tpg-clear.png",
+        logoSrc: "/partners/agetip-clear.png",
       },
       {
         id: "hmd",
         name: "HMD",
-        role: "Primary logistical deployment, technical equipment lifecycle engineering, and supply chain resilience.",
+        role: "A dynamic construction and infrastructure company delivering high-quality projects that shape communities and drive development.",
         phone: null,
         phoneTel: null,
         logoBg: "transparent",
@@ -557,10 +635,10 @@ export const en: Dictionary = {
       },
       {
         id: "osgb",
-        name: "OSGB — Oluwa Shola Global Business",
-        role: "Operational management, regional regulatory compliance, and project governance optimizing productivity.",
-        phone: "[+229] 0197091910",
-        phoneTel: "+2290197091910",
+        name: "OSGB",
+        role: "A global business advisory and investment firm creating cross-border opportunities and sustainable value across Africa.",
+        phone: null,
+        phoneTel: null,
         logoBg: "transparent",
         logoSrc: "/partners/osgb-clear.png",
       },
@@ -573,10 +651,7 @@ export const en: Dictionary = {
       "Partnering to structure Africa’s industrial and economic legacy. Reach out to explore how we can collaborate.",
     partnerContactsLabel: "Partner Contacts",
     entity: "HERNA HOLDING",
-    partnerPhones: [
-      { label: "TPG", phone: "[+229] 0197298070", phoneTel: "+2290197298070" },
-      { label: "OSGB", phone: "[+229] 0197091910", phoneTel: "+2290197091910" },
-    ],
+    partnerPhones: [],
   },
   legal: {
     copyright: `© ${new Date().getFullYear()} HERITAGE OF NATIONS (HERNA). All rights reserved.`,

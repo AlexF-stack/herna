@@ -34,6 +34,7 @@
     "d3-geo": "^3.1.1",
     "eslint": "^9",
     "eslint-config-next": "15.5.20",
+    "pdf-to-png-converter": "^4.1.1",
     "tailwindcss": "^4",
     "topojson-client": "^3.1.0",
     "typescript": "^5"
