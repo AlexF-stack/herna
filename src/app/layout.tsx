@@ -56,15 +56,9 @@ export default async function RootLayout({
       <head>
         <link
           rel="preload"
-          href="/media/preloader.webm"
-          as="video"
-          type="video/webm"
-        />
-        <link
-          rel="preload"
-          href={brandAssets.logoOpaqueSrc}
+          href={brandAssets.logoClearSrc}
           as="image"
-          type="image/png"
+          type="image/svg+xml"
         />
         <link
           rel="preconnect"
@@ -72,57 +66,11 @@ export default async function RootLayout({
           crossOrigin="anonymous"
         />
         <link
-          id="herna-fonts"
           href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700&f[]=clash-display@400,500,600&f[]=general-sans@400,500,600&display=swap"
           rel="stylesheet"
-          media="print"
         />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `document.getElementById('herna-fonts')?.addEventListener('load',function(){this.media='all'});`,
-          }}
-        />
-        <noscript>
-          <link
-            href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700&f[]=clash-display@400,500,600&f[]=general-sans@400,500,600&display=swap"
-            rel="stylesheet"
-          />
-        </noscript>
       </head>
       <body className="antialiased" suppressHydrationWarning>
-        <div
-          id="herna-boot"
-          style={{
-            position: "fixed",
-            inset: 0,
-            zIndex: 100,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            background: "#ffffff",
-            padding: "2rem",
-            pointerEvents: "none",
-          }}
-          aria-hidden
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={brandAssets.logoOpaqueSrc}
-            alt=""
-            width={420}
-            height={160}
-            style={{
-              width: "min(86vw, 26rem)",
-              height: "auto",
-              objectFit: "contain",
-            }}
-          />
-        </div>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(){var el=document.getElementById('herna-boot');if(!el)return;setTimeout(function(){el&&el.remove();},1600);})();`,
-          }}
-        />
         {children}
       </body>
     </html>

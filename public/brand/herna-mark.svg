@@ -1,76 +1,16 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 160" role="img" aria-label="HERNA">
-  <!--
-    Flat brand lockup derived from official HERNA mark
-    (gear + dual wave + gold wordmark).
-    PLACEHOLDER FOR PHOTO: replace usage with /brand/herna-logo.png
-    when the official 3D render file is saved into public/brand/.
-  -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="HERNA mark">
+  <!-- Official plaquette mark — gold architectural pillars / stylized H -->
   <defs>
-    <linearGradient id="gold" x1="0%" y1="0%" x2="0%" y2="100%">
+    <linearGradient id="hernaGold" x1="0%" y1="0%" x2="0%" y2="100%">
       <stop offset="0%" stop-color="#E8CE8A"/>
       <stop offset="45%" stop-color="#C9A24B"/>
       <stop offset="100%" stop-color="#8A6A2E"/>
     </linearGradient>
-    <linearGradient id="maroon" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#9A3B3B"/>
-      <stop offset="100%" stop-color="#6B2424"/>
-    </linearGradient>
-    <linearGradient id="midBlue" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#5A7A9A"/>
-      <stop offset="100%" stop-color="#3E5C78"/>
-    </linearGradient>
-    <linearGradient id="navy" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#2A4A6A"/>
-      <stop offset="100%" stop-color="#163048"/>
-    </linearGradient>
   </defs>
-
-  <!-- Symbol: semi-circle stack -->
-  <g transform="translate(8,18)">
-    <!-- Top gear (maroon) -->
-    <path fill="url(#maroon)" d="
-      M20 54
-      L8 54 L8 42 L16 38 L12 28 L22 24 L28 14 L38 20 L48 10 L58 20 L68 14 L74 24 L84 28 L80 38 L88 42 L88 54
-      Z
-      M28 54
-      A 28 28 0 0 1 80 54
-      Z"/>
-    <!-- Simplified gear silhouette -->
-    <path fill="url(#maroon)" d="
-      M54 8
-      l8 6 10-2 4 10 10 4 -2 10 8 8 -8 8 2 10 -10 4 -4 10 -10-2 -8 6 -8-6 -10 2 -4-10 -10-4 2-10 -8-8 8-8 -2-10 10-4 4-10 10 2 z"/>
-    <circle cx="54" cy="48" r="22" fill="url(#maroon)"/>
-    <circle cx="54" cy="48" r="10" fill="#0A0A0B"/>
-
-    <!-- Mid wave (blue) -->
-    <path fill="url(#midBlue)" d="
-      M14 78
-      C 30 68, 48 68, 54 78
-      C 60 88, 78 88, 94 78
-      L94 92
-      C 78 102, 60 102, 54 92
-      C 48 82, 30 82, 14 92
-      Z"/>
-
-    <!-- Lower wave (navy) -->
-    <path fill="url(#navy)" d="
-      M6 98
-      C 28 86, 44 86, 54 98
-      C 64 110, 84 110, 104 96
-      L104 118
-      C 82 132, 64 132, 54 120
-      C 44 108, 26 108, 6 120
-      Z"/>
+  <g fill="url(#hernaGold)">
+    <rect x="28" y="38" width="14" height="52" rx="2"/>
+    <rect x="53" y="22" width="14" height="68" rx="2"/>
+    <rect x="78" y="38" width="14" height="52" rx="2"/>
+    <path d="M22 92 Q60 108 98 92" fill="none" stroke="url(#hernaGold)" stroke-width="5" stroke-linecap="round"/>
   </g>
-
-  <!-- Wordmark -->
-  <text
-    x="150"
-    y="108"
-    font-family="Arial Black, Arial, Helvetica, sans-serif"
-    font-size="72"
-    font-weight="900"
-    letter-spacing="6"
-    fill="url(#gold)"
-  >HERNA</text>
 </svg>

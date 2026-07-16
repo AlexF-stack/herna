@@ -1,27 +1,34 @@
-﻿# PLACEHOLDER ASSETS
-
-Replace these files with final production assets (WebP/AVIF preferred for photos).
+# Public assets
 
 ## Brand
-- /public/brand/herna-logo.png — full lockup on white (swap with official 3D render file if a master PNG/SVG is provided)
-- /public/brand/herna-mark.svg — flat mark for dark nav
+- `/brand/herna-logo-clear.svg` — transparent lockup (light surfaces)
+- `/brand/herna-logo-on-dark.svg` — transparent lockup (dark surfaces)
+- `/brand/herna-logo-clear.png` — transparent raster lockup
+- `/brand/herna-logo-nav-clear.png` — compact nav lockup (transparent)
+- `/brand/africa-map.svg` — Africa map, gold borders, Benin + HQ pin (generated)
+- `/brand/africa-map-meta.json` — Benin centroid metadata
+- `/brand/herna-mark.svg` — gold pillars mark
+- `/brand/ceo-wayisuhu-dossou.png` — CEO portrait
+- `/brand/herna-cover.jpg` — plaquette cover art
 
-## Divisions (Act IV)
-- /public/divisions/equipment.webp
-- /public/divisions/mining.webp
-- /public/divisions/agriculture.webp
-- /public/divisions/energy.webp
-- /public/divisions/real-estate.webp
+## Documents
+- `/company-profile.pdf` — official **Plaquette HERNA** (Company Profile 2026)
+- `/docs/HERNA-Company-Profile-2026.pdf` — same file, explicit download name
 
-## Sphere fallback (low-GPU / reduced-motion)
-- /public/sphere-fallback.webp
+## Divisions
+- `/divisions/equipment.png`
+- `/divisions/mining.png`
+- `/divisions/agriculture.png`
+- `/divisions/energy.png`
+- `/divisions/real-estate.png`
 
-## Partners (official logos — keep original brand colors)
-- /public/partners/tpg.jpg   (white on black)
-- /public/partners/hmd.jpg   (red on white)
-- /public/partners/osgb.jpg  (purple/gold on white)
+## Partners
+- `/partners/*-clear.png` — transparent partner logos (use in UI)
 
-Optional stretch: convert to SVG masters for crispness, then WebP derivatives.
+## Media
+See `/media/README.md`
 
-## Open Graph
-- /public/og/og-default.jpg
+## Regenerate Africa map
+```bash
+npm run generate:africa-map
+```

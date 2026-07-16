@@ -4,9 +4,9 @@ import {
   useDictionary,
   useLocale,
 } from "@/components/providers/LocaleProvider";
+import { BrandLogo } from "@/components/site/BrandLogo";
 import { Reveal } from "@/components/site/Reveal";
 import { brandAssets } from "@/content/brand";
-import Image from "next/image";
 import { FormEvent, useState } from "react";
 
 export function SiteContact() {
@@ -68,12 +68,12 @@ export function SiteContact() {
         <div className="mt-12 grid gap-10 lg:grid-cols-12">
           <Reveal className="lg:col-span-5">
             <div className="mb-8 inline-flex">
-              <Image
-                src={brandAssets.logoClearSrc}
-                alt={`${brandAssets.holdingName} logo`}
+              <BrandLogo
+                variant="light"
                 width={280}
-                height={100}
+                height={210}
                 className="h-auto w-full max-w-[220px] object-contain"
+                alt={`${brandAssets.holdingName} logo`}
               />
             </div>
 
@@ -98,7 +98,9 @@ export function SiteContact() {
                 {dictionary.ui.website}:{" "}
                 <a
                   className="text-[color:var(--gold)] hover:underline"
-                  href={brandAssets.websiteUrl}
+                  href={brandAssets.portalUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   {brandAssets.website}
                 </a>
@@ -132,8 +134,8 @@ export function SiteContact() {
             </ul>
 
             <a
-              href="/company-profile.pdf"
-              download="HERNA-Company-Profile-2026.pdf"
+              href={brandAssets.companyProfileSrc}
+              download={brandAssets.companyProfileDownloadName}
               target="_blank"
               rel="noopener noreferrer"
               className="btn-secondary mt-8 !rounded-xl"
@@ -196,7 +198,7 @@ export function SiteContact() {
                   </p>
                 ) : null}
                 {status === "error" ? (
-                  <p className="text-sm text-[color:var(--maroon)]">
+                  <p className="text-sm text-[color:var(--gold-deep)]">
                     {dictionary.ui.formError}
                   </p>
                 ) : null}

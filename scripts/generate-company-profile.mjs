@@ -1,6 +1,10 @@
 /**
  * Generates a printable HERNA Company Profile PDF (A4).
  * Run: node scripts/generate-company-profile.mjs
+ *
+ * NOTE: The live downloadable asset is the official "Plaquette HERNA"
+ * (`public/company-profile.pdf`). Do not overwrite it with this generator
+ * unless you intentionally regenerate a draft substitute.
  */
 import fs from "node:fs";
 import path from "node:path";

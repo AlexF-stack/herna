@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "generate:africa-map": "node scripts/generate-africa-map.mjs",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui"
   },
@@ -30,9 +31,11 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/three": "^0.185.1",
+    "d3-geo": "^3.1.1",
     "eslint": "^9",
     "eslint-config-next": "15.5.20",
     "tailwindcss": "^4",
+    "topojson-client": "^3.1.0",
     "typescript": "^5"
   }
 }

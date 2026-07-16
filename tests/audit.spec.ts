@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-const BASE = process.env.PLAYWRIGHT_BASE_URL ?? "http://127.0.0.1:3010";
+const BASE = process.env.PLAYWRIGHT_BASE_URL ?? "http://127.0.0.1:3000";
 
 const slugs = [
   "equipment",
@@ -13,6 +13,7 @@ const slugs = [
 test.describe("HERNA audit", () => {
   test.beforeEach(async ({ page }) => {
     await page.addInitScript(() => {
+      sessionStorage.setItem("herna-intro-seen", "1");
       localStorage.setItem("herna-theme", "light");
     });
   });
@@ -20,8 +21,10 @@ test.describe("HERNA audit", () => {
   test("language switch en -> fr", async ({ page }) => {
     await page.goto(`${BASE}/en`, { waitUntil: "domcontentloaded" });
     await expect(page.locator("#hero-title")).toBeVisible({ timeout: 30_000 });
-    await page.locator("#herna-boot").waitFor({ state: "detached", timeout: 5_000 }).catch(() => undefined);
-    await page.getByRole("navigation", { name: "Language" }).getByRole("link", { name: "fr" }).click();
+    await page
+      .getByRole("navigation", { name: "Language" })
+      .getByRole("link", { name: "fr" })
+      .click();
     await page.waitForURL(/\/fr/, { timeout: 20_000 });
     await expect(page.locator("html")).toHaveAttribute("lang", "fr");
     await expect(
@@ -44,7 +47,6 @@ test.describe("HERNA audit", () => {
 
   test("home card links navigate to each division", async ({ page }) => {
     await page.goto(`${BASE}/en`, { waitUntil: "domcontentloaded" });
-    await page.locator("#herna-boot").waitFor({ state: "detached", timeout: 5_000 }).catch(() => undefined);
     await expect(page.locator("#divisions")).toBeVisible({ timeout: 30_000 });
 
     for (const slug of slugs) {

@@ -8,11 +8,40 @@ type Payload = {
   website?: string; // honeypot
 };
 
+const RATE_WINDOW_MS = 60_000;
+const RATE_MAX = 5;
+const rateHits = new Map<string, { count: number; resetAt: number }>();
+
 function isEmail(value: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 }
 
+function clientIp(request: Request) {
+  return (
+    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    request.headers.get("x-real-ip") ||
+    "unknown"
+  );
+}
+
+function allowRequest(ip: string) {
+  const now = Date.now();
+  const row = rateHits.get(ip);
+  if (!row || now > row.resetAt) {
+    rateHits.set(ip, { count: 1, resetAt: now + RATE_WINDOW_MS });
+    return true;
+  }
+  if (row.count >= RATE_MAX) return false;
+  row.count += 1;
+  return true;
+}
+
 export async function POST(request: Request) {
+  const ip = clientIp(request);
+  if (!allowRequest(ip)) {
+    return NextResponse.json({ ok: false, error: "rate_limited" }, { status: 429 });
+  }
+
   let payload: Payload;
   try {
     payload = (await request.json()) as Payload;
@@ -62,7 +91,6 @@ export async function POST(request: Request) {
       return NextResponse.json({ ok: true, provider: "formspree" });
     }
 
-    /* Default: deliver to HERNA inbox via FormSubmit (confirm email once) */
     const res = await fetch(
       `https://formsubmit.co/ajax/${encodeURIComponent(brandAssets.email)}`,
       {
@@ -78,7 +106,6 @@ export async function POST(request: Request) {
           _subject: subject,
           _replyto: email,
           _template: "table",
-          _captcha: "false",
         }),
       },
     );

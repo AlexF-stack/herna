@@ -6,6 +6,7 @@ export type Dictionary = {
   brand: {
     tagline: string;
     closing: string;
+    footprint: string;
   };
   prologue: {
     lines: [string, string, string];
@@ -33,6 +34,10 @@ export type Dictionary = {
     contactForm: string;
     contactShort: string;
     downloadProfile: string;
+    founded: string;
+    headquarters: string;
+    businessScope: string;
+    strategicUnits: string;
     explore: string;
     themeLight: string;
     themeDark: string;
@@ -55,6 +60,37 @@ export type Dictionary = {
     label: string;
     headline: string;
     body: string;
+    purposeLabel: string;
+    purpose: string;
+    philosophy: string;
+  };
+  story: {
+    label: string;
+    headline: string;
+    body: string;
+    items: { year: string; title: string; body: string }[];
+  };
+  leadership: {
+    label: string;
+    headline: string;
+    paragraphs: string[];
+    quote: string;
+  };
+  businessModel: {
+    label: string;
+    headline: string;
+    intro: string;
+    steps: { title: string; body: string }[];
+    strengthsLabel: string;
+    strengths: { title: string; body: string }[];
+    quote: string;
+  };
+  whyInvest: {
+    label: string;
+    headline: string;
+    intro: string;
+    items: { title: string; body: string }[];
+    quote: string;
   };
   mediaBand: {
     label: string;
@@ -70,6 +106,10 @@ export type Dictionary = {
     body: string;
   };
   mission: {
+    label: string;
+    body: string;
+  };
+  purpose: {
     label: string;
     body: string;
   };
@@ -156,11 +196,12 @@ export const en: Dictionary = {
   meta: {
     title: "HERNA — Heritage of Nations",
     description:
-      "HERITAGE OF NATIONS (HERNA) is a holding company oriented toward developing activities across several strategic sectors.",
+      "HERNA HOLDING is a pan-African investment holding company based in Cotonou, Benin — building the future, honoring the legacy through five strategic business units.",
   },
   brand: {
-    tagline: "Building the Future.\nHonoring the Legacy.",
-    closing: "Building Africa's Legacy, for Generations.",
+    tagline: "Building the Future, Honoring the Legacy",
+    closing: "Creating lasting value for Africa.",
+    footprint: "Driving investments. Building nations. Creating lasting value.",
   },
   prologue: {
     lines: [
@@ -191,7 +232,11 @@ export const en: Dictionary = {
     website: "Website",
     contactForm: "Contact form",
     contactShort: "Contact",
-    downloadProfile: "Company Profile",
+    downloadProfile: "Download company profile",
+    founded: "Founded",
+    headquarters: "Head office",
+    businessScope: "Business scope",
+    strategicUnits: "Strategic business units",
     explore: "Explore",
     themeLight: "Light mode",
     themeDark: "Dark mode",
@@ -203,6 +248,7 @@ export const en: Dictionary = {
   },
   nav: [
     { href: "#about", label: "About" },
+    { href: "#leadership", label: "Leadership" },
     { href: "#identity", label: "Identity" },
     { href: "#divisions", label: "Divisions" },
     { href: "#partners", label: "Partners" },
@@ -210,115 +256,243 @@ export const en: Dictionary = {
   ],
   hero: {
     actLabel: "Legacy",
-    line1: "Building Africa's",
-    line2: "enduring legacy.",
+    line1: "Building the future,",
+    line2: "honoring the legacy.",
     subtitle:
-      "A pan-African investment holding based in Cotonou, structuring projects across strategic sectors.",
+      "A pan-African investment holding company based in Cotonou, Benin — investing today, transforming tomorrow across five strategic business units.",
     primaryCta: "Explore divisions",
     secondaryCta: "Discover HERNA",
   },
   about: {
-    label: "About",
-    headline: "A holding built for Africa’s next generation of value.",
-    body: "HERITAGE OF NATIONS (HERNA) is a pan-African investment holding company based in Benin. We identify, finance and develop high-impact projects across strategic sectors. Our ambition is to build a lasting legacy through sustainable investments.",
+    label: "Who we are",
+    headline: "Building Africa's future through strategic investments.",
+    body: "HERNA is a pan-African investment holding company established in 2012 and headquartered in Cotonou, Benin. We focus on high-impact projects that accelerate Africa’s sustainable economic transformation — industrial growth, infrastructure, energy, food security and responsible resource management.",
+    purposeLabel: "Our purpose",
+    purpose:
+      "We invest in strategic opportunities that accelerate Africa’s development while creating sustainable prosperity for future generations.",
+    philosophy:
+      "We believe that Africa’s greatest opportunities lie in sustainable investments that create economic growth, empower communities, and build a lasting legacy for future generations.",
+  },
+  story: {
+    label: "Our story",
+    headline: "From vision to impact",
+    body: "HERNA was founded with a clear ambition: to create an investment platform capable of transforming strategic opportunities into sustainable development across Africa. Today, HERNA continues expanding its activities while developing long-term partnerships with governments, financial institutions and private investors.",
+    items: [
+      {
+        year: "2012",
+        title: "Foundation",
+        body: "Launch of the platform with a clear ambition to transform African potential into industrial realities.",
+      },
+      {
+        year: "2026",
+        title: "Expansion",
+        body: "Portfolio consolidation, sector diversification, and reinforcing multi-national impact.",
+      },
+      {
+        year: "2035",
+        title: "Horizon 2035",
+        body: "The go-to leader in sustainable impact investment and economic transformation in Africa.",
+      },
+    ],
+  },
+  leadership: {
+    label: "Message from the",
+    headline: "President & CEO",
+    paragraphs: [
+      "Africa holds extraordinary potential. At HERNA Holding, we are committed to investing in a sustainable future for our nations — transforming opportunity into lasting prosperity.",
+      "Since our establishment in 2012, we have built a pan-African investment platform dedicated to high-impact projects across strategic sectors. Our ambition is clear: accelerate economic transformation while creating value for investors, communities and generations to come.",
+      "Through integrity, innovation and excellence, we structure partnerships that deliver impactful solutions. We invest today to build a better Africa tomorrow.",
+      "I invite you to discover our vision, our divisions and the allies who walk this journey with us.",
+    ],
+    quote: "We invest today to build a better Africa tomorrow.",
+  },
+  businessModel: {
+    label: "How we work",
+    headline: "Our business model",
+    intro:
+      "A disciplined investment cycle designed to turn opportunity into sustainable value.",
+    steps: [
+      {
+        title: "Investment opportunities",
+        body: "Rigorous sourcing and market analysis to identify high-potential projects.",
+      },
+      {
+        title: "Project structuring",
+        body: "Designing robust legal, financial, and operational frameworks.",
+      },
+      {
+        title: "Financing",
+        body: "Securing diverse funding through strategic partnerships and internal capital.",
+      },
+      {
+        title: "Execution",
+        body: "Implementing projects with a focus on speed, quality, and compliance.",
+      },
+      {
+        title: "Operations",
+        body: "Managing assets efficiently to guarantee long-term viability.",
+      },
+      {
+        title: "Sustainable value creation",
+        body: "Delivering consistent financial returns while empowering local economies.",
+      },
+    ],
+    strengthsLabel: "Our strengths",
+    strengths: [
+      {
+        title: "Strategic vision",
+        body: "Anticipating market trends to position our investments ahead of the curve.",
+      },
+      {
+        title: "Operational excellence",
+        body: "A hands-on approach combined with world-class management standards.",
+      },
+      {
+        title: "Strong partnerships",
+        body: "Fostering trusted relationships with global investors and local governments.",
+      },
+      {
+        title: "Responsible investments",
+        body: "Prioritizing Environmental, Social, and Governance (ESG) criteria in every decision.",
+      },
+    ],
+    quote:
+      "Our model is built on resilience, ensuring every venture translates into collective wealth and shared progress.",
+  },
+  whyInvest: {
+    label: "Why HERNA",
+    headline: "Why invest with HERNA?",
+    intro:
+      "Maximizing return, ensuring reliability, and building a prosperous African tomorrow.",
+    items: [
+      {
+        title: "Pan-African vision",
+        body: "Anchored in Benin, bridging regional markets to catalyze structural continental integration.",
+      },
+      {
+        title: "Strong governance",
+        body: "Uncompromising compliance, financial audit rigor, and complete operational transparency.",
+      },
+      {
+        title: "Experienced leadership",
+        body: "A multi-disciplinary executive team driving complex transactions with execution safety.",
+      },
+      {
+        title: "Strategic partnerships",
+        body: "Co-investing alongside global funding groups, sovereign agencies, and local state actors.",
+      },
+      {
+        title: "Long-term value",
+        body: "Prioritizing business resilience, predictable asset cash flows, and sustainable capital return.",
+      },
+      {
+        title: "Responsible investments",
+        body: "Systematically embedding ESG protocols across our energy, agricultural, and mineral assets.",
+      },
+    ],
+    quote: "Investing today to shape tomorrow.",
   },
   mediaBand: {
     label: "Footprint",
-    headline: "Capital deployed where progress is built.",
-    body: "From infrastructure and energy to industry and agriculture, HERNA channels investment into sectors that shape long-term prosperity.",
+    headline: "Driving investments. Building nations.",
+    body: "From mining and equipment to agriculture, energy, real estate and infrastructure — HERNA channels capital into sectors that create lasting value for Africa.",
   },
   identity: {
-    label: "Our Identity",
-    headline: "Vision, Mission & Approach",
+    label: "Our identity",
+    headline: "Vision, Mission & Purpose",
   },
   vision: {
     label: "Vision",
-    body: "To become a catalyst for Africa's economic transformation through strategic investments.",
+    body: "To become Africa’s leading investment holding company, creating sustainable economic transformation through strategic investments.",
   },
   mission: {
     label: "Mission",
-    body: "To design, structure and support sustainable projects creating value for investors, communities and future generations.",
+    body: "To identify, structure, finance and manage projects that generate long-term value for investors, communities and future generations.",
+  },
+  purpose: {
+    label: "Purpose",
+    body: "Building prosperous nations while preserving a lasting legacy.",
   },
   divisions: {
     sectionLabel: "Strategic Business Units",
     actLabel: "Divisions",
-    headline: "Driving Growth Across 5 Strategic Business Units",
+    headline: "Driving sustainable growth across five critical sectors",
     intro:
-      "We channel our expertise through distinct divisions, each focused on critical sectors essential for Africa's progress.",
+      "Driving sustainable growth and long-term value across critical economic sectors through five distinct strategic business units.",
     items: [
       {
         id: "equipment",
         title: "Equipment",
         description:
-          "Supply, distribution, and maintenance of advanced technical and industrial solutions.",
-        body: "Our Equipment division supplies, distributes and maintains advanced technical and industrial solutions for construction, mining and agricultural operators across the region. We work with established manufacturers to guarantee reliability, spare-parts availability and responsive after-sales support. This foundation allows partner companies to keep critical fleets and machinery running with confidence.",
+          "Providing high-performance machinery, industrial tooling, and complete technical support services for major regional ventures.",
+        body: "Our Equipment division supplies high-performance machinery, industrial tooling and complete technical support for major regional ventures. We source and deploy earthmoving, mining and construction fleets, guarantee genuine OEM spare parts, and deliver 24/7 technical assistance so partners keep critical assets running with confidence.",
         focus: [
-          "Heavy machinery supply",
-          "Spare parts distribution",
-          "Preventive maintenance",
-          "After-sales support",
+          "Heavy equipment supply",
+          "Spare parts & supply",
+          "Industrial machinery",
+          "Assistance & maintenance",
         ],
-        accent: "#8e322a",
+        accent: "#c9a24b",
         imageSrc: "/divisions/equipment.png",
       },
       {
         id: "real-estate",
         title: "Real Estate & Infrastructure",
         description:
-          "Innovative real estate development, robust construction, and essential infrastructure projects.",
-        body: "The Real Estate & Infrastructure division designs and delivers residential, commercial and public infrastructure projects that meet rising urban demand. From land structuring to construction execution, we coordinate design, financing and delivery under a single accountable framework. Our teams favor durable materials and building practices suited to the region's climate and growth trajectory.",
+          "Constructing smart cities, residential assets, and critical logistics frameworks for tomorrow’s growth.",
+        body: "The Real Estate & Infrastructure division develops modern residential and commercial assets, master-planned urban frameworks, road corridors and engineering services. We support Africa’s urban transformation through high-quality, smart and resilient infrastructure projects.",
         focus: [
-          "Urban & residential development",
-          "Commercial real estate",
-          "Public infrastructure",
-          "Construction project management",
+          "Real estate development",
+          "Urban development",
+          "Road infrastructure",
+          "Engineering services",
         ],
-        accent: "#D8D6CE",
+        accent: "#1a2433",
         imageSrc: "/divisions/real-estate.png",
       },
       {
         id: "mining",
         title: "Mining",
         description:
-          "Exploration, development, and support of responsible and sustainable mining projects.",
-        body: "Our Mining division explores, develops and supports responsible extraction projects, working alongside technical partners and local authorities. We place particular emphasis on rigorous environmental and community engagement standards throughout the project lifecycle. This approach positions HERNA as a long-term contributor to the sector's sustainable development.",
+          "Advancing responsible mineral exploration, extraction, and asset development with world-class safety standards.",
+        body: "Our Mining division advances responsible exploration, extraction and asset development. From geological assessment to project structuring and on-site support, we develop mining projects that create sustainable economic value while respecting local environments.",
         focus: [
-          "Exploration & geological studies",
+          "Mining exploration",
+          "Mining equipment",
           "Project development",
-          "Environmental stewardship",
-          "Community engagement",
+          "Consultancy & support",
         ],
-        accent: "#B8934A",
+        accent: "#8a6a2e",
         imageSrc: "/divisions/mining.png",
       },
       {
         id: "agriculture",
         title: "Agriculture & Livestock",
         description:
-          "Agro-industry development, advanced processing, and enhancement of local value chains.",
-        body: "The Agriculture & Livestock division develops agro-industrial capacity, from primary production to advanced processing, strengthening local value chains. We invest in facilities and partnerships that improve yield, traceability and market access for producers. The division's ambition is to help transform raw output into higher-value goods across the region.",
+          "Empowering regional food security through precision farming, livestock practices, and optimized distribution.",
+        body: "The Agriculture & Livestock division strengthens regional food security via precision farming, modern livestock practices, food processing and mechanized value chains. We invest in agro-industrial capacity that turns primary production into lasting prosperity.",
         focus: [
-          "Agro-industrial processing",
+          "Agro-industrial projects",
+          "Food processing & tech",
           "Livestock development",
-          "Value chain integration",
-          "Producer partnerships",
+          "Mechanization & value chain",
         ],
-        accent: "#2F4A3B",
+        accent: "#121826",
         imageSrc: "/divisions/agriculture.png",
       },
       {
         id: "energy",
         title: "Energy",
         description:
-          "Comprehensive electrical solutions, cutting-edge renewable energy, and energy efficiency initiatives.",
-        body: "Our Energy division delivers comprehensive electrical solutions alongside renewable generation and energy efficiency initiatives. We support public and private clients in expanding reliable access to power while reducing environmental impact. The division combines engineering expertise with a long-term view of the continent's energy transition.",
+          "Securing transition-ready power through solar, wind, and sustainable energy initiatives at scale.",
+        body: "Our Energy division delivers reliable, innovative and sustainable energy solutions — from utility-scale renewables and efficiency systems to electrical infrastructure and industrial electrification — to fuel continental industrial and social development.",
         focus: [
-          "Electrical engineering solutions",
-          "Renewable energy generation",
-          "Energy efficiency",
-          "Grid & access projects",
+          "Renewable energy & solar",
+          "Energy efficiency systems",
+          "Electrical infrastructure",
+          "Industrial electrification",
         ],
-        accent: "#2E5C8A",
+        accent: "#d4b06a",
         imageSrc: "/divisions/energy.png",
       },
     ],
@@ -333,34 +507,29 @@ export const en: Dictionary = {
     items: [],
   },
   approach: {
-    label: "Approach",
+    label: "Core values",
     intro:
-      "Every HERNA endeavor is built upon a foundation of five unwavering principles that define our approach and commitment.",
+      "Principles shaping our investment vision and conduct — integrity at the foundation of sustainable growth.",
     values: [
       {
-        title: "Professionalism",
-        description:
-          "Achieving operational excellence and rigorous execution in every project.",
-      },
-      {
-        title: "Quality",
-        description:
-          "Upholding international standards across all our diverse projects and operations.",
+        title: "Integrity",
+        description: "We do what is right.",
       },
       {
         title: "Innovation",
-        description:
-          "Developing tailored and forward-thinking solutions for unique African challenges.",
+        description: "We embrace new ideas.",
       },
       {
         title: "Partnership",
-        description:
-          "Cultivating strategic alliances for profound and sustainable impact.",
+        description: "We achieve more together.",
       },
       {
-        title: "Sustainable Development",
-        description:
-          "Championing economic growth that profoundly respects both the environment and its people.",
+        title: "Excellence",
+        description: "We deliver quality.",
+      },
+      {
+        title: "Sustainability",
+        description: "We build for the future.",
       },
     ],
   },
@@ -371,7 +540,7 @@ export const en: Dictionary = {
       {
         id: "tpg",
         name: "TPG — The Pertinent Group",
-        role: "Strategic collaborator",
+        role: "Joint venture alignment, global funding structuring, and high-level cross-border asset orchestration.",
         phone: "[+229] 0197298070",
         phoneTel: "+2290197298070",
         logoBg: "transparent",
@@ -380,7 +549,7 @@ export const en: Dictionary = {
       {
         id: "hmd",
         name: "HMD",
-        role: "Partner contributing specialized expertise to the portfolio",
+        role: "Primary logistical deployment, technical equipment lifecycle engineering, and supply chain resilience.",
         phone: null,
         phoneTel: null,
         logoBg: "transparent",
@@ -389,7 +558,7 @@ export const en: Dictionary = {
       {
         id: "osgb",
         name: "OSGB — Oluwa Shola Global Business",
-        role: "Partner for concrete solutions in Africa",
+        role: "Operational management, regional regulatory compliance, and project governance optimizing productivity.",
         phone: "[+229] 0197091910",
         phoneTel: "+2290197091910",
         logoBg: "transparent",
@@ -401,7 +570,7 @@ export const en: Dictionary = {
     actLabel: "Contact",
     title: "Connect with HERNA HOLDING",
     invite:
-      "We invite you to reach out and explore how we can collaborate to build a prosperous future for Africa.",
+      "Partnering to structure Africa’s industrial and economic legacy. Reach out to explore how we can collaborate.",
     partnerContactsLabel: "Partner Contacts",
     entity: "HERNA HOLDING",
     partnerPhones: [
@@ -418,7 +587,7 @@ export const en: Dictionary = {
       "HERNA strives to keep the information on this website accurate and up to date. However, we cannot guarantee completeness or uninterrupted availability. Use of the site is at your own risk. Corporate registration numbers will be published here as soon as they are available.",
     privacyTitle: "Privacy policy",
     privacyIntro:
-      "This policy explains how HERITAGE OF NATIONS (HERNA) collects and uses personal information submitted through herna.vercel.app and related contact channels.",
+      "This policy explains how HERITAGE OF NATIONS (HERNA) collects and uses personal information submitted through herna-group.com and related contact channels.",
     privacyContactHeading: "Contact",
     privacyContactBody: "For privacy requests, contact",
     privacyDataHeading: "Data collected",

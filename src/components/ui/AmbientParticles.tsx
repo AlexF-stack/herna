@@ -18,8 +18,6 @@ export function AmbientParticles() {
     if (!ctx) return;
 
     let raf = 0;
-    let w = 0;
-    let h = 0;
     const density = window.innerWidth < 640 ? 28 : 55;
     const particles = Array.from({ length: density }, () => ({
       x: Math.random(),
@@ -30,8 +28,8 @@ export function AmbientParticles() {
     }));
 
     const resize = () => {
-      w = canvas.width = window.innerWidth * devicePixelRatio;
-      h = canvas.height = window.innerHeight * devicePixelRatio;
+      canvas.width = window.innerWidth * devicePixelRatio;
+      canvas.height = window.innerHeight * devicePixelRatio;
       canvas.style.width = `${window.innerWidth}px`;
       canvas.style.height = `${window.innerHeight}px`;
       ctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);

@@ -38,6 +38,13 @@ yarn-error.log*
 .env*
 !.env.example
 
+# temp extraction
+/tmp-plaquette/
+/tmp-*.png
+/tmp-*.svg
+/tmp-*.json
+/tmp-world.json
+
 # vercel
 .vercel
 

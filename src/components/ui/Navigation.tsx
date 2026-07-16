@@ -40,16 +40,16 @@ export function Navigation() {
       <div className="container-herna flex items-center justify-between py-4 md:py-5">
         <a
           href="#hero"
-          className="relative z-50 flex items-center rounded-sm bg-white px-2.5 py-1.5 transition-opacity duration-[600ms] ease-out hover:opacity-90"
+          className="relative z-50 flex items-center transition-opacity duration-[600ms] ease-out hover:opacity-90"
           onClick={() => setOpen(false)}
           aria-label={brandAssets.name}
         >
           <Image
-            src={brandAssets.logoSrc}
+            src={brandAssets.logoClearSrc}
             alt={brandAssets.holdingName}
             width={140}
-            height={48}
-            className="h-7 w-auto md:h-8"
+            height={110}
+            className="h-8 w-auto object-contain md:h-9"
             priority
           />
         </a>

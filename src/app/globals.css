@@ -4,34 +4,52 @@
   --font-clash: "Cabinet Grotesk", "Clash Display", system-ui, sans-serif;
   --font-general: "General Sans", system-ui, sans-serif;
 
-  /* Light-only premium holding palette (logo: gold / maroon / navy / slate blue) */
-  --bg: #f7f4ef;
+  /*
+   * Plaquette HERNA 2026 — charte officielle
+   * Navy profond · Or métallique · Blanc
+   */
+  --bg: #f4f5f7;
   --bg-elevated: #ffffff;
-  --surface: #ebe5db;
-  --ink: #12161e;
-  --muted: #5a6270;
-  --line: rgba(22, 48, 72, 0.1);
-  --gold: #b8922f;
-  --gold-soft: #c9a84c;
-  --maroon: #8e322a;
-  --maroon-soft: #a84a42;
-  --maroon-wash: #f3e9e7;
-  --navy: #24374d;
-  --navy-deep: #163048;
-  /* Mid wave from the emblem */
-  --blue: #355e83;
-  /* Section wash — logo blue diluted for readable holding bands */
-  --blue-wash: #e7eef5;
-  --blue-mist: #d5e2ee;
-  --nav-bg: rgba(247, 244, 239, 0.92);
-  /* Header adapts to section behind it */
-  --nav-on-light: color-mix(in srgb, var(--blue-wash) 94%, transparent);
-  --nav-on-blue: rgba(255, 255, 255, 0.94);
+  --surface: #e8eaee;
+  --ink: #0a0e1a;
+  --muted: #5c6472;
+  --line: rgba(10, 14, 26, 0.1);
+  --gold: #c4a35a;
+  --gold-soft: #e2d0a0;
+  --gold-deep: #9a7b3d;
+  --gold-glow: rgba(196, 163, 90, 0.14);
+  /* Legacy alias → or (plus de maroon dans la charte plaquette) */
+  --maroon: var(--gold);
+  --maroon-soft: var(--gold-soft);
+  --maroon-wash: color-mix(in srgb, var(--gold) 10%, white);
+  --navy: #1a2433;
+  --navy-deep: #0a0e1a;
+  --navy-mid: #121826;
+  --blue: #1a2433;
+  --blue-wash: #eef0f4;
+  --blue-mist: #e2e6ed;
+  --gold-wash: #f7f2e6;
+  /* Soft champagne wash — less metallic / less aggressive */
+  --gold-section: linear-gradient(
+    165deg,
+    #faf6ec 0%,
+    #f3ead5 42%,
+    #ebe0c4 78%,
+    #e4d6b0 100%
+  );
+  --nav-bg: rgba(255, 255, 255, 0.94);
+  --nav-on-light: linear-gradient(
+    90deg,
+    rgba(247, 242, 230, 0.96) 0%,
+    rgba(236, 224, 196, 0.97) 50%,
+    rgba(247, 242, 230, 0.96) 100%
+  );
+  --nav-on-gold: rgba(10, 14, 26, 0.94);
   --hero-overlay: linear-gradient(
     115deg,
-    rgba(22, 48, 72, 0.88) 0%,
-    rgba(22, 48, 72, 0.55) 48%,
-    rgba(10, 12, 16, 0.35) 100%
+    rgba(10, 14, 26, 0.78) 0%,
+    rgba(10, 14, 26, 0.48) 48%,
+    rgba(10, 14, 26, 0.28) 100%
   );
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
   --container: 1180px;
@@ -43,27 +61,39 @@
   --off-white: var(--ink);
   --text-gray: var(--muted);
   --border: var(--line);
-  --glass: rgba(255, 255, 255, 0.72);
-  --logo-maroon: var(--maroon);
+  --glass: rgba(255, 255, 255, 0.78);
+  --logo-maroon: var(--gold);
   --logo-navy: var(--navy-deep);
-  --logo-blue: var(--blue);
+  --logo-blue: var(--navy);
 }
 
-/* Soft brand band — light slate blue from the logo emblem */
+/* Bandes de section — champagne doux (or plaquette adouci) */
+.section-gold,
 .section-blue {
   background:
     radial-gradient(
-      120% 80% at 12% 0%,
-      color-mix(in srgb, var(--blue-mist) 88%, white) 0%,
+      110% 80% at 0% 0%,
+      rgba(255, 255, 255, 0.62) 0%,
       transparent 55%
     ),
     radial-gradient(
-      90% 70% at 88% 100%,
-      color-mix(in srgb, var(--blue) 10%, transparent) 0%,
-      transparent 50%
+      90% 70% at 100% 100%,
+      color-mix(in srgb, var(--gold) 10%, transparent) 0%,
+      transparent 52%
     ),
-    var(--blue-wash);
-  border-color: color-mix(in srgb, var(--blue) 16%, transparent);
+    var(--gold-section);
+  border-color: color-mix(in srgb, var(--gold-deep) 14%, transparent);
+  color: var(--navy-deep);
+}
+
+.section-gold .label-act,
+.section-blue .label-act {
+  color: color-mix(in srgb, var(--navy-deep) 72%, var(--gold-deep));
+}
+
+.section-navy {
+  background: var(--navy-deep);
+  color: #fff;
 }
 
 @theme inline {
@@ -162,32 +192,34 @@ html.has-soft-cursor * {
   color: var(--gold);
 }
 
-/* Emblem maroon as a quiet brand tick — never a fill */
+/* Accent or — tick de marque plaquette */
 .label-act::before {
   content: "";
-  width: 1.05rem;
+  width: 1.15rem;
   height: 1.5px;
   flex-shrink: 0;
   border-radius: 999px;
-  background: var(--maroon);
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--maroon) 12%, transparent);
+  background: linear-gradient(90deg, var(--gold-deep), var(--gold));
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--gold) 18%, transparent);
 }
 
-.chip-maroon {
+.chip-maroon,
+.chip-gold {
   background: var(--maroon-wash);
-  color: var(--maroon);
+  color: var(--gold-deep);
 }
 
 .accent-rule {
-  border-color: color-mix(in srgb, var(--maroon) 55%, var(--line));
+  border-color: color-mix(in srgb, var(--gold) 55%, var(--line));
 }
 
-.card-accent-maroon {
-  box-shadow: inset 3px 0 0 0 var(--maroon);
+.card-accent-maroon,
+.card-accent-gold {
+  box-shadow: inset 3px 0 0 0 var(--gold);
 }
 
 .card-accent-blue {
-  box-shadow: inset 3px 0 0 0 var(--blue);
+  box-shadow: inset 3px 0 0 0 var(--navy);
 }
 
 .section-pad {
@@ -206,21 +238,22 @@ html.has-soft-cursor * {
   min-height: 2.85rem;
   padding: 0.8rem 1.35rem;
   border-radius: 999px;
-  background: var(--gold);
-  color: #0a0c10;
+  background: linear-gradient(180deg, var(--gold-soft) 0%, var(--gold) 55%, var(--gold-deep) 100%);
+  color: var(--navy-deep);
   font-size: 0.9rem;
   font-weight: 600;
   letter-spacing: 0.01em;
+  box-shadow: 0 10px 28px var(--gold-glow);
   transition:
     transform 0.35s var(--ease),
-    background-color 0.35s var(--ease),
+    filter 0.35s var(--ease),
     box-shadow 0.35s var(--ease);
 }
 
 .btn-primary:hover {
-  background: color-mix(in srgb, var(--gold) 85%, #fff);
+  filter: brightness(1.06);
   transform: translateY(-1px);
-  box-shadow: 0 14px 32px rgba(184, 146, 47, 0.28);
+  box-shadow: 0 16px 36px rgba(201, 162, 75, 0.34);
 }
 
 .btn-secondary {
@@ -231,11 +264,11 @@ html.has-soft-cursor * {
   min-height: 2.85rem;
   padding: 0.8rem 1.35rem;
   border-radius: 999px;
-  border: 1px solid color-mix(in srgb, var(--ink) 22%, transparent);
+  border: 1px solid color-mix(in srgb, var(--navy) 18%, transparent);
   color: var(--ink);
   font-size: 0.9rem;
   font-weight: 500;
-  background: color-mix(in srgb, var(--ink) 3%, transparent);
+  background: color-mix(in srgb, var(--navy) 3%, transparent);
   backdrop-filter: blur(8px);
   transition:
     border-color 0.35s var(--ease),
@@ -426,11 +459,11 @@ textarea:focus {
   padding: 1px;
   background: linear-gradient(
     135deg,
-    color-mix(in srgb, var(--maroon) 35%, transparent) 0%,
-    transparent 28%,
-    color-mix(in srgb, var(--gold) 55%, transparent) 52%,
+    color-mix(in srgb, var(--gold) 55%, transparent) 0%,
+    transparent 30%,
+    color-mix(in srgb, var(--navy) 35%, transparent) 55%,
     transparent 78%,
-    color-mix(in srgb, var(--blue) 28%, transparent) 100%
+    color-mix(in srgb, var(--gold-soft) 40%, transparent) 100%
   );
   -webkit-mask:
     linear-gradient(#000 0 0) content-box,

@@ -24,7 +24,7 @@ export function SiteMediaBand() {
           cycleMs={5500}
           overlayStyle={{
             background:
-              "linear-gradient(180deg, rgba(10,12,16,0.35) 0%, rgba(22,48,72,0.72) 55%, rgba(10,12,16,0.88) 100%)",
+              "linear-gradient(180deg, rgba(10,14,26,0.4) 0%, rgba(10,14,26,0.78) 55%, rgba(10,14,26,0.92) 100%)",
           }}
         />
         <div className="container-herna relative z-10 flex min-h-[52svh] items-end pb-14 pt-24 md:min-h-[62svh] md:pb-20">

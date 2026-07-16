@@ -1,23 +1,22 @@
-﻿"use client";
+"use client";
 
 import {
   useDictionary,
   useLocale,
 } from "@/components/providers/LocaleProvider";
+import { BrandLogo } from "@/components/site/BrandLogo";
 import { HardLink } from "@/components/site/HardLink";
 import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
 import { brandAssets } from "@/content/brand";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { X } from "lucide-react";
-import Image from "next/image";
 import { useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
-type NavSurface = "hero" | "dark" | "blue" | "light";
+type NavSurface = "hero" | "dark" | "gold" | "light";
 
 type Props = {
   visible: boolean;
-  /** Starting surface before first scroll probe (secondary pages = light). */
   initialSurface?: NavSurface;
 };
 
@@ -34,12 +33,12 @@ function readNavSurface(header: HTMLElement | null): NavSurface {
   if (
     value === "hero" ||
     value === "dark" ||
-    value === "blue" ||
+    value === "gold" ||
     value === "light"
   ) {
     return value;
   }
-  if (el?.closest(".section-blue")) return "blue";
+  if (el?.closest(".section-gold, .section-blue")) return "gold";
   if (el?.closest("#hero")) return "hero";
   if (el?.closest("footer")) return "dark";
   return "light";
@@ -99,22 +98,23 @@ export function SiteNav({ visible, initialSurface = "hero" }: Props) {
 
   if (!visible) return null;
 
-  const overDark =
-    (surface === "hero" || surface === "dark") && !open;
-  const headerSurface: NavSurface = open ? "blue" : surface;
-  const headerClass =
-    headerSurface === "hero"
-      ? "border-b border-transparent bg-gradient-to-b from-black/35 to-transparent"
-      : headerSurface === "dark"
-        ? "border-b border-white/10 bg-[#0d1520]/94 shadow-[0_10px_40px_rgba(0,0,0,0.35)] backdrop-blur-xl"
-        : headerSurface === "blue"
-          ? "border-b border-[color:var(--line)] bg-[color:var(--nav-on-blue)] shadow-[0_10px_40px_rgba(22,48,72,0.08)] backdrop-blur-xl"
-          : "border-b border-[color:var(--line)] bg-[color:var(--nav-on-light)] shadow-[0_10px_40px_rgba(22,48,72,0.08)] backdrop-blur-xl";
+  const activeSurface: NavSurface = open ? "dark" : surface;
+  const goldBar = activeSurface === "light";
+  const darkBar =
+    activeSurface === "gold" ||
+    activeSurface === "dark" ||
+    activeSurface === "hero";
 
-  const linkTone = overDark
-    ? "text-white/75 hover:text-white"
-    : "text-[color:var(--ink)]/70 hover:text-[color:var(--ink)]";
-  const iconTone = overDark ? "text-white" : "text-[color:var(--ink)]";
+  const headerClass = goldBar
+    ? "border-b border-[color:var(--gold)]/20 bg-[image:var(--nav-on-light)] shadow-[0_6px_24px_rgba(26,36,51,0.06)] backdrop-blur-md"
+    : activeSurface === "hero"
+      ? "border-b border-transparent bg-gradient-to-b from-black/40 to-transparent"
+      : "border-b border-white/10 bg-[color:var(--nav-on-gold)] shadow-[0_10px_40px_rgba(0,0,0,0.35)] backdrop-blur-xl";
+
+  const linkTone = goldBar
+    ? "text-[color:var(--navy-deep)]/75 hover:text-[color:var(--navy-deep)]"
+    : "text-white/75 hover:text-white";
+  const iconTone = goldBar ? "text-[color:var(--navy-deep)]" : "text-white";
   const buildHref = (href: string) => `/${locale}${href}`;
   const address = brandAssets.address[locale];
 
@@ -134,12 +134,12 @@ export function SiteNav({ visible, initialSurface = "hero" }: Props) {
               aria-modal="true"
               aria-label={dictionary.ui.menu}
             >
-              <div className="absolute inset-0 section-blue" />
+              <div className="absolute inset-0 bg-[color:var(--navy-deep)]" />
               <div
-                className="absolute inset-0 opacity-70"
+                className="absolute inset-0 opacity-80"
                 style={{
                   background:
-                    "radial-gradient(ellipse at 100% 0%, rgba(184,146,47,0.16), transparent 45%), radial-gradient(ellipse at 0% 90%, rgba(142,50,42,0.08), transparent 40%)",
+                    "radial-gradient(ellipse at 100% 0%, rgba(201,162,75,0.18), transparent 45%), radial-gradient(ellipse at 0% 90%, rgba(26,36,51,0.5), transparent 40%)",
                 }}
                 aria-hidden
               />
@@ -158,19 +158,19 @@ export function SiteNav({ visible, initialSurface = "hero" }: Props) {
                     onClick={() => setOpen(false)}
                     aria-label={brandAssets.name}
                   >
-                    <Image
-                      src={brandAssets.logoClearSrc}
+                    <BrandLogo
+                      variant="nav"
+                      width={180}
+                      height={48}
+                      className="h-10 w-auto object-contain sm:h-11"
                       alt=""
-                      width={200}
-                      height={70}
-                      className="h-12 w-auto sm:h-14"
                     />
                   </a>
                   <div className="flex items-center gap-2">
-                    <LanguageSwitcher className="rounded-full bg-white/80 px-3 py-2 shadow-sm ring-1 ring-black/5 [&_a[aria-current=page]]:text-[color:var(--maroon)]" />
+                    <LanguageSwitcher className="rounded-full bg-white/10 px-3 py-2 ring-1 ring-white/15 [&_a]:text-white/70 [&_a[aria-current=page]]:text-[color:var(--gold)] [&_a:hover]:text-white" />
                     <button
                       type="button"
-                      className="flex h-11 w-11 items-center justify-center rounded-full bg-white text-[color:var(--ink)] shadow-sm ring-1 ring-black/5"
+                      className="flex h-11 w-11 items-center justify-center rounded-full bg-white text-[color:var(--navy-deep)] shadow-sm"
                       aria-label={dictionary.ui.closeMenu}
                       onClick={() => setOpen(false)}
                       data-cursor-hover
@@ -184,7 +184,9 @@ export function SiteNav({ visible, initialSurface = "hero" }: Props) {
                   className="container-herna flex-1 overflow-y-auto overscroll-contain pb-4 pt-2"
                   aria-label={dictionary.ui.menu}
                 >
-                  <p className="label-act mb-3">{dictionary.ui.menu}</p>
+                  <p className="label-act mb-3 text-[color:var(--gold)]">
+                    {dictionary.ui.menu}
+                  </p>
                   <ul className="flex flex-col">
                     {dictionary.nav.map((link, i) => (
                       <motion.li
@@ -199,11 +201,11 @@ export function SiteNav({ visible, initialSurface = "hero" }: Props) {
                       >
                         <a
                           href={buildHref(link.href)}
-                          className="group flex min-h-[3.4rem] items-center border-b border-[color:var(--line)] py-3.5"
+                          className="group flex min-h-[3.4rem] items-center border-b border-white/12 py-3.5"
                           onClick={() => setOpen(false)}
                           data-cursor-hover
                         >
-                          <span className="font-display text-[clamp(1.45rem,6.2vw,2.1rem)] leading-none text-[color:var(--ink)] transition-colors group-active:text-[color:var(--maroon)]">
+                          <span className="font-display text-[clamp(1.45rem,6.2vw,2.1rem)] leading-none text-white transition-colors group-active:text-[color:var(--gold)]">
                             {link.label}
                           </span>
                         </a>
@@ -212,7 +214,7 @@ export function SiteNav({ visible, initialSurface = "hero" }: Props) {
                   </ul>
                 </nav>
 
-                <div className="container-herna space-y-4 border-t border-[color:var(--line)] bg-white/55 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-4 backdrop-blur-md">
+                <div className="container-herna space-y-4 border-t border-white/12 bg-black/25 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-4 backdrop-blur-md">
                   <a
                     href={buildHref("#contact")}
                     className="btn-primary w-full"
@@ -221,15 +223,15 @@ export function SiteNav({ visible, initialSurface = "hero" }: Props) {
                   >
                     {dictionary.ui.contactShort}
                   </a>
-                  <div className="flex flex-wrap items-start justify-between gap-3 text-sm text-[color:var(--muted)]">
+                  <div className="flex flex-wrap items-start justify-between gap-3 text-sm text-white/65">
                     <div className="space-y-1">
-                      <p className="font-medium text-[color:var(--ink)]">
+                      <p className="font-medium text-white">
                         {brandAssets.holdingName}
                       </p>
                       <p>{address}</p>
                       <a
                         href={`tel:${brandAssets.phoneTel}`}
-                        className="block text-[color:var(--maroon)] hover:underline"
+                        className="block text-[color:var(--gold)] hover:underline"
                       >
                         {brandAssets.phone}
                       </a>
@@ -237,14 +239,14 @@ export function SiteNav({ visible, initialSurface = "hero" }: Props) {
                     <div className="flex flex-col items-end gap-2 text-right">
                       <HardLink
                         href={`/${locale}/legal-notice`}
-                        className="hover:text-[color:var(--ink)]"
+                        className="hover:text-white"
                         onClick={() => setOpen(false)}
                       >
                         {dictionary.ui.legalNotice}
                       </HardLink>
                       <HardLink
                         href={`/${locale}/privacy-policy`}
-                        className="hover:text-[color:var(--ink)]"
+                        className="hover:text-white"
                         onClick={() => setOpen(false)}
                       >
                         {dictionary.ui.privacyPolicy}
@@ -274,12 +276,15 @@ export function SiteNav({ visible, initialSurface = "hero" }: Props) {
             aria-label={brandAssets.name}
             data-cursor-hover
           >
-            <Image
-              src={brandAssets.logoClearSrc}
-              alt={brandAssets.holdingName}
-              width={220}
-              height={76}
-              className="h-11 w-auto drop-shadow-[0_2px_10px_rgba(0,0,0,0.4)] sm:h-12 md:h-[3.35rem] lg:h-14"
+            <BrandLogo
+              variant="nav"
+              width={180}
+              height={48}
+              className={`h-10 w-auto object-contain sm:h-11 md:h-12 ${
+                darkBar && !goldBar
+                  ? "drop-shadow-[0_2px_10px_rgba(0,0,0,0.35)]"
+                  : ""
+              }`}
               priority
             />
           </a>
@@ -299,9 +304,9 @@ export function SiteNav({ visible, initialSurface = "hero" }: Props) {
                     {link.label}
                     <span
                       className={`pointer-events-none absolute inset-x-3 -bottom-0.5 h-px origin-left scale-x-0 transition-transform duration-500 ease-out group-hover:scale-x-100 ${
-                        overDark
-                          ? "bg-[color:var(--gold-soft)]"
-                          : "bg-[color:var(--gold)]"
+                        goldBar
+                          ? "bg-[color:var(--navy-deep)]"
+                          : "bg-[color:var(--gold-soft)]"
                       }`}
                       aria-hidden
                     />
@@ -313,16 +318,18 @@ export function SiteNav({ visible, initialSurface = "hero" }: Props) {
 
           <div className="relative z-50 flex items-center gap-1.5 sm:gap-2">
             <LanguageSwitcher
-              className={`${
-                overDark
-                  ? "[&_a]:text-white/65 [&_a[aria-current=page]]:text-[color:var(--gold-soft)] [&_a:hover]:text-white"
-                  : "[&_a]:text-[color:var(--muted)] [&_a[aria-current=page]]:text-[color:var(--gold)] [&_a:hover]:text-[color:var(--ink)]"
-              }`}
+              className={
+                goldBar
+                  ? "[&_a]:text-[color:var(--navy-deep)]/65 [&_a[aria-current=page]]:text-[color:var(--navy-deep)] [&_a:hover]:text-[color:var(--navy-deep)]"
+                  : "[&_a]:text-white/65 [&_a[aria-current=page]]:text-[color:var(--gold-soft)] [&_a:hover]:text-white"
+              }
             />
             <a
               href={buildHref("#contact")}
               data-cursor-hover
-              className="btn-primary !min-h-9 !px-3.5 !py-2 text-sm max-[380px]:hidden"
+              className={`btn-primary !min-h-9 !px-3.5 !py-2 text-sm max-[380px]:hidden ${
+                goldBar ? "!text-[color:var(--navy-deep)]" : ""
+              }`}
             >
               {dictionary.ui.contactShort}
             </a>
@@ -335,7 +342,9 @@ export function SiteNav({ visible, initialSurface = "hero" }: Props) {
               }`}
               aria-expanded={open}
               aria-controls={menuId}
-              aria-label={open ? dictionary.ui.closeMenu : dictionary.ui.openMenu}
+              aria-label={
+                open ? dictionary.ui.closeMenu : dictionary.ui.openMenu
+              }
               onClick={() => setOpen((v) => !v)}
               data-cursor-hover
             >
@@ -345,17 +354,17 @@ export function SiteNav({ visible, initialSurface = "hero" }: Props) {
                 <span aria-hidden className="flex w-5 flex-col items-end gap-[5px]">
                   <span
                     className={`block h-[1.5px] w-full rounded-full ${
-                      overDark ? "bg-white" : "bg-[color:var(--ink)]"
+                      goldBar ? "bg-[color:var(--navy-deep)]" : "bg-white"
                     }`}
                   />
                   <span
                     className={`block h-[1.5px] w-3.5 rounded-full ${
-                      overDark ? "bg-white" : "bg-[color:var(--ink)]"
+                      goldBar ? "bg-[color:var(--navy-deep)]" : "bg-white"
                     }`}
                   />
                   <span
                     className={`block h-[1.5px] w-full rounded-full ${
-                      overDark ? "bg-white" : "bg-[color:var(--ink)]"
+                      goldBar ? "bg-[color:var(--navy-deep)]" : "bg-white"
                     }`}
                   />
                 </span>

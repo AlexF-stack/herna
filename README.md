@@ -34,4 +34,5 @@ Optional: set `FORMSPREE_ID` / `NEXT_PUBLIC_FORMSPREE_ID` to use Formspree inste
 
 Connected to Vercel from the GitHub repository. No env var required for the default FormSubmit inbox flow.
 
-Replace `public/company-profile.pdf` and `public/media/hero.mp4` with official assets when available.
+Official Company Profile (Plaquette HERNA 2026) is served at `/company-profile.pdf`.
+Set `NEXT_PUBLIC_SITE_URL=https://www.herna-group.com` when the custom domain is live.

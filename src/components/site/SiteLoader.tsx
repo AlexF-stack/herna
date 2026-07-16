@@ -3,12 +3,11 @@
 import { useDictionary } from "@/components/providers/LocaleProvider";
 import { brandAssets } from "@/content/brand";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
-const PRELOADER_SRC = "/media/preloader.webm";
 const SESSION_KEY = "herna-intro-seen";
-const MIN_MS = 1600;
-const MAX_MS = 4200;
+/** Keep the brand beat short — returning visitors skip entirely. */
+const MAX_MS = 900;
 
 type Props = {
   onComplete: () => void;
@@ -31,19 +30,17 @@ function markSeen() {
 }
 
 /**
- * Cinematic video preloader — only on first home entry of the session.
- * Later navigations use the route loading shell (logo only, no video).
+ * Brand intro shell — short, fail-safe.
+ * Initial `visible` is always `true` so SSR HTML matches the first client paint;
+ * session / reduced-motion decisions run only after mount.
  */
 export function SiteLoader({ onComplete }: Props) {
   const dictionary = useDictionary();
   const reduced = useReducedMotion();
-  const videoRef = useRef<HTMLVideoElement>(null);
   const completedRef = useRef(false);
   const onCompleteRef = useRef(onComplete);
-  const startedAt = useRef(0);
-  const [visible, setVisible] = useState(() => !hasSeenIntro());
-  const [videoOk, setVideoOk] = useState(true);
-  const [videoReady, setVideoReady] = useState(false);
+  /** Must be identical on server + first client render (no sessionStorage / media queries). */
+  const [visible, setVisible] = useState(true);
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
@@ -55,138 +52,66 @@ export function SiteLoader({ onComplete }: Props) {
     completedRef.current = true;
     markSeen();
     document.body.style.overflow = "";
-    document.getElementById("herna-boot")?.remove();
     setVisible(false);
     onCompleteRef.current();
   };
 
-  const finishAfterMin = () => {
-    const elapsed = Date.now() - startedAt.current;
-    const wait = Math.max(0, MIN_MS - elapsed);
-    window.setTimeout(complete, wait);
-  };
-
-  useEffect(() => {
-    if (!visible) {
-      document.getElementById("herna-boot")?.remove();
+  useLayoutEffect(() => {
+    // Skip intro after first visit or when motion is reduced — before paint when possible.
+    if (hasSeenIntro() || reduced) {
+      completedRef.current = true;
+      document.body.style.overflow = "";
+      setVisible(false);
       onCompleteRef.current();
       return;
     }
 
-    startedAt.current = Date.now();
     document.body.style.overflow = "hidden";
-    document.getElementById("herna-boot")?.remove();
 
-    if (reduced) {
-      complete();
-      return;
-    }
+    const started = Date.now();
+    const tick = window.setInterval(() => {
+      const p = Math.min(
+        100,
+        Math.round(((Date.now() - started) / MAX_MS) * 100),
+      );
+      setProgress(p);
+    }, 50);
 
-    const maxTimer = window.setTimeout(complete, MAX_MS);
+    const timer = window.setTimeout(complete, MAX_MS);
+
     return () => {
-      window.clearTimeout(maxTimer);
+      window.clearTimeout(timer);
+      window.clearInterval(tick);
       document.body.style.overflow = "";
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    if (!visible || reduced || !videoOk) return;
-    const el = videoRef.current;
-    if (!el) return;
-
-    const onTime = () => {
-      if (!el.duration || !Number.isFinite(el.duration)) return;
-      setProgress(
-        Math.min(100, Math.round((el.currentTime / el.duration) * 100)),
-      );
-    };
-
-    const play = async () => {
-      try {
-        el.defaultMuted = true;
-        el.muted = true;
-        el.playsInline = true;
-        await el.play();
-        setVideoReady(true);
-      } catch {
-        setVideoOk(false);
-      }
-    };
-
-    el.addEventListener("timeupdate", onTime);
-    el.addEventListener("playing", () => setVideoReady(true));
-    el.addEventListener("ended", finishAfterMin);
-    void play();
-
-    return () => {
-      el.removeEventListener("timeupdate", onTime);
-      el.removeEventListener("ended", finishAfterMin);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [visible, reduced, videoOk]);
-
-  useEffect(() => {
-    if (!visible || reduced || videoOk) return;
-    let frame = 0;
-    let raf = 0;
-    const tick = () => {
-      frame += 1;
-      const next = Math.min(100, Math.round(frame * 4));
-      setProgress(next);
-      if (next >= 100) {
-        finishAfterMin();
-        return;
-      }
-      raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [visible, reduced, videoOk]);
+  }, [reduced]);
 
   return (
     <AnimatePresence>
-      {visible && (
+      {visible ? (
         <motion.div
-          className="pointer-events-none fixed inset-0 z-[100] flex flex-col items-center justify-center bg-white"
+          key="herna-loader"
+          className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#0a0e1a]"
           initial={false}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
           aria-busy="true"
           aria-label={dictionary.ui.loading}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={brandAssets.logoOpaqueSrc}
+            src={brandAssets.logoOnDarkSrc}
             alt=""
-            width={720}
-            height={280}
-            className={`absolute left-1/2 top-1/2 z-[1] w-[min(86vw,26rem)] -translate-x-1/2 -translate-y-1/2 object-contain transition-opacity duration-500 ${
-              videoReady && videoOk ? "opacity-0" : "opacity-100"
-            }`}
+            width={520}
+            height={420}
+            className="relative z-[1] w-[min(72vw,20rem)] object-contain"
           />
 
-          {videoOk && !reduced ? (
-            <video
-              ref={videoRef}
-              className={`absolute inset-0 z-[1] h-full w-full scale-[1.2] object-contain bg-white transition-opacity duration-500 sm:scale-[1.24] md:scale-[1.3] ${
-                videoReady ? "opacity-100" : "opacity-0"
-              }`}
-              src={PRELOADER_SRC}
-              muted
-              playsInline
-              preload="auto"
-              aria-hidden
-              onError={() => setVideoOk(false)}
-            />
-          ) : null}
-
           <div className="absolute inset-x-0 bottom-16 z-[2] flex flex-col items-center">
-            <div className="h-px w-40 overflow-hidden bg-black/10 sm:w-52">
+            <div className="h-px w-40 overflow-hidden bg-white/15 sm:w-52">
               <div
-                className="h-full bg-[color:var(--gold)] transition-[width] duration-200 ease-out"
+                className="h-full bg-[color:var(--gold)] transition-[width] duration-100 ease-out"
                 style={{ width: `${progress}%` }}
               />
             </div>
@@ -194,14 +119,14 @@ export function SiteLoader({ onComplete }: Props) {
 
           <button
             type="button"
-            className="pointer-events-auto absolute bottom-8 z-[3] text-sm text-[color:var(--muted)] underline-offset-4 hover:text-[color:var(--ink)] hover:underline"
+            className="absolute bottom-8 z-[3] text-sm text-white/70 underline-offset-4 hover:text-white hover:underline"
             onClick={complete}
             data-cursor-hover
           >
             {dictionary.prologue.skip}
           </button>
         </motion.div>
-      )}
+      ) : null}
     </AnimatePresence>
   );
 }

@@ -1,34 +1,36 @@
 "use client";
 
-import { useDictionary } from "@/components/providers/LocaleProvider";
-import { Reveal } from "@/components/site/Reveal";
-import { SoftImage } from "@/shared/ui/SoftImage";
 import {
-  motion,
-  useReducedMotion,
-  useScroll,
-  useTransform,
-} from "framer-motion";
-import { useRef } from "react";
+  useDictionary,
+  useLocale,
+} from "@/components/providers/LocaleProvider";
+import { AfricaGoldMap } from "@/components/site/AfricaGoldMap";
+import { Reveal } from "@/components/site/Reveal";
+import { brandAssets } from "@/content/brand";
 
 export function SiteAbout() {
   const dictionary = useDictionary();
-  const reduced = useReducedMotion();
-  const ref = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"],
-  });
-  const y = useTransform(
-    scrollYProgress,
-    [0, 1],
-    reduced ? ["0%", "0%"] : ["-6%", "6%"],
-  );
+  const { locale } = useLocale();
+
+  const hqShort =
+    locale === "fr" ? "Cotonou, Bénin" : "Cotonou, Benin";
+
+  const facts = [
+    { label: dictionary.ui.founded, value: String(brandAssets.founded) },
+    { label: dictionary.ui.headquarters, value: hqShort },
+    {
+      label: dictionary.ui.businessScope,
+      value: brandAssets.presence[locale],
+    },
+    {
+      label: dictionary.ui.strategicUnits,
+      value: "5",
+    },
+  ];
 
   return (
     <section
       id="about"
-      ref={ref}
       data-nav-surface="light"
       className="section-pad"
       aria-labelledby="about-heading"
@@ -45,27 +47,29 @@ export function SiteAbout() {
           <p className="mt-6 text-body-lg text-[color:var(--muted)]">
             {dictionary.about.body}
           </p>
+          <p className="mt-5 border-l-2 border-[color:var(--gold)] pl-4 text-sm italic leading-relaxed text-[color:var(--ink)] md:text-base">
+            {dictionary.about.philosophy}
+          </p>
         </Reveal>
 
         <Reveal className="lg:col-span-7" delay={0.1}>
-          <div className="relative aspect-[16/11] overflow-hidden rounded-2xl border border-[color:var(--line)]">
-            <motion.div className="absolute inset-[-10%]" style={{ y }}>
-              <SoftImage
-                src="/divisions/real-estate.png"
-                alt=""
-                fill
-                quality={70}
-                sizes="(max-width: 1024px) 100vw, 55vw"
-                className="object-cover"
-                wrapperClassName="absolute inset-0"
-              />
-            </motion.div>
-            <div
-              className="absolute inset-0 bg-gradient-to-tr from-[rgba(22,48,72,0.45)] via-transparent to-[rgba(142,50,42,0.2)]"
-              aria-hidden
-            />
-          </div>
+          <AfricaGoldMap locale={locale} />
         </Reveal>
+      </div>
+
+      <div className="container-herna mt-10 grid gap-3 sm:grid-cols-2 lg:mt-12 lg:grid-cols-4">
+        {facts.map((fact, i) => (
+          <Reveal key={fact.label} delay={0.04 * i}>
+            <div className="rounded-xl border border-[color:var(--line)] bg-[color:var(--bg-elevated)] px-5 py-4">
+              <p className="text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-[color:var(--gold)]">
+                {fact.label}
+              </p>
+              <p className="mt-2 font-display text-lg text-[color:var(--ink)]">
+                {fact.value}
+              </p>
+            </div>
+          </Reveal>
+        ))}
       </div>
     </section>
   );

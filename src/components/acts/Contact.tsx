@@ -69,12 +69,12 @@ export function Contact() {
 
         <div className="mt-16 grid grid-cols-1 gap-14 lg:grid-cols-12 lg:gap-12">
           <div className="lg:col-span-5">
-            <div className="mb-8 flex max-w-sm items-center justify-center bg-white px-5 py-4">
+            <div className="mb-8 flex max-w-sm items-center justify-center">
               <Image
-                src={brandAssets.logoSrc}
+                src={brandAssets.logoClearSrc}
                 alt={`${brandAssets.holdingName} logo`}
                 width={420}
-                height={160}
+                height={320}
                 className="h-auto w-full max-w-[280px] object-contain"
               />
             </div>
@@ -204,12 +204,12 @@ export function Contact() {
                 {dictionary.ui.send}
               </MagneticButton>
               <a
-                href="/company-profile.pdf"
+                href={brandAssets.companyProfileSrc}
                 className="mt-2 inline-flex items-center gap-2 text-sm text-text-gray link-underline"
-                download
+                download={brandAssets.companyProfileDownloadName}
               >
                 <FileText className="h-4 w-4" aria-hidden />
-                Company Profile 2026
+                {dictionary.ui.downloadProfile}
               </a>
               {status === "sent" && (
                 <p className="text-sm text-gold-light" role="status">

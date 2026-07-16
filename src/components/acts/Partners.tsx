@@ -41,7 +41,7 @@ export function Partners() {
               key={`${partner.id}-${i}`}
               href="#partners"
               className="partner-logo relative flex h-28 w-56 shrink-0 items-center justify-center px-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold-primary"
-              style={{ backgroundColor: partner.logoBg }}
+              style={{ backgroundColor: "transparent" }}
               data-cursor-hover
               tabIndex={i < dictionary.partners.items.length ? 0 : -1}
               aria-label={partner.name}

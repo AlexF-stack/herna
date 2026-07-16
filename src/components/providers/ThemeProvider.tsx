@@ -25,7 +25,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 export function useTheme() {
   return {
     theme: "light" as ThemeMode,
-    setTheme: (_theme: ThemeMode) => {},
+    setTheme: () => {},
     toggleTheme: () => {},
   };
 }

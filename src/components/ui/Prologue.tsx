@@ -123,14 +123,12 @@ export function Prologue({ onComplete, active }: Props) {
         className="prologue-logo absolute opacity-0"
         aria-hidden="true"
       >
-        <div className="bg-white px-7 py-4">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={brandAssets.logoSrc}
-            alt=""
-            className="h-auto w-[min(70vw,340px)]"
-          />
-        </div>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={brandAssets.logoOnDarkSrc}
+          alt=""
+          className="h-auto w-[min(70vw,340px)] object-contain"
+        />
       </div>
 
       <div className="relative z-10 flex flex-col items-center gap-3 text-center">
