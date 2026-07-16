@@ -39,9 +39,13 @@ export function SitePartners() {
                     <Image
                       src={partner.logoSrc}
                       alt={partner.name}
-                      width={260}
-                      height={120}
-                      className="max-h-24 w-auto max-w-[90%] object-contain sm:max-h-28"
+                      width={partner.id === "tpg" ? 320 : 260}
+                      height={partner.id === "tpg" ? 140 : 120}
+                      className={`w-auto max-w-[94%] object-contain ${
+                        partner.id === "tpg"
+                          ? "max-h-[5.5rem] sm:max-h-28"
+                          : "max-h-24 sm:max-h-28"
+                      }`}
                     />
                   </div>
                   <h3 className="mt-6 font-display text-base text-[color:var(--ink)] md:text-lg">

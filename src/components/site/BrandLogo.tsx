@@ -4,7 +4,7 @@ import { brandAssets } from "@/content/brand";
 import Image from "next/image";
 
 type Props = {
-  /** light = dark tagline on light bg; dark = white tagline on dark bg; nav = compact nav lockup */
+  /** light | dark = full plaquette lockup; nav = compact header lockup */
   variant?: "light" | "dark" | "nav";
   className?: string;
   priority?: boolean;
@@ -13,24 +13,22 @@ type Props = {
   alt?: string;
 };
 
-/** Transparent HERNA lockup — no navy plate behind the mark. */
+/** Official HERNA plaquette lockup (transparent PNG — not the SVG recreation). */
 export function BrandLogo({
   variant = "light",
   className = "h-11 w-auto object-contain sm:h-12 md:h-14",
   priority = false,
   width = 220,
-  height = 170,
+  height = 190,
   alt,
 }: Props) {
   const src =
     variant === "nav"
       ? brandAssets.logoNavClearSrc
-      : variant === "dark"
-        ? brandAssets.logoOnDarkSrc
-        : brandAssets.logoClearSrc;
+      : brandAssets.logoClearSrc;
 
-  const w = variant === "nav" ? 180 : width;
-  const h = variant === "nav" ? 48 : height;
+  const w = variant === "nav" ? 200 : width;
+  const h = variant === "nav" ? 68 : height;
 
   return (
     <Image

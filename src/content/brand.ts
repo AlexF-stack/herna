@@ -2,17 +2,17 @@ export const brandAssets = {
   name: "HERNA",
   holdingName: "HERNA HOLDING",
   fullName: "HERITAGE OF NATIONS",
-  /** Transparent SVG lockup — light surfaces */
-  logoSrc: "/brand/herna-logo-clear.svg",
-  logoClearSrc: "/brand/herna-logo-clear.svg",
-  /** Transparent SVG lockup — dark surfaces (white tagline) */
-  logoOnDarkSrc: "/brand/herna-logo-on-dark.svg",
+  /** Official plaquette lockup (transparent PNG) — light & dark surfaces */
+  logoSrc: "/brand/herna-logo-clear.png",
+  logoClearSrc: "/brand/herna-logo-clear.png",
+  /** Same official lockup (gold reads on navy) */
+  logoOnDarkSrc: "/brand/herna-logo-clear.png",
   /** Transparent raster (plaquette crop, alpha) */
   logoClearPngSrc: "/brand/herna-logo-clear.png",
   logoNavClearSrc: "/brand/herna-logo-nav-clear.png",
   /** Transparent raster for OG / JSON-LD (no plate) */
   logoOpaqueSrc: "/brand/herna-logo-clear.png",
-  logoOfficialSrc: "/brand/herna-logo-clear.svg",
+  logoOfficialSrc: "/brand/herna-logo-official.png",
   logoPlaquetteSrc: "/brand/herna-logo-clear.png",
   coverSrc: "/brand/herna-cover.jpg",
   markSrc: "/brand/herna-mark.svg",

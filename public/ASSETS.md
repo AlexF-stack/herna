@@ -1,10 +1,9 @@
 # Public assets
 
 ## Brand
-- `/brand/herna-logo-clear.svg` — transparent lockup (light surfaces)
-- `/brand/herna-logo-on-dark.svg` — transparent lockup (dark surfaces)
-- `/brand/herna-logo-clear.png` — transparent raster lockup
-- `/brand/herna-logo-nav-clear.png` — compact nav lockup (transparent)
+- `/brand/herna-logo-clear.png` — **official plaquette lockup** (transparent)
+- `/brand/herna-logo-official.png` — same lockup, sized for UI
+- `/brand/herna-logo-nav-clear.png` — compact nav lockup (plaquette)
 - `/brand/africa-map.svg` — Africa map, gold borders, Benin + HQ pin (generated)
 - `/brand/africa-map-meta.json` — Benin centroid metadata
 - `/brand/herna-mark.svg` — gold pillars mark
@@ -16,9 +15,9 @@
 - `/docs/HERNA-Company-Profile-2026.pdf` — same file, explicit download name
 
 ## Divisions
-- `/divisions/equipment.png`
+- `/divisions/equipment.png` — from plaquette page Equipment (heavy machinery)
 - `/divisions/mining.png`
-- `/divisions/agriculture.png`
+- `/divisions/agriculture.png` — from plaquette page Agriculture & Livestock
 - `/divisions/energy.png`
 - `/divisions/real-estate.png`
 
@@ -28,7 +27,8 @@
 ## Media
 See `/media/README.md`
 
-## Regenerate Africa map
+## Regenerate from plaquette extracts
 ```bash
+node scripts/sync-plaquette-assets.mjs
 npm run generate:africa-map
 ```

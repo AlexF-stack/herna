@@ -160,9 +160,9 @@ export function SiteNav({ visible, initialSurface = "hero" }: Props) {
                   >
                     <BrandLogo
                       variant="nav"
-                      width={180}
-                      height={48}
-                      className="h-10 w-auto object-contain sm:h-11"
+                      width={200}
+                      height={68}
+                      className="h-11 w-auto object-contain sm:h-12"
                       alt=""
                     />
                   </a>
@@ -278,9 +278,9 @@ export function SiteNav({ visible, initialSurface = "hero" }: Props) {
           >
             <BrandLogo
               variant="nav"
-              width={180}
-              height={48}
-              className={`h-10 w-auto object-contain sm:h-11 md:h-12 ${
+              width={200}
+              height={68}
+              className={`h-11 w-auto object-contain sm:h-12 md:h-[3.25rem] ${
                 darkBar && !goldBar
                   ? "drop-shadow-[0_2px_10px_rgba(0,0,0,0.35)]"
                   : ""

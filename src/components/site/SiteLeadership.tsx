@@ -50,19 +50,19 @@ export function SiteLeadership() {
         aria-hidden
       />
 
-      <div className="container-herna grid items-center gap-10 lg:grid-cols-12 lg:gap-14">
-        <Reveal className="lg:col-span-5" delay={0.04}>
-          <TiltCard intensity={10} className="mx-auto max-w-md lg:mx-0">
+      <div className="container-herna grid items-start gap-8 lg:grid-cols-12 lg:items-center lg:gap-12">
+        <Reveal className="lg:col-span-4" delay={0.04}>
+          <TiltCard intensity={8} className="mx-auto w-full max-w-[14.5rem] sm:max-w-[16rem] lg:mx-0 lg:max-w-[17rem]">
             <motion.div
               style={{ y: floatY, rotateZ: rotate }}
-              className="relative overflow-hidden rounded-[1.5rem] border border-[color:var(--gold)]/45 bg-gradient-to-br from-[color:var(--navy-deep)] to-[color:var(--navy)] p-2.5 shadow-[0_30px_80px_rgba(10,14,26,0.22)]"
+              className="relative overflow-hidden rounded-[1.25rem] border border-[color:var(--gold)]/40 bg-gradient-to-br from-[color:var(--navy-deep)] to-[color:var(--navy)] p-2 shadow-[0_20px_50px_rgba(10,14,26,0.18)]"
             >
-              <div className="relative aspect-[4/5] overflow-hidden rounded-[1.1rem]">
+              <div className="relative aspect-[3/4] overflow-hidden rounded-[0.95rem]">
                 <Image
                   src={brandAssets.ceoPortraitSrc}
                   alt={brandAssets.ceo.name}
                   fill
-                  sizes="(max-width: 1024px) 90vw, 380px"
+                  sizes="(max-width: 1024px) 260px, 272px"
                   className="object-cover object-top"
                   priority
                 />
@@ -71,11 +71,11 @@ export function SiteLeadership() {
                   aria-hidden
                 />
               </div>
-              <div className="absolute bottom-5 left-5 right-5 rounded-xl border border-white/15 bg-black/35 px-4 py-3 backdrop-blur-md">
-                <p className="font-display text-sm text-white">
+              <div className="absolute bottom-3.5 left-3.5 right-3.5 rounded-lg border border-white/15 bg-black/35 px-3 py-2.5 backdrop-blur-md">
+                <p className="font-display text-xs text-white sm:text-sm">
                   {brandAssets.ceo.name}
                 </p>
-                <p className="mt-0.5 text-[0.65rem] uppercase tracking-[0.14em] text-[color:var(--gold-soft)]">
+                <p className="mt-0.5 text-[0.58rem] uppercase tracking-[0.12em] text-[color:var(--gold-soft)]">
                   {title}
                 </p>
               </div>
@@ -83,7 +83,7 @@ export function SiteLeadership() {
           </TiltCard>
         </Reveal>
 
-        <Reveal className="lg:col-span-7" delay={0.1}>
+        <Reveal className="lg:col-span-8" delay={0.1}>
           <p className="label-act text-[color:var(--gold)]">
             {dictionary.leadership.label}
           </p>
