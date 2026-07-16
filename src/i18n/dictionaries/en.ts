@@ -543,8 +543,8 @@ export const en: Dictionary = {
         role: "Joint venture alignment, global funding structuring, and high-level cross-border asset orchestration.",
         phone: "[+229] 0197298070",
         phoneTel: "+2290197298070",
-        logoBg: "#000000",
-        logoSrc: "/partners/tpg.jpg",
+        logoBg: "transparent",
+        logoSrc: "/partners/tpg-clear.png",
       },
       {
         id: "hmd",

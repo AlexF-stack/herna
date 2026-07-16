@@ -353,8 +353,8 @@ export const fr: Dictionary = {
         role: "Alignement de joint-ventures, structuration de financements mondiaux et orchestration d'actifs transfrontaliers.",
         phone: "[+229] 0197298070",
         phoneTel: "+2290197298070",
-        logoBg: "#000000",
-        logoSrc: "/partners/tpg.jpg",
+        logoBg: "transparent",
+        logoSrc: "/partners/tpg-clear.png",
       },
       {
         id: "hmd",

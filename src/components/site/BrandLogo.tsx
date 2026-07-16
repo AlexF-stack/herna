@@ -27,8 +27,8 @@ export function BrandLogo({
       ? brandAssets.logoNavClearSrc
       : brandAssets.logoClearSrc;
 
-  const w = variant === "nav" ? 200 : width;
-  const h = variant === "nav" ? 68 : height;
+  const w = variant === "nav" ? 240 : width;
+  const h = variant === "nav" ? 84 : height;
 
   return (
     <Image
