@@ -35,15 +35,15 @@ export function SitePartners() {
             >
               <TiltCard intensity={9} className="h-full">
                 <article className="flex h-full flex-col items-center rounded-2xl border border-[color:var(--line)] bg-[color:var(--bg-elevated)] px-6 py-9 text-center transition duration-500 hover:border-[color:var(--gold)]/40 hover:shadow-[0_16px_40px_rgba(10,14,26,0.1)]">
-                  <div className="flex h-28 w-full items-center justify-center sm:h-32">
+                  <div className="flex h-28 w-full items-center justify-center rounded-xl bg-white sm:h-32">
                     <Image
                       src={partner.logoSrc}
                       alt={partner.name}
-                      width={partner.id === "tpg" ? 360 : 260}
-                      height={partner.id === "tpg" ? 160 : 120}
+                      width={partner.id === "tpg" ? 400 : 260}
+                      height={partner.id === "tpg" ? 200 : 120}
                       className={`w-auto max-w-[94%] object-contain ${
                         partner.id === "tpg"
-                          ? "max-h-[5.75rem] sm:max-h-[6.5rem]"
+                          ? "max-h-[6rem] sm:max-h-28"
                           : "max-h-24 sm:max-h-28"
                       }`}
                     />
