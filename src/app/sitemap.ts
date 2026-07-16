@@ -8,40 +8,37 @@ const divisionSlugs = [
   "mining",
   "agriculture",
   "energy",
-];
-
-/** Stable date so crawlers don't see a fake "always updated" sitemap. */
-const LAST_MOD = new Date("2026-07-16");
+] as const;
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = brandAssets.websiteUrl.replace(/\/$/, "");
-  const staticPaths = ["", "/legal-notice", "/privacy-policy"];
   const entries: MetadataRoute.Sitemap = [];
 
   for (const locale of locales) {
-    for (const path of staticPaths) {
-      const languages = Object.fromEntries(
-        locales.map((l) => [l, `${base}/${l}${path}`]),
-      );
-      entries.push({
-        url: `${base}/${locale}${path}`,
-        lastModified: LAST_MOD,
-        changeFrequency: path === "" ? "weekly" : "monthly",
-        priority: path === "" ? 1 : 0.4,
-        alternates: { languages },
-      });
-    }
+    entries.push({
+      url: `${base}/${locale}`,
+      lastModified: new Date("2026-07-16"),
+      changeFrequency: "weekly",
+      priority: 1,
+    });
+    entries.push({
+      url: `${base}/${locale}/legal-notice`,
+      lastModified: new Date("2026-07-16"),
+      changeFrequency: "monthly",
+      priority: 0.4,
+    });
+    entries.push({
+      url: `${base}/${locale}/privacy-policy`,
+      lastModified: new Date("2026-07-16"),
+      changeFrequency: "monthly",
+      priority: 0.4,
+    });
     for (const slug of divisionSlugs) {
-      const path = `/divisions/${slug}`;
-      const languages = Object.fromEntries(
-        locales.map((l) => [l, `${base}/${l}${path}`]),
-      );
       entries.push({
-        url: `${base}/${locale}${path}`,
-        lastModified: LAST_MOD,
+        url: `${base}/${locale}/divisions/${slug}`,
+        lastModified: new Date("2026-07-16"),
         changeFrequency: "monthly",
         priority: 0.8,
-        alternates: { languages },
       });
     }
   }
