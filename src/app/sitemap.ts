@@ -20,12 +20,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   for (const locale of locales) {
     for (const path of staticPaths) {
-      const languages = {
-        ...Object.fromEntries(
-          locales.map((l) => [l, `${base}/${l}${path}`]),
-        ),
-        "x-default": `${base}/en${path}`,
-      };
+      const languages = Object.fromEntries(
+        locales.map((l) => [l, `${base}/${l}${path}`]),
+      );
       entries.push({
         url: `${base}/${locale}${path}`,
         lastModified: LAST_MOD,
@@ -36,12 +33,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }
     for (const slug of divisionSlugs) {
       const path = `/divisions/${slug}`;
-      const languages = {
-        ...Object.fromEntries(
-          locales.map((l) => [l, `${base}/${l}${path}`]),
-        ),
-        "x-default": `${base}/en${path}`,
-      };
+      const languages = Object.fromEntries(
+        locales.map((l) => [l, `${base}/${l}${path}`]),
+      );
       entries.push({
         url: `${base}/${locale}${path}`,
         lastModified: LAST_MOD,
