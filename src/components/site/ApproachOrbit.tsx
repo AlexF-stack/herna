@@ -33,6 +33,23 @@ const ACCENTS = [
 /** Seconds for one full orbit. */
 const ORBIT_PERIOD = 42;
 
+function splitOrbitLabel(title: string): [string, string?] {
+  const words = title.trim().split(/\s+/);
+  if (words.length < 2 || title.length <= 14) return [title];
+  const mid = Math.ceil(words.length / 2);
+  return [words.slice(0, mid).join(" "), words.slice(mid).join(" ")];
+}
+
+function orbitTextClass(title: string) {
+  if (title.length > 22) {
+    return "text-[0.5rem] leading-[1.05] sm:text-[0.56rem]";
+  }
+  if (title.length > 14) {
+    return "text-[0.56rem] leading-[1.08] sm:text-[0.62rem]";
+  }
+  return "text-[0.64rem] leading-[1.12] sm:text-[0.72rem]";
+}
+
 export function ApproachOrbit({ label, intro, values, hint }: Props) {
   const reduced = useReducedMotion();
   const [active, setActive] = useState<number | null>(null);
@@ -56,7 +73,7 @@ export function ApproachOrbit({ label, intro, values, hint }: Props) {
         {hint}
       </p>
 
-      <div className="relative mx-auto aspect-square w-full max-w-[min(100%,38rem)]">
+      <div className="relative mx-auto aspect-square w-full max-w-[min(100%,42rem)]">
         <div
           className="pointer-events-none absolute inset-[8%] rounded-full opacity-60"
           style={{
@@ -82,7 +99,7 @@ export function ApproachOrbit({ label, intro, values, hint }: Props) {
 
         {/* Fixed center hub */}
         <div
-          className="pointer-events-none absolute inset-[28%] z-10 flex flex-col items-center justify-center overflow-hidden rounded-full border border-[color:var(--line)] bg-[color:var(--bg-elevated)]/95 px-4 text-center shadow-[0_20px_50px_rgba(22,48,72,0.1)] backdrop-blur-md sm:inset-[26%] sm:px-6"
+          className="pointer-events-none absolute inset-[30%] z-10 flex flex-col items-center justify-center overflow-hidden rounded-full border border-[color:var(--line)] bg-[color:var(--bg-elevated)]/95 px-4 text-center shadow-[0_20px_50px_rgba(22,48,72,0.1)] backdrop-blur-md sm:inset-[28%] sm:px-6"
           aria-live="polite"
         >
           <AnimatePresence mode="wait">
@@ -130,11 +147,12 @@ export function ApproachOrbit({ label, intro, values, hint }: Props) {
         >
           {values.map((value, i) => {
             const a = (i / values.length) * Math.PI * 2 - Math.PI / 2;
-            const radius = 40;
+            const radius = 42;
             const x = 50 + radius * Math.cos(a);
             const y = 50 + radius * Math.sin(a);
             const accent = ACCENTS[i % ACCENTS.length];
             const isActive = active === i;
+            const [line1, line2] = splitOrbitLabel(value.title);
 
             return (
               <li
@@ -159,7 +177,7 @@ export function ApproachOrbit({ label, intro, values, hint }: Props) {
                         ? `${value.title}. ${value.description}`
                         : value.title
                     }
-                    className="relative flex h-[5.25rem] w-[5.25rem] items-center justify-center rounded-full border border-white/70 text-center shadow-[0_12px_28px_rgba(22,48,72,0.16)] outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] sm:h-[6.1rem] sm:w-[6.1rem]"
+                    className="relative flex h-[6.5rem] w-[6.5rem] items-center justify-center rounded-full border border-white/70 px-1 text-center shadow-[0_12px_28px_rgba(22,48,72,0.16)] outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] sm:h-[7.25rem] sm:w-[7.25rem]"
                     style={{
                       background: `radial-gradient(circle at 32% 28%, white 0%, color-mix(in srgb, ${accent} 22%, white) 45%, color-mix(in srgb, ${accent} 38%, white) 100%)`,
                     }}
@@ -182,8 +200,16 @@ export function ApproachOrbit({ label, intro, values, hint }: Props) {
                       }}
                       aria-hidden
                     />
-                    <span className="relative z-[1] max-w-[4.6rem] px-1.5 font-display text-[0.68rem] font-semibold uppercase leading-[1.15] tracking-wide text-[color:var(--ink)] sm:max-w-[5.2rem] sm:text-[0.78rem]">
-                      {value.title}
+                    <span
+                      className={`relative z-[1] max-w-[5.4rem] px-1 font-display font-semibold uppercase tracking-wide text-[color:var(--ink)] sm:max-w-[6rem] ${orbitTextClass(value.title)}`}
+                    >
+                      {line1}
+                      {line2 ? (
+                        <>
+                          <br />
+                          {line2}
+                        </>
+                      ) : null}
                     </span>
                   </motion.button>
                 </motion.div>
