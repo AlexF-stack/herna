@@ -62,11 +62,6 @@ export const fr: Dictionary = {
     { href: "#identity", label: "Identité" },
     { href: "#divisions", label: "Divisions" },
     { href: "#subsidiaries", label: "Filiales" },
-    {
-      href: "https://mashal-web.vercel.app",
-      label: "Mashal Equipment",
-      external: true,
-    },
     { href: "#partners", label: "Partenaires" },
     { href: "#contact", label: "Contact" },
   ],

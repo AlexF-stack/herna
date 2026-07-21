@@ -268,11 +268,6 @@ export const en: Dictionary = {
     { href: "#identity", label: "Identity" },
     { href: "#divisions", label: "Divisions" },
     { href: "#subsidiaries", label: "Subsidiaries" },
-    {
-      href: "https://mashal-web.vercel.app",
-      label: "Mashal Equipment",
-      external: true,
-    },
     { href: "#partners", label: "Partners" },
     { href: "#contact", label: "Contact" },
   ],
