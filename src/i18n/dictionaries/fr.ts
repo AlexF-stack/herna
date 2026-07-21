@@ -62,6 +62,11 @@ export const fr: Dictionary = {
     { href: "#identity", label: "Identité" },
     { href: "#divisions", label: "Divisions" },
     { href: "#subsidiaries", label: "Filiales" },
+    {
+      href: "https://mashal-web.vercel.app",
+      label: "Mashal Equipment",
+      external: true,
+    },
     { href: "#partners", label: "Partenaires" },
     { href: "#contact", label: "Contact" },
   ],
@@ -363,19 +368,21 @@ export const fr: Dictionary = {
     intro:
       "HERNA HOLDING réunit des filiales spécialisées qui opèrent dans des secteurs stratégiques, délivrent des solutions intégrées et contribuent au développement durable de l'Afrique.",
     tagline: "Trois sociétés spécialisées. Une vision. Un héritage.",
+    visitSite: "Visiter le site",
     items: [
       {
         id: "mashal",
         name: "Mashal Equipment",
         sector: "Équipements lourds & solutions industrielles",
         services: [
-          "Fourniture d'engins lourds",
-          "Pièces détachées",
-          "Services de maintenance",
-          "Équipements industriels",
-          "Support technique",
+          "Formation opérateurs",
+          "Consultation & assistance technique",
+          "Service après-vente",
+          "Pièces de rechange",
+          "Gestion de chantiers BTP, miniers & hydrauliques",
         ],
         logoSrc: "/subsidiaries/mashal.png",
+        href: "https://mashal-web.vercel.app",
       },
       {
         id: "tsalach",

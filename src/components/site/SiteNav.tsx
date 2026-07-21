@@ -116,6 +116,10 @@ export function SiteNav({ visible, initialSurface = "hero" }: Props) {
     : "text-white/75 hover:text-white";
   const iconTone = goldBar ? "text-[color:var(--navy-deep)]" : "text-white";
   const buildHref = (href: string) => `/${locale}${href}`;
+  const resolveNavHref = (href: string, external?: boolean) => {
+    if (external || href.startsWith("http")) return href;
+    return buildHref(href);
+  };
   const address = brandAssets.address[locale];
 
   const mobileMenu = mounted
@@ -200,7 +204,9 @@ export function SiteNav({ visible, initialSurface = "hero" }: Props) {
                         }}
                       >
                         <a
-                          href={buildHref(link.href)}
+                          href={resolveNavHref(link.href, link.external)}
+                          target={link.external ? "_blank" : undefined}
+                          rel={link.external ? "noopener noreferrer" : undefined}
                           className="group flex min-h-[3.4rem] items-center border-b border-white/12 py-3.5"
                           onClick={() => setOpen(false)}
                           data-cursor-hover
@@ -297,7 +303,9 @@ export function SiteNav({ visible, initialSurface = "hero" }: Props) {
               {dictionary.nav.map((link) => (
                 <li key={link.href}>
                   <a
-                    href={buildHref(link.href)}
+                    href={resolveNavHref(link.href, link.external)}
+                    target={link.external ? "_blank" : undefined}
+                    rel={link.external ? "noopener noreferrer" : undefined}
                     data-cursor-hover
                     className={`group relative rounded-full px-3 py-2 text-[0.78rem] font-medium tracking-wide transition-colors duration-300 ${linkTone}`}
                   >

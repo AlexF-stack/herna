@@ -47,7 +47,7 @@ export type Dictionary = {
     insightsNav: string;
     backToDivisions: string;
   };
-  nav: { href: string; label: string }[];
+  nav: { href: string; label: string; external?: boolean }[];
   hero: {
     actLabel: string;
     line1: string;
@@ -155,12 +155,14 @@ export type Dictionary = {
     headline: string;
     intro: string;
     tagline: string;
+    visitSite: string;
     items: {
       id: string;
       name: string;
       sector: string;
       services: string[];
       logoSrc: string;
+      href?: string;
     }[];
   };
   partners: {
@@ -266,6 +268,11 @@ export const en: Dictionary = {
     { href: "#identity", label: "Identity" },
     { href: "#divisions", label: "Divisions" },
     { href: "#subsidiaries", label: "Subsidiaries" },
+    {
+      href: "https://mashal-web.vercel.app",
+      label: "Mashal Equipment",
+      external: true,
+    },
     { href: "#partners", label: "Partners" },
     { href: "#contact", label: "Contact" },
   ],
@@ -567,19 +574,21 @@ export const en: Dictionary = {
     intro:
       "HERNA HOLDING brings together specialized subsidiaries that operate across strategic sectors, delivering integrated solutions and contributing to Africa’s sustainable development.",
     tagline: "Three specialized companies. One vision. One legacy.",
+    visitSite: "Visit website",
     items: [
       {
         id: "mashal",
         name: "Mashal Equipment",
         sector: "Heavy equipment & industrial solutions",
         services: [
-          "Heavy equipment supply",
+          "Operator training",
+          "Consulting & technical assistance",
+          "After-sales service",
           "Spare parts",
-          "Maintenance services",
-          "Industrial equipment",
-          "Technical support",
+          "Construction, mining & hydraulic site management",
         ],
         logoSrc: "/subsidiaries/mashal.png",
+        href: "https://mashal-web.vercel.app",
       },
       {
         id: "tsalach",

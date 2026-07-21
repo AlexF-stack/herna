@@ -24,6 +24,8 @@ export const brandAssets = {
   website: "hernaholding.com",
   websiteUrl:
     process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.hernaholding.com",
+  mashalUrl:
+    process.env.NEXT_PUBLIC_MASHAL_URL ?? "https://mashal-web.vercel.app",
   portalUrl: "https://www.hernaholding.com",
   email: "contact@hernaholding.com",
   phone: "+229 01 96 39 99 88",

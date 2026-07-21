@@ -3,7 +3,9 @@
 import { useDictionary } from "@/components/providers/LocaleProvider";
 import { Reveal } from "@/components/site/Reveal";
 import { TiltCard } from "@/components/site/TiltCard";
+import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 export function SiteSubsidiaries() {
   const dictionary = useDictionary();
@@ -49,7 +51,7 @@ export function SiteSubsidiaries() {
                   <p className="mt-1 text-xs font-semibold uppercase tracking-[0.14em] text-[color:var(--gold-deep)]">
                     {item.sector}
                   </p>
-                  <ul className="mt-4 space-y-2">
+                  <ul className="mt-4 flex-1 space-y-2">
                     {item.services.map((service) => (
                       <li
                         key={service}
@@ -63,6 +65,17 @@ export function SiteSubsidiaries() {
                       </li>
                     ))}
                   </ul>
+                  {"href" in item && item.href ? (
+                    <Link
+                      href={item.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-[color:var(--gold-deep)] transition-colors hover:text-[color:var(--gold)]"
+                    >
+                      {dictionary.subsidiaries.visitSite}
+                      <ArrowUpRight className="h-4 w-4" aria-hidden />
+                    </Link>
+                  ) : null}
                 </article>
               </TiltCard>
             </Reveal>
